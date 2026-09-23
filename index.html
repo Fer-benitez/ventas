@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pisos en venta disponibles en Barcelona | Fincas A.G. Núñez</title>
+<meta name="description" content="Mapa de pisos en venta disponibles ahora en Barcelona. Mira zona, precio y fotos, y pide visita directamente con Fincas A.G. Núñez.">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-agn-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="favicon-agn-180.png">
+<!-- NOTA PARA FER: ajusta esta URL cuando publiques el repo real de pisos en venta de AG Núñez -->
+<link rel="canonical" href="https://fer-benitez.github.io/pisosenventa/">
+<link rel="shortcut icon" href="favicon-agn.ico">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Fincas A.G. Núñez">
+<meta property="og:url" content="https://fer-benitez.github.io/pisosenventa/">
+<!-- NOTA PARA FER: sube una imagen og-venta.jpg (1200x630) a esta carpeta y ajusta la ruta -->
+<meta property="og:image" content="https://fer-benitez.github.io/pisosenventa/og-venta.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Pisos en venta disponibles ahora en Barcelona — Fincas A.G. Núñez">
+<meta property="og:title" content="Pisos en venta disponibles en Barcelona">
+<meta property="og:description" content="Mapa con las propiedades en venta disponibles ahora. Pide visita en un clic.">
+<meta property="og:locale" content="es_ES">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://fer-benitez.github.io/pisosenventa/og-venta.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" crossorigin>
+<style>
+  /* ---- paleta "venta" — carbón profundo + dorado envejecido + hueso ---- */
+  :root{--black:#0a1626;--black-2:#0f2038;--black-3:#16294a;--line:rgba(150,178,210,.16);--white:#f3f5fa;--muted:#8ea3bf;--red:#e8a339;--red-dim:#9c6a1c;--glow:rgba(232,163,57,.34);--crimson:#d92d2d;--crimson-dim:#7a1a1a;--ink:#3a0f12;--ink-2:#5c161b;--wa:#1fa855;--ease:cubic-bezier(.22,.68,0,1);}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  [hidden]{display:none!important;}
+  body{background:var(--black);color:var(--white);font-family:'Plus Jakarta Sans',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  a{color:inherit;text-decoration:none;}
+  h1,h2,h3{font-family:'Fraunces',serif;font-weight:600;line-height:1.1;letter-spacing:-.01em;}
+  :focus-visible{outline:2px solid var(--red);outline-offset:3px;}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 20px;}
+  header{border-bottom:1px solid var(--line);}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 0;}
+  .brand{font-family:'Fraunces',serif;font-weight:700;text-transform:uppercase;font-size:16px;letter-spacing:.02em;}
+  .brand span{color:var(--red);}
+  .agn-logo{height:42px;width:auto;display:block;}
+  .top-actions{display:flex;gap:10px;}
+  .lang{display:flex;gap:9px;align-items:center}
+  .lang button{width:34px;height:34px;padding:0;border-radius:50%;overflow:hidden;cursor:pointer;background:none;border:2px solid rgba(255,255,255,.28);box-shadow:0 2px 8px rgba(0,0,0,.5),inset 0 0 0 1px rgba(0,0,0,.35);opacity:.78;filter:saturate(.85);transition:transform .25s var(--ease),opacity .2s,filter .2s,border-color .2s,box-shadow .25s;display:grid;place-items:center}
+  .lang button svg{width:100%;height:100%;display:block}
+  .lang button:hover{opacity:1;filter:none;transform:translateY(-2px) scale(1.06)}
+  .lang button[aria-pressed=true]{opacity:1;filter:none;border-color:var(--red);box-shadow:0 0 0 3px rgba(232,163,57,.28),0 6px 16px -4px var(--glow);transform:scale(1.08)}
+  .lang button:focus-visible{outline:2px solid #fff;outline-offset:3px}
+  @media(max-width:640px){.top{flex-wrap:wrap;row-gap:10px}.brandrow{min-width:0;gap:9px}.brandrow .brand{font-size:14px}.agn-logo{height:32px}.top-actions{flex:none;gap:6px}.top-actions .btn{padding:10px 14px}.brandrow .brand{font-size:13px}.top{gap:8px}.lang{order:3;width:100%;justify-content:center;gap:12px;padding:2px 0 0}.lang button{width:38px;height:38px}}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border-radius:999px;font-weight:700;font-size:13.5px;border:1px solid rgba(255,255,255,.25);background:transparent;color:var(--white);cursor:pointer;font-family:inherit;transition:transform .25s var(--ease),background .25s var(--ease);}
+  .btn:hover{transform:translateY(-1px);}
+  .btn.red{background:var(--crimson);border-color:var(--crimson);}
+  .btn.red:hover{background:#ef4d4d;}
+  .btn.gold{background:linear-gradient(115deg,#6b430e 0%,#9c6a1c 40%,#e8a339 70%,#f4c469 100%);background-size:180% 100%;border-color:#c98a2a;color:var(--black);font-weight:800;box-shadow:0 10px 26px -10px rgba(140,95,20,.55);transition:background-position .5s var(--ease),transform .2s var(--ease),box-shadow .2s}
+  .btn.gold:hover{background-position:100% 0;transform:translateY(-2px);box-shadow:0 14px 30px -10px rgba(140,95,20,.75)}
+  .btn.wa{background:var(--wa);border-color:var(--wa);}
+  .hero{padding:34px 0 18px;}
+  .eyebrow{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;padding-bottom:9px;border-bottom:3px solid var(--red);margin-bottom:16px;}
+  .hero h1{font-size:clamp(28px,4.2vw,46px);max-width:760px;}
+  .hero p{color:var(--muted);margin-top:12px;max-width:620px;line-height:1.6;}
+  .count{display:inline-block;margin-left:10px;font-size:13px;font-weight:700;color:var(--red);background:rgba(232,163,57,.12);border:1px solid var(--red-dim);border-radius:999px;padding:3px 12px;vertical-align:middle;}
+  .filters{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 18px;}
+  .filters label{display:flex;flex-direction:column;gap:5px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+  .filters select{background:var(--black-2);color:var(--white);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:600 14px Inter,sans-serif;min-width:150px;}
+  .filters .clear{align-self:flex-end;}
+  .listbar{margin:0 0 12px;position:relative;z-index:1300}
+  .listbtn{display:inline-flex;align-items:center;gap:10px;background:var(--black-2);color:var(--white);border:1px solid var(--line);border-radius:12px;padding:10px 16px 10px 12px;font:700 14px 'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:border-color .25s var(--ease)}
+  .listbtn:hover,.listbtn[aria-expanded="true"]{border-color:var(--red)}
+  .listbtn svg{width:26px;height:26px;stroke:var(--red);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .listbtn .chev{width:14px;height:14px;stroke:var(--muted);transition:transform .25s var(--ease)}
+  .listbtn[aria-expanded="true"] .chev{transform:rotate(180deg)}
+  .cards{margin:8px 0 0;background:var(--black-2);border:1px solid var(--line);border-radius:14px;overflow:hidden;max-height:min(60vh,420px);overflow-y:auto}
+  .cards[hidden]{display:none}
+  .row{display:grid;grid-template-columns:1fr auto;gap:2px 14px;align-items:center;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);color:inherit;font-family:inherit;padding:13px 16px;cursor:pointer;transition:background .2s}
+  .row:last-child{border-bottom:0}
+  .row:hover,.row.active{background:var(--black-3)}
+  .row.active{box-shadow:inset 3px 0 0 var(--red)}
+  .row .zona{grid-column:1;font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--red)}
+  .row .tt{grid-column:1;font-family:'Fraunces',serif;font-weight:600;font-size:15px;line-height:1.25}
+  .row .pr{grid-column:2;grid-row:1 / span 2;font-weight:800;font-size:17px;white-space:nowrap;text-align:right}
+  .row .pr small{font-weight:500;color:var(--muted);font-size:12px}
+  .row .rs{display:inline-block;margin-left:8px;background:var(--ink-2);color:#ffd9c0;border:1px solid rgba(255,217,192,.35);font:800 9px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:.12em;padding:3px 7px;border-radius:999px;vertical-align:middle}
+  .ribbon{position:absolute;top:12px;left:12px;z-index:2;background:var(--ink-2);color:#ffd9c0;border:1px solid rgba(255,217,192,.35);font:800 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:.14em;padding:7px 11px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.4);}
+  .pin.res path{fill:var(--ink-2)}.pin.res circle{fill:#ffd9c0}
+  .leaflet-tile-pane{filter:grayscale(.55) sepia(.25) hue-rotate(180deg) brightness(.75) contrast(1.08) saturate(.55);}
+  .leaflet-container{background:#0a1626;}
+  #map{height:min(70vh,660px);min-height:540px;border-radius:16px;border:1px solid var(--line);margin-top:6px;background:var(--black-2);}
+  .status{margin:12px 2px 0;font-size:13.5px;color:var(--muted);display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+  .status button{font-size:12.5px;padding:7px 14px;}
+  .pin{width:34px;height:42px;position:relative;filter:drop-shadow(0 6px 8px rgba(0,0,0,.5));transition:transform .2s var(--ease);}
+  .pin:hover,.pin.on{transform:scale(1.18);}
+  .pin svg{width:34px;height:42px;display:block;}
+  .leaflet-popup-content-wrapper{background:var(--black-2);color:var(--white);border:1px solid var(--line);border-radius:14px;padding:0;overflow:hidden;box-shadow:0 20px 40px rgba(0,0,0,.6);}
+  .leaflet-popup-content{margin:0;width:270px!important;}
+  .leaflet-popup-tip{background:var(--black-2);}
+  .leaflet-container a.leaflet-popup-close-button{color:var(--white);background:rgba(0,0,0,.5);border-radius:50%;width:26px;height:26px;line-height:24px;top:8px;right:8px;font-size:18px;text-align:center;padding:0;}
+  .pp .ph{height:110px;background:var(--black-3) center/cover no-repeat;}
+  .pp .bd{padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px;}
+  .pp .zona{font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--red);}
+  .pp h3{font-size:18px;}
+  .pp .pr{font-weight:800;font-size:20px;}
+  .pp .pr small{font-weight:500;color:var(--muted);font-size:12px;}
+  .pp .sp{display:flex;flex-wrap:wrap;gap:6px;font-size:12.5px;color:#cfccc7;}
+  .pp .sp span{background:var(--black-3);border-radius:999px;padding:4px 10px;}
+  .pp .approx{font-size:11.5px;color:var(--muted);}
+  .pp .acts{display:grid;gap:8px;margin-top:4px;}
+  .pp .acts .btn{padding:11px 12px;font-size:13px;color:var(--white)!important;}
+  .pp .row2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+
+  /* panel de detalle (estilo portal inmobiliario) */
+  .navarrow{position:absolute;top:50%;transform:translateY(-50%);z-index:1200;width:50px;height:50px;border-radius:50%;background:var(--red);border:2px solid rgba(255,255,255,.92);display:grid;place-items:center;cursor:pointer;padding:0;box-shadow:0 10px 26px -6px var(--glow),0 4px 12px rgba(0,0,0,.5);transition:transform .2s var(--ease),background .2s,left .25s var(--ease);}
+  .navarrow[hidden]{display:none}
+  .navarrow svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;}
+  .navarrow:hover{transform:translateY(-50%) scale(1.1);background:#f4c469;}
+  .navarrow:active{transform:translateY(-50%) scale(.95);}
+  .navarrow.prev{left:14px}.navarrow.next{right:14px}
+  .mapwrap.has-detail .navarrow.prev{left:372px}
+  @media(max-width:640px){.navarrow{top:calc(max(46vh,340px)/2);width:44px;height:44px}.navarrow svg{width:19px;height:19px}.navarrow.prev{left:10px}.navarrow.next{right:10px}.mapwrap.has-detail .navarrow.prev{left:10px}}
+  .mapwrap{position:relative;margin-top:6px;}
+  .mapwrap #map{margin-top:0;}
+  .detail{display:none;position:absolute;z-index:1100;left:12px;top:12px;bottom:12px;width:344px;background:var(--black-2);border:1px solid var(--line);border-radius:16px;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,.65);}
+  .detail.open{display:block;animation:dIn .3s var(--ease);}
+  @keyframes dIn{from{opacity:0;transform:translateX(-22px)}to{opacity:1;transform:none}}
+  .detail .dph{height:190px;background:var(--black-3) center/cover no-repeat;position:relative;}
+  .detail .dph::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(20,20,20,.85),transparent 55%);}
+  .d-close{position:absolute;right:12px;top:12px;z-index:2;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(0,0,0,.55);color:#fff;font-size:15px;cursor:pointer;}
+  .detail .bd{padding:16px 18px 20px;display:flex;flex-direction:column;gap:10px;}
+  .detail .zona{font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--red);}
+  .detail h3{font-size:21px;line-height:1.15;}
+  .detail .pr{font-weight:800;font-size:26px;}
+  .detail .pr small{font-weight:500;color:var(--muted);font-size:13px;}
+  .detail .sp{display:flex;flex-wrap:wrap;gap:6px;font-size:13px;color:#cfccc7;}
+  .detail .sp span{background:var(--black-3);border-radius:999px;padding:5px 11px;}
+  .detail .approx{font-size:12px;color:var(--muted);line-height:1.5;}
+  .detail .acts{display:grid;gap:8px;margin-top:4px;}
+  .detail .acts .btn{color:var(--white)!important;}
+  .detail .row2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .pin.sel{transform:scale(1.25);filter:drop-shadow(0 0 10px rgba(255,255,255,.55));z-index:5;}
+  .pin.sel path{fill:#fff;stroke:#fff;}
+  .pin.sel circle{fill:var(--red);}
+  @media(max-width:640px){
+    .detail{position:static;width:auto;margin-top:12px;overflow:visible;}
+    .detail.open{animation:dUp .3s var(--ease);}
+    .detail .dph{height:120px;border-radius:16px 16px 0 0;}
+    .detail .bd{padding:14px 16px 18px;}
+    .detail .pr{font-size:22px;}
+  }
+  @keyframes dUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .empty{padding:60px 20px;text-align:center;color:var(--muted);line-height:1.7;}
+  .demo{background:#3a2a00;border:1px solid #7a5b00;color:#ffd77a;padding:10px 16px;font-size:13px;text-align:center;}
+  .cta{margin:44px 0 0;padding:34px 28px;background:var(--black-2);border:1px solid var(--line);border-radius:16px;display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;}
+  .cta h2{font-size:clamp(22px,3vw,30px);max-width:520px;}
+  footer{border-top:1px solid var(--line);margin-top:48px;padding:26px 0 40px;font-size:13px;color:var(--muted);}
+  footer .fl{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:10px;}
+  footer a:hover{color:var(--white);}
+  .toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);background:var(--white);color:var(--black);padding:11px 20px;border-radius:999px;font-weight:700;font-size:13.5px;opacity:0;pointer-events:none;transition:.3s var(--ease);z-index:2000;}
+  .toast.show{opacity:1;transform:translate(-50%,0);}
+  @media(max-width:640px){.top-actions .btn span{display:none}.filters select{min-width:0;width:100%}.filters label{flex:1 1 44%}#map{height:46vh;min-height:340px}}
+
+  /* ---- foto + instagram ---- */
+  .avatar{width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid var(--red);background:var(--black-2);}
+  .brandrow{border-radius:10px;transition:opacity .2s}
+  .brandrow:hover{opacity:.85}
+  .brandrow{display:flex;align-items:center;gap:12px;}
+  .cta{align-items:center;gap:28px;}
+
+  .cta-btns{display:flex;flex-wrap:wrap;gap:10px;}
+  dialog#leadDlg{margin:auto;border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,#132640,#0a1626);color:var(--white);padding:0;width:min(580px,calc(100vw - 20px));max-height:calc(100dvh - 20px);overflow:auto;box-shadow:0 40px 90px rgba(0,0,0,.7);}
+  dialog#leadDlg::backdrop{background:rgba(0,0,0,.75);backdrop-filter:blur(4px);}
+  dialog#leadDlg[open]{animation:dlgIn .35s var(--ease)}
+  @keyframes dlgIn{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
+  #leadForm{padding:28px 24px 24px;position:relative;}
+  #leadForm h2{font-size:24px;padding-right:32px;}
+  #leadForm .x{position:absolute;top:12px;right:14px;background:none;border:0;color:var(--muted);font-size:28px;line-height:1;cursor:pointer;z-index:2}
+  .lsub{color:var(--muted);font-size:14px;margin:8px 0 18px;line-height:1.5;}
+  .lgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .lgrid[hidden]{display:none!important}
+  .lgrid .wide{grid-column:1/-1}
+  #fTenant label{display:flex;flex-direction:column;gap:5px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+  #fTenant input:not([type=checkbox]),#fTenant select,.wiz input:not([type=checkbox]):not([type=radio]):not([type=range]),.wiz select,.wiz textarea{font:inherit;font-size:15px;letter-spacing:0;text-transform:none;font-weight:500;color:var(--white);background:var(--black);border:1px solid var(--line);border-radius:12px;padding:12px 13px;width:100%;color-scheme:dark;transition:border-color .2s,box-shadow .2s}
+  #fTenant input:focus,#fTenant select:focus,.wiz input:focus,.wiz select:focus,.wiz textarea:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 3px rgba(232,163,57,.22)}
+  #leadForm .chk{display:flex;flex-direction:row;align-items:flex-start;gap:10px;text-transform:none;letter-spacing:0;font-weight:500;font-size:12.5px;margin:16px 0;line-height:1.45;color:var(--muted);cursor:pointer}
+  #leadForm .chk input{margin-top:2px;accent-color:var(--red);width:18px;height:18px;flex:none}
+  #leadForm .chk a{color:var(--white)}
+  .lsend{width:100%;justify-content:center;padding:14px}
+  .lmsg{margin-top:10px;font-size:14px;min-height:0}
+  .lmsg.ok{color:#4ade80}.lmsg.err{color:#ff8a8a}
+  @media(max-width:520px){.lgrid{grid-template-columns:1fr}}
+
+  /* ---- asistente de 3 pasos (propietarios) ---- */
+  .ic{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+  @keyframes pop{0%{transform:scale(.6)}60%{transform:scale(1.18)}100%{transform:scale(1)}}
+  .wsteps{display:flex;align-items:flex-start;list-style:none;padding:0;margin:4px 0 22px}
+  .wsteps li{display:flex;flex-direction:column;align-items:center;gap:7px;flex:none;width:70px;font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);transition:color .3s}
+  .wsteps .dot{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--black-3);border:1px solid var(--line);transition:background .3s,border-color .3s,box-shadow .3s}
+  .wsteps li.on{color:#fff}
+  .wsteps li.on .dot{background:var(--red);border-color:rgba(255,255,255,.7);color:var(--black);box-shadow:0 0 0 6px rgba(232,163,57,.2),0 10px 24px -8px var(--glow);animation:pop .45s var(--ease)}
+  .wsteps li.done{color:#8ee6ad}
+  .wsteps li.done .dot{background:#1f9d55;border-color:#1f9d55;color:#fff}
+  .wsteps li.wbar{flex:1;width:auto;height:4px;margin-top:20px;border-radius:4px;background:var(--black-3);position:relative;overflow:hidden}
+  .wbar i{position:absolute;inset:0;width:0;background:linear-gradient(90deg,#1f9d55,#4ade80);transition:width .5s var(--ease)}
+  .wbar.full i{width:100%}
+  .stp{display:none}
+  .stp.on{display:block;animation:stpIn .38s var(--ease)}
+  @keyframes stpIn{from{opacity:0;transform:translateX(26px)}to{opacity:1;transform:none}}
+  .stp h3{font-size:21px;display:flex;align-items:center;gap:10px}
+  .stp h3 .ic{color:var(--red);width:26px;height:26px}
+  .stp .hint{color:var(--muted);font-size:13.5px;line-height:1.5;margin:6px 0 18px}
+  .fld{display:flex;flex-direction:column;gap:7px;margin-bottom:16px}
+  .fld>.lb,.lb{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .lb .ic{width:15px;height:15px;color:var(--red)}
+  .req{color:var(--red);margin-left:2px}
+  .opt{font-weight:600;letter-spacing:0;text-transform:none;color:#7c7c7c;margin-left:2px}
+  .inp{position:relative}
+  .inp>.ic{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--muted);pointer-events:none;transition:color .2s}
+  .inp:focus-within>.ic{color:var(--red)}
+  .wiz .inp input:not([type=checkbox]):not([type=radio]):not([type=range]),.wiz .inp select{padding-left:42px}
+  .wiz .inp .sfx{position:absolute;right:13px;top:50%;transform:translateY(-50%);color:var(--muted);font-weight:700;font-size:13px;pointer-events:none}
+  .wiz textarea{resize:vertical;min-height:84px;line-height:1.5}
+  .ferr{color:#ff8a8a;font-size:12.5px;min-height:0;font-weight:600}
+  .fld.bad input,.fld.bad select,.fld.bad .chips{border-color:#ff6b6b}
+  .fld.bad .inp input{box-shadow:0 0 0 3px rgba(255,107,107,.18)}
+  .fld.bad{animation:shake .35s}
+  @keyframes shake{20%{transform:translateX(-6px)}45%{transform:translateX(5px)}70%{transform:translateX(-3px)}100%{transform:none}}
+  .chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px;border-radius:14px}
+  .chips.c2{grid-template-columns:1fr 1fr}
+  .chips.c3{grid-template-columns:repeat(3,1fr)}
+  .chip{position:relative;display:block}
+  .chip input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer;z-index:1}
+  .chip>span{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;height:100%;padding:14px 8px;border-radius:14px;background:var(--black);border:1px solid var(--line);font-size:13px;font-weight:700;text-align:center;line-height:1.2;color:#d6d3ce;transition:border-color .2s,background .2s,transform .2s var(--ease),box-shadow .2s}
+  .chip>span .ic{width:28px;height:28px;color:var(--muted);transition:color .2s}
+  .chip:hover>span{border-color:rgba(255,255,255,.28)}
+  .chip input:checked+span{border-color:var(--red);background:rgba(232,163,57,.13);color:#fff;transform:translateY(-2px);box-shadow:0 12px 24px -12px var(--glow)}
+  .chip input:checked+span .ic{color:var(--red);animation:pop .4s var(--ease)}
+  .chip input:focus-visible+span{outline:2px solid var(--red);outline-offset:2px}
+  .chip.big>span{flex-direction:row;justify-content:flex-start;gap:12px;text-align:left;padding:14px}
+  .chip.big small{display:block;font-weight:500;color:var(--muted);font-size:12px;margin-top:2px}
+  .chip.sm>span{padding:11px 6px;font-size:12.5px}
+  .chip.sm>span .ic{width:24px;height:24px}
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+  .g2 .fld{margin-bottom:0}
+  .g2>*{min-width:0}
+  .g2 .stpr .lab{gap:6px;font-size:13px}
+  .g2 .stpr .ctl{gap:4px}
+  .g2 .stpr button{width:34px;height:34px}
+  @media(max-width:520px){.g2{grid-template-columns:1fr}.chips.c3{grid-template-columns:1fr 1fr 1fr}}
+  .stpr{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--black);border:1px solid var(--line);border-radius:14px;padding:8px 10px 8px 14px}
+  .stpr .lab{display:flex;align-items:center;gap:9px;font-weight:700;font-size:14px}
+  .stpr .lab .ic{color:var(--red);width:22px;height:22px}
+  .stpr .ctl{display:flex;align-items:center;gap:6px}
+  .stpr button{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--black-3);color:#fff;font-size:20px;line-height:1;cursor:pointer;transition:background .2s,transform .15s}
+  .stpr button:hover{background:var(--red);border-color:var(--red)}
+  .stpr button:active{transform:scale(.88)}
+  .stpr output{min-width:34px;text-align:center;font:800 19px 'Plus Jakarta Sans',sans-serif}
+  .ppl{display:flex;gap:4px;margin:10px 4px 0;flex-wrap:wrap}
+  .ppl .ic{width:26px;height:26px;color:#3a3a3a;transition:color .25s,transform .25s var(--ease)}
+  .ppl .ic.on{color:var(--red);transform:translateY(-3px)}
+  .rng{background:var(--black);border:1px solid var(--line);border-radius:14px;padding:14px 16px 12px}
+  .rng .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+  .rng .rv{font:800 24px 'Plus Jakarta Sans',sans-serif}
+  .rng .rv small{font:600 13px 'Plus Jakarta Sans',sans-serif;color:var(--muted)}
+  .rng input[type=range]{width:100%;accent-color:var(--red);height:28px;cursor:pointer}
+  .cond{margin-top:12px;padding:14px;border:1px dashed rgba(255,255,255,.18);border-radius:14px;animation:stpIn .35s var(--ease)}
+  .cond[hidden]{display:none}
+  .cond .fld:last-child{margin-bottom:0}
+  .wnav{display:flex;gap:10px;margin-top:20px}
+  .wnav .btn{flex:1;padding:14px;font-size:14.5px}
+  .wnav .btn .ic{width:18px;height:18px}
+  .wnav #wBack{flex:0 0 auto;padding-inline:18px}
+  .wnav .btn[hidden]{display:none}
+  .done{display:none;text-align:center;padding:26px 6px 8px;position:relative;overflow:hidden}
+  .done.on{display:block}
+  .done .okc{width:88px;height:88px;border-radius:50%;background:#1f9d55;display:grid;place-items:center;margin:0 auto 18px;animation:pop .55s var(--ease);box-shadow:0 0 0 10px rgba(31,157,85,.18)}
+  .done .okc .ic{width:46px;height:46px;stroke:#fff;stroke-width:2.8;stroke-dasharray:32;animation:draw .6s .25s both}
+  @keyframes draw{from{stroke-dashoffset:32}to{stroke-dashoffset:0}}
+  .done h2{font-size:26px;padding:0!important}
+  .done p{color:var(--muted);line-height:1.6;margin:10px auto 20px;max-width:420px}
+  .done .cf{position:absolute;inset:0;pointer-events:none}
+  .done .cf i{position:absolute;top:-12px;width:9px;height:14px;border-radius:2px;opacity:0;animation:fall 2.6s ease-in forwards}
+  @keyframes fall{0%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translateY(420px) rotate(560deg)}}
+
+  /* ---- inquilino: servicio prioritario ---- */
+  .vs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .vs>div{display:flex;flex-direction:column;gap:6px;padding:14px;border-radius:14px;font-size:12.5px;line-height:1.45;color:var(--muted)}
+  .vs b{font:800 14px 'Plus Jakarta Sans',sans-serif;color:#fff}
+  .vs .ic{width:24px;height:24px}
+  .vs-a{background:var(--black);border:1px solid var(--line)}
+  .vs-a .ic{color:var(--muted)}
+  .vs-b{background:linear-gradient(160deg,rgba(232,163,57,.22),rgba(232,163,57,.06));border:1px solid var(--red)}
+  .vs-b .ic{color:var(--red)}
+  .price{margin-top:12px;border:1px solid var(--line);border-radius:16px;background:var(--black);padding:16px}
+  .pr-top{display:flex;align-items:center;gap:12px;font-size:15px}
+  .pr-top>.ic{width:34px;height:34px;color:var(--red);flex:none}
+  .pr-top b{font:800 19px 'Plus Jakarta Sans',sans-serif;color:#fff;display:block}
+  .pr-top span{color:var(--muted);font-size:13px;display:block;margin-top:2px}
+  .pr-list{list-style:none;margin:14px 0;padding:0;display:grid;gap:11px}
+  .pr-list li{display:flex;gap:10px;font-size:13px;line-height:1.5;color:#cfcac3}
+  .pr-list .ic{width:20px;height:20px;color:var(--red);margin-top:1px}
+  .pr-list b{color:#fff}
+  .calc{border-top:1px dashed rgba(255,255,255,.16);padding-top:14px}
+  .calc label{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .calc label .ic{width:15px;height:15px;color:var(--red)}
+  .calc-out{margin-top:10px;font-size:13.5px;color:var(--muted);line-height:1.6}
+  .calc-out b{font:800 22px 'Plus Jakarta Sans',sans-serif;color:#fff;display:block}
+  #tAceptaWrap{margin-top:12px}
+  #tAceptaWrap[hidden]{display:none}
+  @media(max-width:520px){.vs{grid-template-columns:1fr}}
+  /* ---- campana de avisos ---- */
+  .hero-row{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .bellbtn{position:relative;flex:none;width:54px;height:54px;border-radius:50%;border:2px solid rgba(255,255,255,.9);background:var(--red);color:var(--black);cursor:pointer;display:inline-grid;place-items:center;padding:0;box-shadow:0 12px 28px -8px var(--glow);transition:transform .25s var(--ease),box-shadow .25s}
+  .bellbtn::before,.bellbtn::after{content:'';position:absolute;inset:-2px;border-radius:50%;border:2px solid var(--red);opacity:0;animation:ripple 2.6s ease-out infinite;pointer-events:none}
+  .bellbtn::after{animation-delay:1.3s}
+  @keyframes ripple{0%{transform:scale(1);opacity:.75}100%{transform:scale(2);opacity:0}}
+  .bellbtn .ic{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;transform-origin:50% 8%;animation:bell 3s ease-in-out infinite}
+  .bellbtn .bdot{position:absolute;top:8px;right:9px;width:12px;height:12px;border-radius:50%;background:#ffe1b8;border:2px solid var(--red);box-shadow:0 0 0 0 rgba(255,225,184,.7);animation:bdot 1.6s ease-out infinite}
+  @keyframes bdot{0%{box-shadow:0 0 0 0 rgba(255,225,184,.75)}80%,100%{box-shadow:0 0 0 9px rgba(255,225,184,0)}}
+  .bellbtn:hover{transform:translateY(-2px) scale(1.08);box-shadow:0 16px 34px -8px var(--glow)}
+  .bellbtn:hover .ic{animation-duration:.9s}
+  .bellbtn:active{transform:scale(.94)}
+  .listrow{display:flex;align-items:center;gap:14px}
+  .bell-list{display:none;width:46px;height:46px}
+  @media(max-width:640px){.bell-hero{display:none}.bell-list{display:inline-grid}.bell-list .ic{width:23px;height:23px}}
+  dialog#alertDlg{margin:auto;border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,#132640,#0a1626);color:var(--white);padding:0;width:min(720px,calc(100vw - 20px));max-height:calc(100dvh - 20px);overflow:auto;box-shadow:0 40px 90px rgba(0,0,0,.7)}
+  dialog#alertDlg::backdrop{background:rgba(0,0,0,.75);backdrop-filter:blur(4px)}
+  dialog#alertDlg[open]{animation:dlgIn .35s var(--ease)}
+  .al-pop{position:relative;padding:26px 22px 22px}
+  .al-pop .x{position:absolute;top:10px;right:14px;background:none;border:0;color:var(--muted);font-size:28px;line-height:1;cursor:pointer;z-index:2}
+  .al-head{padding-right:26px}
+  @media(prefers-reduced-motion:reduce){.bellbtn::before,.bellbtn::after,.bellbtn .ic,.bellbtn .bdot{animation:none}}
+  /* ---- avisos de pisos nuevos ---- */
+  .al-head{display:flex;gap:16px;align-items:center;margin-bottom:22px}
+  .al-ic{flex:none;width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:var(--red);box-shadow:0 0 0 7px rgba(232,163,57,.18),0 12px 26px -10px var(--glow)}
+  .al-ic .ic{width:26px;height:26px;color:var(--black);animation:bell 3s ease-in-out infinite;transform-origin:50% 8%}
+  @keyframes bell{0%,72%,100%{transform:rotate(0)}76%{transform:rotate(14deg)}80%{transform:rotate(-12deg)}84%{transform:rotate(9deg)}88%{transform:rotate(-6deg)}92%{transform:rotate(0)}}
+  .al-head h2{font-size:clamp(22px,3vw,28px)}
+  .al-head p{color:var(--muted);margin-top:5px;line-height:1.5;font-size:15px}
+  .al-grid{display:grid;grid-template-columns:1fr 1.35fr;gap:16px;align-items:stretch}
+  .al-grid.one{grid-template-columns:minmax(0,640px)}
+  .al-box{border:1px solid var(--line);border-radius:18px;padding:20px;background:var(--black)}
+  .al-box h3{font-size:18px;display:flex;align-items:center;gap:9px}
+  .al-box h3 .ic{color:var(--red)}
+  .al-box .hint{color:var(--muted);font-size:13.5px;line-height:1.5;margin:6px 0 16px}
+  .al-box .chk{display:flex;align-items:flex-start;gap:10px;font-size:12.5px;line-height:1.45;color:var(--muted);cursor:pointer}
+  .al-box .chk input{margin-top:2px;accent-color:var(--red);width:18px;height:18px;flex:none}
+  .al-box .chk a{color:var(--white);text-decoration:underline}
+  .al-send{width:100%;justify-content:center;padding:14px}
+  .al-send .ic{width:18px;height:18px}
+  .al-wa{display:flex;flex-direction:column;background:linear-gradient(160deg,rgba(31,168,85,.16),rgba(31,168,85,.03));border-color:rgba(31,168,85,.5)}
+  .al-wa h3 .ic{color:#4ade80}
+  .fast{margin-left:auto;display:inline-flex;align-items:center;gap:4px;background:linear-gradient(115deg,#2c4f6e,#46779f);color:#f3f5fa;font:800 10.5px 'Plus Jakarta Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:5px 10px 5px 7px;border-radius:999px;white-space:nowrap;box-shadow:0 6px 16px -6px rgba(20,50,70,.7)}
+  .al-wa h3 .fast .ic{width:14px;height:14px;color:#f3f5fa;fill:#f3f5fa;stroke:none;animation:zap 1.6s ease-in-out infinite}
+  @keyframes zap{0%,60%,100%{transform:scale(1);opacity:1}70%{transform:scale(1.35) rotate(-8deg)}80%{transform:scale(1);opacity:.55}90%{transform:scale(1.25) rotate(6deg);opacity:1}}
+  @media(prefers-reduced-motion:reduce){.al-wa h3 .fast .ic{animation:none}}
+  .al-wa .al-send{margin-top:auto}
+  .al-pop .lmsg{margin-top:12px;font-size:14px;line-height:1.5;min-height:0}
+  .al-pop .lmsg.ok{color:#4ade80}.al-pop .lmsg.err{color:#ff8a8a}
+  @media(max-width:820px){.al-grid{grid-template-columns:1fr}}
+  @media(prefers-reduced-motion:reduce){.al-ic .ic{animation:none}}
+  @media(prefers-reduced-motion:reduce){.done .cf{display:none}.stp.on,.cond,dialog#leadDlg[open]{animation:none}}
+  .cta .who{display:flex;align-items:center;gap:22px;flex:1 1 420px;}
+  .cta .who img{width:104px;height:104px;border-radius:50%;flex:none;box-shadow:0 0 0 3px var(--red),0 18px 40px -10px var(--glow);}
+  .cta .who img.fer-photo{box-shadow:0 0 0 3px var(--crimson),0 18px 40px -10px rgba(217,45,45,.45);}
+  .cta .who p{color:var(--muted);margin-top:10px;line-height:1.55;font-size:14.5px;}
+  .ig{position:relative;margin-top:64px;padding:56px 0 8px;overflow:hidden;}
+  .ig::before{content:"";position:absolute;left:50%;top:-140px;width:900px;height:520px;transform:translateX(-50%);background:radial-gradient(closest-side,rgba(232,163,57,.22),transparent);pointer-events:none;}
+  .ig-head{position:relative;display:flex;align-items:center;gap:22px;flex-wrap:wrap;justify-content:space-between;}
+  .ig-id{display:flex;align-items:center;gap:20px;}
+  .ring{width:96px;height:96px;border-radius:50%;padding:4px;background:conic-gradient(from 0deg,#e8a339 0%,#ffe1b8 18%,rgba(232,163,57,.12) 38%,rgba(232,163,57,.12) 55%,#f4c469 75%,#e8a339 100%);animation:spin 3.2s linear infinite;flex:none;}
+  .ring>span{display:block;width:100%;height:100%;border-radius:50%;background:var(--black);padding:3px;animation:spin 3.2s linear infinite reverse;}
+  .ring img{width:100%;height:100%;border-radius:50%;display:block;}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .ig-id h2{font-size:clamp(26px,3.6vw,38px);}
+  .ig-id .handle{color:var(--red);font-weight:700;font-size:15px;margin-top:6px;display:block;}
+  .ig-id p{color:var(--muted);font-size:14.5px;margin-top:6px;}
+  .ig-btn{background:linear-gradient(135deg,#e8a339,#f4c469);border:0;color:var(--black)!important;}
+  .reels{position:relative;display:flex;gap:18px;overflow-x:auto;padding:34px 4px 26px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;}
+  .reels::-webkit-scrollbar{height:6px}.reels::-webkit-scrollbar-thumb{background:var(--black-3);border-radius:6px}
+  .reels.emb{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:22px;align-items:start;overflow:visible;scroll-snap-type:none;}
+  .reels.emb .embed{display:flex;justify-content:center;min-width:0}
+  .reel{position:relative;flex:0 0 min(300px,78vw);aspect-ratio:9/16;scroll-snap-align:center;border-radius:22px;overflow:hidden;border:1px solid var(--line);background:var(--black-2);cursor:pointer;color:inherit;font-family:inherit;text-align:left;padding:0;transition:transform .4s var(--ease),box-shadow .4s var(--ease),border-color .3s;}
+  .reel:hover{transform:translateY(-8px) rotate(-.6deg);box-shadow:0 30px 60px -20px var(--glow);border-color:var(--red);}
+  .reel:nth-child(even):hover{transform:translateY(-8px) rotate(.6deg);}
+  .reel .bg{position:absolute;inset:0;background-size:cover;background-position:center;}
+  .reel .bg.gen{background:radial-gradient(120% 70% at 20% 0%,rgba(232,163,57,.55),transparent 60%),radial-gradient(90% 60% at 100% 100%,rgba(217,45,45,.30),transparent 60%),linear-gradient(160deg,#16294a,#0a1626);}
+  .reel .bg.gen::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(255,255,255,.035) 0 2px,transparent 2px 18px);}
+  .reel .shade{position:absolute;inset:0;background:linear-gradient(0deg,rgba(9,9,9,.92),transparent 55%);}
+  .reel .play{position:absolute;left:50%;top:44%;width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;background:rgba(255,255,255,.14);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.35);display:grid;place-items:center;transition:transform .3s var(--ease),background .3s;}
+  .reel:hover .play{transform:scale(1.12);background:var(--red);}
+  .reel .play svg{width:28px;height:28px;margin-left:4px;fill:#fff;}
+  .reel .meta{position:absolute;left:18px;right:18px;bottom:18px;display:flex;flex-direction:column;gap:6px;}
+  .reel .tag{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--red);}
+  .reel .tt{font-family:'Fraunces',serif;font-weight:600;font-size:20px;line-height:1.15;}
+  .reel iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff;}
+  .reels.emb .embed.vid{flex-direction:column;align-items:stretch;gap:12px;max-width:380px;margin:0 auto;width:100%}
+  .reels.emb .embed.vid video{width:100%;height:auto;max-height:78vh;display:block;background:#000;border-radius:18px;border:1px solid var(--line);object-fit:contain}
+  .vlink{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:11px 16px;border-radius:999px;font-weight:700;font-size:13.5px;color:var(--black);background:linear-gradient(135deg,#e8a339,#f4c469);transition:transform .25s var(--ease)}
+  .vlink:hover{transform:translateY(-1px)}
+  .vlink svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2}
+  .ig-note{font-size:12.5px;color:var(--muted);margin-top:4px;}
+  @media(max-width:640px){.cta .who img{width:84px;height:84px}.ig-head{justify-content:flex-start}}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+  /* ---- texto oscuro sobre botones dorados (contraste, look premium) ---- */
+  .btn.red{color:var(--white);}
+  .acts .btn.red,.wnav .btn.red,#lSend.btn.red,.lsend.btn.red,.al-send.btn.red{color:var(--white)!important;}
+</style>
+</head>
+<body>
+<div id="demoBar" class="demo" hidden>MODO DEMO — datos de ejemplo. Configura <b>API_URL</b> en index.html para mostrar tus propiedades en venta reales.</div>
+<header>
+  <div class="wrap top">
+    <a class="brandrow" href="https://agenapisos.com" target="_blank" rel="noopener"><img class="agn-logo" src="agn-logo.png" alt="Fincas A.G. Núñez, administración de fincas y agencia inmobiliaria en Barcelona desde 1978" width="192" height="44"></a>
+    <nav class="lang" id="lang" aria-label="Idioma / Language / Sprache / Langue"><button type="button" data-lang="es" aria-label="Español" title="Español" aria-pressed="true"><svg viewBox="0 0 32 32" aria-hidden="true" preserveAspectRatio="xMidYMid slice"><rect width="32" height="32" fill="#c60b1e"/><rect y="8" width="32" height="16" fill="#ffc400"/></svg></button><button type="button" data-lang="en" aria-label="English" title="English" aria-pressed="false"><svg viewBox="0 0 32 32" aria-hidden="true" preserveAspectRatio="xMidYMid slice"><rect width="32" height="32" fill="#012169"/><path d="M0 0L32 32M32 0L0 32" stroke="#fff" stroke-width="6"/><path d="M0 0L32 32M32 0L0 32" stroke="#c8102e" stroke-width="2"/><path d="M16 0V32M0 16H32" stroke="#fff" stroke-width="10"/><path d="M16 0V32M0 16H32" stroke="#c8102e" stroke-width="6"/></svg></button><button type="button" data-lang="de" aria-label="Deutsch" title="Deutsch" aria-pressed="false"><svg viewBox="0 0 32 32" aria-hidden="true" preserveAspectRatio="xMidYMid slice"><rect width="32" height="11" fill="#000"/><rect y="10.6" width="32" height="10.9" fill="#dd0000"/><rect y="21.3" width="32" height="10.7" fill="#ffce00"/></svg></button><button type="button" data-lang="fr" aria-label="Français" title="Français" aria-pressed="false"><svg viewBox="0 0 32 32" aria-hidden="true" preserveAspectRatio="xMidYMid slice"><rect width="11" height="32" fill="#0055a4"/><rect x="10.6" width="10.9" height="32" fill="#fff"/><rect x="21.3" width="10.7" height="32" fill="#ef4135"/></svg></button></nav>
+    <div class="top-actions">
+      <button class="btn" id="copyAll" type="button">🔗 <span>Copiar enlace</span></button>
+      <a class="btn wa" id="waTop" href="#" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <span class="eyebrow">Venta · Barcelona</span>
+    <div class="hero-row"><h1>Propiedades en venta disponibles ahora<span class="count" id="count">…</span></h1><button class="bellbtn bell-hero" type="button" data-alert aria-label="Avísame de propiedades nuevas" title="Avísame de propiedades nuevas"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 17V11a6 6 0 0112 0v6l2 2H4z"/><path d="M10 21a2 2 0 004 0"/></svg><i class="bdot" aria-hidden="true"></i></button></div>
+    <p>Mira dónde está cada propiedad, su precio y sus fotos. Cuando una te encaje, pide la visita desde su ficha: te contesto yo directamente.</p>
+  </section>
+
+  <div class="filters" id="filters" hidden>
+    <label>Zona<select id="fZona"><option value="">Todas</option></select></label>
+    <label>Precio máx.<select id="fPrecio"><option value="">Sin límite</option></select></label>
+    <label>Habitaciones<select id="fHab"><option value="">Cualquiera</option><option value="1">1 o más</option><option value="2">2 o más</option><option value="3">3 o más</option></select></label>
+    <button class="btn clear" id="fClear" type="button">Limpiar</button>
+  </div>
+
+  <div class="listbar">
+    <div class="listrow">
+          <button class="listbtn" id="listBtn" type="button" aria-expanded="false" aria-controls="cards"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M6.5 13h11M6.5 16.5h11M6.5 20h11"/></svg><span>Ver lista de propiedades</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg></button>
+      <button class="bellbtn bell-list" type="button" data-alert aria-label="Avísame de propiedades nuevas" title="Avísame de propiedades nuevas"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 17V11a6 6 0 0112 0v6l2 2H4z"/><path d="M10 21a2 2 0 004 0"/></svg><i class="bdot" aria-hidden="true"></i></button>
+    </div>
+    <div class="cards" id="cards" aria-label="Lista de propiedades" hidden></div>
+  </div>
+  <div class="empty" id="emptyMsg" hidden></div>
+  <div class="mapwrap" id="mapwrap">
+    <div id="map" role="region" aria-label="Mapa de propiedades disponibles"></div>
+    <aside class="detail" id="detail" aria-live="polite" aria-label="Detalle de la propiedad"></aside>
+    <button class="navarrow prev" id="navPrev" type="button" aria-label="Propiedad anterior" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4l-8 8 8 8"/></svg></button>
+    <button class="navarrow next" id="navNext" type="button" aria-label="Propiedad siguiente" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4l8 8-8 8"/></svg></button>
+  </div>
+  <div class="status" id="status"><span id="statusTxt">Cargando propiedades…</span><button class="btn" id="retry" type="button" hidden>↻ Reintentar</button></div>
+
+
+  <section class="cta" id="servicios">
+    <div class="who">
+      <img class="fer-photo" src="fer-rojo.webp" alt="Fernando Benítez, Fincas A.G. Núñez" width="104" height="104" loading="lazy">
+      <div>
+        <h2>¿Tienes una propiedad para vender o buscas comprar con prioridad?</h2>
+        <p>En AG Núñez gestionamos cada operación de compraventa directamente. Cuéntanos tu caso y te respondemos personalmente, sin intermediarios.</p>
+      </div>
+    </div>
+    <div class="cta-btns">
+      <button class="btn gold" type="button" data-lead="owner">Tengo un piso para vender</button>
+      <button class="btn red" type="button" data-lead="tenant">Busco piso para comprar y quiero prioridad</button>
+    </div>
+  </section>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></symbol>
+    <symbol id="i-piso" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M9 7h2M13 7h2M9 11h2M13 11h2M10 21v-4h4v4"/></symbol>
+    <symbol id="i-atico" viewBox="0 0 24 24"><path d="M4 21V10h16v11M2 10h20M7 10V6h10v4M9 21v-5h6v5"/><path d="M12 3v3"/></symbol>
+    <symbol id="i-duplex" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="8" rx="1.5"/><rect x="4" y="13" width="16" height="8" rx="1.5"/><path d="M9 7h6M9 17h6"/></symbol>
+    <symbol id="i-bed" viewBox="0 0 24 24"><path d="M2 5v15M2 9h17a3 3 0 013 3v8M2 16h20M6 9v7"/></symbol>
+    <symbol id="i-shop" viewBox="0 0 24 24"><path d="M4 9l1-5h14l1 5"/><path d="M4 9v11h16V9"/><path d="M4 9a2.7 2.7 0 005.3 0 2.7 2.7 0 005.4 0A2.7 2.7 0 0020 9"/><path d="M10 20v-5h4v5"/></symbol>
+    <symbol id="i-dots" viewBox="0 0 24 24"><circle cx="5.5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18.5" cy="12" r="1.6"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11.5A7 7 0 005 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
+    <symbol id="i-ruler" viewBox="0 0 24 24"><path d="M3 17L17 3l4 4L7 21z"/><path d="M8 12l2 2M11 9l2 2M14 6l2 2"/></symbol>
+    <symbol id="i-bath" viewBox="0 0 24 24"><path d="M4 12h16v3a4 4 0 01-4 4H8a4 4 0 01-4-4v-3z"/><path d="M6 12V6a2 2 0 014 0M7 19l-1 2M17 19l1 2"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="M10.8 12.2L20 3M16 7l3 3M14 9l2 2"/></symbol>
+    <symbol id="i-usercheck" viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6M16 11l2 2 4-4"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+    <symbol id="i-euro" viewBox="0 0 24 24"><path d="M18 7a7 7 0 100 10M4 10h9M4 14h9"/></symbol>
+    <symbol id="i-sofa" viewBox="0 0 24 24"><path d="M4 11V8a2 2 0 012-2h12a2 2 0 012 2v3"/><path d="M2 13a2 2 0 014 0v2h12v-2a2 2 0 014 0v5H2z"/><path d="M5 18v2M19 18v2"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 16l.7 1.8L21.5 18.5l-1.8.7L19 21l-.7-1.8-1.8-.7 1.8-.7z"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></symbol>
+    <symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-3.5 3-5.5 7-5.5s7 2 7 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14.5c2.8 0 5 1.6 5 4.5"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 21s-8-5.2-8-11a4.5 4.5 0 018-2.7A4.5 4.5 0 0120 10c0 5.8-8 11-8 11z"/></symbol>
+    <symbol id="i-cap" viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></symbol>
+    <symbol id="i-brief" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 012-2h2a2 2 0 012 2v2M3 13h18"/></symbol>
+    <symbol id="i-paw" viewBox="0 0 24 24"><circle cx="6.5" cy="11" r="1.7"/><circle cx="9.5" cy="6.5" r="1.7"/><circle cx="14.5" cy="6.5" r="1.7"/><circle cx="17.5" cy="11" r="1.7"/><path d="M8 17c0-2.5 2-4.5 4-4.5s4 2 4 4.5c0 2-1.8 2.5-4 2.5s-4-.5-4-2.5z"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></symbol>
+    <symbol id="i-next" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-prev" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 17V11a6 6 0 0112 0v6l2 2H4z"/><path d="M10 21a2 2 0 004 0"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/></symbol>
+    <symbol id="i-hourglass" viewBox="0 0 24 24"><path d="M6 3h12M6 21h12M7 3c0 5 5 6 5 9s-5 4-5 9M17 3c0 5-5 6-5 9s5 4 5 9"/></symbol>
+  </defs></svg>
+
+  <dialog id="leadDlg" aria-labelledby="leadTitle">
+    <form id="leadForm" action="https://api.web3forms.com/submit" method="POST" novalidate>
+      <button class="x" type="button" data-lclose aria-label="Cerrar">×</button>
+      <!-- NOTA PARA FER: no reutilices el access_key del mapa de alquiler. Crea un formulario nuevo en Web3Forms (web3forms.com) para "pisos en venta" y pega aquí su access_key. -->
+      <input type="hidden" name="access_key" value="PEGA_AQUI_TU_ACCESS_KEY_DE_WEB3FORMS_VENTA">
+      <input type="hidden" name="subject" id="lSubject" value="Mapa de pisos en venta: nuevo contacto">
+      <input type="hidden" name="from_name" value="Mapa de pisos en venta · Fincas A.G. Núñez">
+      <input type="hidden" name="tipo" id="lTipo" value="">
+      <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
+      <div id="lHead">
+        <h2 id="leadTitle"></h2>
+        <p class="lsub" id="leadSub"></p>
+      </div>
+
+      <!-- ===== PROPIETARIO: asistente de 3 pasos ===== -->
+      <div class="wiz" id="fOwner">
+        <ol class="wsteps" id="wSteps" aria-label="Progreso del formulario">
+          <li class="on" data-s="1"><span class="dot" data-ico="i-user"><svg class="ic"><use href="#i-user"/></svg></span>Tú</li>
+          <li class="wbar" aria-hidden="true"><i></i></li>
+          <li data-s="2"><span class="dot" data-ico="i-home"><svg class="ic"><use href="#i-home"/></svg></span>Tu piso</li>
+          <li class="wbar" aria-hidden="true"><i></i></li>
+          <li data-s="3"><span class="dot" data-ico="i-target"><svg class="ic"><use href="#i-target"/></svg></span>Objetivo</li>
+        </ol>
+
+        <!-- PASO 1 -->
+        <section class="stp on" data-step="1">
+          <h3><svg class="ic"><use href="#i-user"/></svg>¿Con quién hablo?</h3>
+          <p class="hint">Solo tres datos y sigo yo. Te escribo por WhatsApp, sin llamadas de sorpresa.</p>
+          <div class="fld"><label class="lb" for="oNombre"><svg class="ic"><use href="#i-user"/></svg>Nombre<span class="req">*</span></label>
+            <div class="inp"><svg class="ic"><use href="#i-user"/></svg><input id="oNombre" name="nombre" data-o autocomplete="name" placeholder="Tu nombre"></div><span class="ferr"></span></div>
+          <div class="fld"><label class="lb" for="oWa"><svg class="ic"><use href="#i-phone"/></svg>WhatsApp<span class="req">*</span></label>
+            <div class="inp"><svg class="ic"><use href="#i-phone"/></svg><input id="oWa" name="whatsapp" data-o type="tel" inputmode="tel" autocomplete="tel" placeholder="+34 600 000 000"></div><span class="ferr"></span></div>
+          <div class="fld"><label class="lb" for="oEmail"><svg class="ic"><use href="#i-mail"/></svg>Email<span class="req">*</span></label>
+            <div class="inp"><svg class="ic"><use href="#i-mail"/></svg><input id="oEmail" name="email" data-o type="email" autocomplete="email" placeholder="tu@email.com"></div><span class="ferr"></span></div>
+        </section>
+
+        <!-- PASO 2 -->
+        <section class="stp" data-step="2">
+          <h3><svg class="ic"><use href="#i-home"/></svg>Cuéntame cómo es tu propiedad</h3>
+          <p class="hint">Lo que sepas, aunque sea aproximado. Lo afino yo después.</p>
+
+          <div class="fld"><span class="lb"><svg class="ic"><use href="#i-home"/></svg>¿Qué tipo de inmueble es?</span>
+            <div class="chips" role="radiogroup" aria-label="Tipo de inmueble">
+              <label class="chip"><input type="radio" name="tipo_inmueble" value="Piso" data-o><span><svg class="ic"><use href="#i-piso"/></svg>Piso</span></label>
+              <label class="chip"><input type="radio" name="tipo_inmueble" value="Ático" data-o><span><svg class="ic"><use href="#i-atico"/></svg>Ático</span></label>
+              <label class="chip"><input type="radio" name="tipo_inmueble" value="Dúplex" data-o><span><svg class="ic"><use href="#i-duplex"/></svg>Dúplex</span></label>
+              <label class="chip"><input type="radio" name="tipo_inmueble" value="Estudio" data-o><span><svg class="ic"><use href="#i-bed"/></svg>Estudio</span></label>
+              <label class="chip"><input type="radio" name="tipo_inmueble" value="Casa / Chalet" data-o><span><svg class="ic"><use href="#i-home"/></svg>Casa / Chalet</span></label>
+              <label class="chip"><input type="radio" name="tipo_inmueble" value="Local" data-o><span><svg class="ic"><use href="#i-shop"/></svg>Local</span></label>
+              <label class="chip"><input type="radio" name="tipo_inmueble" value="Otro" data-o><span><svg class="ic"><use href="#i-dots"/></svg>Otro</span></label>
+            </div>
+          </div>
+          <div class="fld" id="tipoOtroWrap" hidden><label class="lb" for="oTipoOtro"><svg class="ic"><use href="#i-dots"/></svg>¿Cuál?</label>
+            <div class="inp"><svg class="ic"><use href="#i-dots"/></svg><input id="oTipoOtro" name="tipo_otro" data-o placeholder="Ej. buhardilla, loft, plaza de parking…"></div></div>
+
+          <div class="fld"><label class="lb" for="oBarrio"><svg class="ic"><use href="#i-pin"/></svg>Barrio</label>
+            <div class="inp"><svg class="ic"><use href="#i-pin"/></svg><select id="oBarrio" name="barrio" data-o></select></div></div>
+          <div class="fld" id="barrioOtroWrap" hidden><label class="lb" for="oBarrioOtro"><svg class="ic"><use href="#i-pin"/></svg>¿Qué municipio o zona?</label>
+            <div class="inp"><svg class="ic"><use href="#i-pin"/></svg><input id="oBarrioOtro" name="zona_otra" data-o placeholder="Ej. Sitges, Terrassa…"></div></div>
+          <div class="fld"><label class="lb" for="oDir"><svg class="ic"><use href="#i-home"/></svg>Calle y número<span class="opt">(opcional)</span></label>
+            <div class="inp"><svg class="ic"><use href="#i-home"/></svg><input id="oDir" name="direccion" data-o autocomplete="street-address" placeholder="Solo lo veo yo. No se publica."></div></div>
+
+          <div class="fld"><span class="lb"><svg class="ic"><use href="#i-ruler"/></svg>Superficie</span>
+            <div class="rng"><div class="top"><span class="rv" id="rSupV"><small>Desliza para elegir</small></span><svg class="ic" style="color:var(--red)"><use href="#i-ruler"/></svg></div>
+              <input type="range" id="rSup" min="15" max="300" step="1" value="60" aria-label="Superficie en metros cuadrados"></div>
+            <input type="hidden" name="superficie_m2" id="oSup" data-o value=""></div>
+
+          <div class="g2">
+            <div class="stpr" data-stepper="hab" data-min="0" data-max="8"><span class="lab"><svg class="ic"><use href="#i-bed"/></svg>Habitaciones</span><span class="ctl"><button type="button" data-d="-1" aria-label="Menos habitaciones">−</button><output>2</output><button type="button" data-d="1" aria-label="Más habitaciones">+</button></span><input type="hidden" name="habitaciones" data-o value="2"></div>
+            <div class="stpr" data-stepper="ban" data-min="1" data-max="5"><span class="lab"><svg class="ic"><use href="#i-bath"/></svg>Baños</span><span class="ctl"><button type="button" data-d="-1" aria-label="Menos baños">−</button><output>1</output><button type="button" data-d="1" aria-label="Más baños">+</button></span><input type="hidden" name="banos" data-o value="1"></div>
+          </div>
+
+          <div class="fld"><span class="lb"><svg class="ic"><use href="#i-sofa"/></svg>¿Está amueblado?</span>
+            <div class="chips c3" role="radiogroup" aria-label="Amueblado">
+              <label class="chip sm"><input type="radio" name="amueblado" value="Amueblado" data-o><span><svg class="ic"><use href="#i-sofa"/></svg>Amueblado</span></label>
+              <label class="chip sm"><input type="radio" name="amueblado" value="Sin amueblar" data-o><span><svg class="ic"><use href="#i-key"/></svg>Vacío</span></label>
+              <label class="chip sm"><input type="radio" name="amueblado" value="Parcialmente" data-o><span><svg class="ic"><use href="#i-spark"/></svg>Parcial</span></label>
+            </div>
+          </div>
+
+          <div class="fld" style="margin-bottom:4px"><span class="lb"><svg class="ic"><use href="#i-people"/></svg>¿Cuántas personas pueden vivir en él?</span>
+            <div class="stpr" data-stepper="ppl" data-min="1" data-max="8"><span class="lab"><svg class="ic"><use href="#i-people"/></svg>Personas</span><span class="ctl"><button type="button" data-d="-1" aria-label="Menos personas">−</button><output>2</output><button type="button" data-d="1" aria-label="Más personas">+</button></span><input type="hidden" name="personas_max" data-o value="2"></div>
+            <div class="ppl" id="pplRow" aria-hidden="true"></div>
+          </div>
+        </section>
+
+        <!-- PASO 3 -->
+        <section class="stp" data-step="3">
+          <h3><svg class="ic"><use href="#i-target"/></svg>Situación y objetivo</h3>
+          <p class="hint">Así sé por dónde empezar y qué te conviene más.</p>
+
+          <div class="fld"><span class="lb"><svg class="ic"><use href="#i-key"/></svg>¿Cómo está ahora?</span>
+            <div class="chips c2" role="radiogroup" aria-label="Situación actual">
+              <label class="chip big"><input type="radio" name="situacion" value="Libre" data-o><span><svg class="ic"><use href="#i-key"/></svg><b>Libre<small>Puede entregarse ya</small></b></span></label>
+              <label class="chip big"><input type="radio" name="situacion" value="Alquilado" data-o><span><svg class="ic"><use href="#i-usercheck"/></svg><b>Alquilado<small>Con inquilino actual</small></b></span></label>
+            </div>
+            <div class="cond" id="sitLibre" hidden>
+              <div class="fld"><label class="lb" for="oDisp"><svg class="ic"><use href="#i-clock"/></svg>¿Cuándo podrías entregar las llaves?</label>
+                <div class="inp"><svg class="ic"><use href="#i-clock"/></svg><select id="oDisp" name="disponible" data-o><option value="Ya mismo">Ya mismo</option><option value="En menos de 1 mes">En menos de 1 mes</option><option value="En 1 a 3 meses">En 1 a 3 meses</option><option value="Sin fecha todavía">Sin fecha todavía</option></select></div></div>
+            </div>
+            <div class="cond" id="sitAlq" hidden>
+              <div class="g2">
+                <div class="fld"><label class="lb" for="oDesde"><svg class="ic"><use href="#i-cal"/></svg>Inquilino desde</label>
+                  <div class="inp"><svg class="ic"><use href="#i-cal"/></svg><input id="oDesde" name="inquilino_desde" data-o type="month"></div></div>
+                <div class="fld"><label class="lb" for="oRentaAct"><svg class="ic"><use href="#i-euro"/></svg>Renta que cobras</label>
+                  <div class="inp"><svg class="ic"><use href="#i-euro"/></svg><input id="oRentaAct" name="renta_actual" data-o inputmode="numeric" placeholder="Ej. 850"><span class="sfx">€/mes</span></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="fld"><span class="lb"><svg class="ic"><use href="#i-target"/></svg>¿Qué buscas conmigo?</span>
+            <div class="chips c3" role="radiogroup" aria-label="Servicio">
+              <label class="chip sm"><input type="radio" name="servicio" value="Valoración gratuita de venta" data-o checked><span><svg class="ic"><use href="#i-target"/></svg>Valoración gratis</span></label>
+              <label class="chip sm"><input type="radio" name="servicio" value="Venta completa (búsqueda de comprador, negociación y cierre)" data-o><span><svg class="ic"><use href="#i-shield"/></svg>Venta completa</span></label>
+              <label class="chip sm"><input type="radio" name="servicio" value="Las dos cosas" data-o><span><svg class="ic"><use href="#i-spark"/></svg>Las dos</span></label>
+            </div>
+          </div>
+
+          <div class="fld"><span class="lb"><svg class="ic"><use href="#i-heart"/></svg>Comprador ideal <span class="opt">(marca los que quieras)</span></span>
+            <div class="chips" id="perfilChips">
+              <label class="chip sm"><input type="checkbox" data-perfil value="Familias"><span><svg class="ic"><use href="#i-people"/></svg>Familias</span></label>
+              <label class="chip sm"><input type="checkbox" data-perfil value="Parejas"><span><svg class="ic"><use href="#i-heart"/></svg>Parejas</span></label>
+              <label class="chip sm"><input type="checkbox" data-perfil value="Estudiantes"><span><svg class="ic"><use href="#i-cap"/></svg>Estudiantes</span></label>
+              <label class="chip sm"><input type="checkbox" data-perfil value="Profesionales"><span><svg class="ic"><use href="#i-brief"/></svg>Profesionales</span></label>
+              <label class="chip sm"><input type="checkbox" data-perfil value="Inversores"><span><svg class="ic"><use href="#i-brief"/></svg>Inversores</span></label>
+              <label class="chip sm"><input type="checkbox" data-perfil value="Segunda residencia"><span><svg class="ic"><use href="#i-key"/></svg>Segunda residencia</span></label>
+              <label class="chip sm"><input type="checkbox" data-perfil value="Me da igual"><span><svg class="ic"><use href="#i-spark"/></svg>Me da igual</span></label>
+            </div>
+          </div>
+
+          <div class="g2">
+            <div class="fld"><label class="lb" for="oRentaDes"><svg class="ic"><use href="#i-euro"/></svg>Precio orientativo que te gustaría <span class="opt">(opcional)</span></label>
+              <div class="inp"><svg class="ic"><use href="#i-euro"/></svg><input id="oRentaDes" name="precio_deseado" data-o inputmode="numeric" placeholder="Ej. 350.000"><span class="sfx">€</span></div></div>
+            <div class="fld"><label class="lb" for="oCuando"><svg class="ic"><use href="#i-clock"/></svg>¿Para cuándo?</label>
+              <div class="inp"><svg class="ic"><use href="#i-clock"/></svg><select id="oCuando" name="urgencia" data-o><option value="Cuanto antes">Cuanto antes</option><option value="En 1 o 2 meses">En 1 o 2 meses</option><option value="Sin prisa">Sin prisa, solo miro</option></select></div></div>
+          </div>
+
+          <div class="fld"><label class="lb" for="oNotas"><svg class="ic"><use href="#i-chat"/></svg>¿Algo más que deba saber? <span class="opt">(opcional)</span></label>
+            <textarea id="oNotas" name="notas" data-o rows="3" placeholder="Reformas, ascensor, terraza, comunidad, cargas, lo que quieras…"></textarea></div>
+
+          <div class="fld" style="margin-bottom:0"><label class="chk"><input type="checkbox" id="oConsent" name="consentimiento" value="Sí" data-o><span>Acepto que Fincas A.G. Núñez use mis datos para contactarme. <a href="https://fer-benitez.github.io/consultor/privacidad.html" target="_blank" rel="noopener">Privacidad</a></span></label><span class="ferr"></span></div>
+        </section>
+
+      </div>
+
+      <!-- ===== INQUILINO: busqueda prioritaria, 3 pasos ===== -->
+      <div class="wiz" id="fTen" hidden>
+        <ol class="wsteps" id="tSteps" aria-label="Progreso del formulario">
+          <li class="on" data-s="1"><span class="dot" data-ico="i-user"><svg class="ic"><use href="#i-user"/></svg></span>Tú</li>
+          <li class="wbar" aria-hidden="true"><i></i></li>
+          <li data-s="2"><span class="dot" data-ico="i-bolt"><svg class="ic"><use href="#i-bolt"/></svg></span>Servicio</li>
+          <li class="wbar" aria-hidden="true"><i></i></li>
+          <li data-s="3"><span class="dot" data-ico="i-search"><svg class="ic"><use href="#i-search"/></svg></span>Búsqueda</li>
+        </ol>
+
+        <section class="stp on" data-step="1">
+          <h3><svg class="ic"><use href="#i-user"/></svg>¿Quién eres?</h3>
+          <p class="hint">Tres datos y seguimos. Te escribo por WhatsApp, sin llamadas de sorpresa.</p>
+          <div class="fld"><label class="lb" for="tNombre"><svg class="ic"><use href="#i-user"/></svg>Nombre<span class="req">*</span></label>
+            <div class="inp"><svg class="ic"><use href="#i-user"/></svg><input id="tNombre" name="nombre" data-t autocomplete="name" placeholder="Tu nombre"></div><span class="ferr"></span></div>
+          <div class="fld"><label class="lb" for="tWa"><svg class="ic"><use href="#i-phone"/></svg>WhatsApp<span class="req">*</span></label>
+            <div class="inp"><svg class="ic"><use href="#i-phone"/></svg><input id="tWa" name="whatsapp" data-t type="tel" inputmode="tel" autocomplete="tel" placeholder="+34 600 000 000"></div><span class="ferr"></span></div>
+          <div class="fld"><label class="lb" for="tEmail"><svg class="ic"><use href="#i-mail"/></svg>Email<span class="req">*</span></label>
+            <div class="inp"><svg class="ic"><use href="#i-mail"/></svg><input id="tEmail" name="email" data-t type="email" autocomplete="email" placeholder="tu@email.com"></div><span class="ferr"></span></div>
+          <div class="fld"><span class="lb"><svg class="ic"><use href="#i-brief"/></svg>¿Cómo prevés financiar la compra? <span class="opt">(opcional)</span></span>
+            <div class="chips">
+              <label class="chip sm"><input type="radio" name="financiacion" value="Con hipoteca" data-t><span><svg class="ic"><use href="#i-brief"/></svg>Con hipoteca</span></label>
+              <label class="chip sm"><input type="radio" name="financiacion" value="Al contado" data-t><span><svg class="ic"><use href="#i-clock"/></svg>Al contado</span></label>
+              <label class="chip sm"><input type="radio" name="financiacion" value="Ya tengo hipoteca preaprobada" data-t><span><svg class="ic"><use href="#i-euro"/></svg>Ya tengo hipoteca preaprobada</span></label>
+              <label class="chip sm"><input type="radio" name="financiacion" value="Aún no lo sé" data-t><span><svg class="ic"><use href="#i-cap"/></svg>Aún no lo sé</span></label>
+              <label class="chip sm"><input type="radio" name="financiacion" value="Otra" data-t><span><svg class="ic"><use href="#i-dots"/></svg>Otra</span></label>
+            </div>
+          </div>
+        </section>
+
+        <section class="stp" data-step="2">
+          <h3><svg class="ic"><use href="#i-bolt"/></svg>Búsqueda prioritaria</h3>
+          <p class="hint">Antes de seguir, quiero ser claro con cómo funciona.</p>
+
+          <div class="vs">
+            <div class="vs-a"><svg class="ic"><use href="#i-hourglass"/></svg><b>Aviso gratuito</b><span>Entras en una lista de espera estática. Te aviso cuando encaje algo, sin garantía de orden ni de plazo.</span></div>
+            <div class="vs-b"><svg class="ic"><use href="#i-bolt"/></svg><b>Búsqueda prioritaria</b><span>Voy a buscar por ti y tienes preferencia real sobre el resto.</span></div>
+          </div>
+
+          <div class="price">
+            <div class="pr-top"><svg class="ic"><use href="#i-bolt"/></svg><div><b>Servicio personalizado</b><span>Sin precios cerrados: primero hablamos</span></div></div>
+            <ul class="pr-list">
+              <li><svg class="ic"><use href="#i-doc"/></svg><span data-h="h1">Antes de empezar hago un <b>estudio de tu capacidad de compra</b> (financiación) para saber qué tipo de propiedad puedes conseguir y cómo prepararte.</span></li>
+              <li><svg class="ic"><use href="#i-search"/></svg><span data-h="h2">Busco, filtro, visito contigo y negocio, incluidas propiedades que <b>no llegan a publicarse</b>.</span></li>
+              <li><svg class="ic"><use href="#i-shield"/></svg><span data-h="h3">Es un servicio adicional a la lista de espera, con condiciones propias. Te las explico <b>por escrito antes de empezar</b>, sin compromiso hasta que las aceptes.</span></li>
+            </ul>
+          </div>
+
+          <div class="fld" style="margin-top:16px"><span class="lb"><svg class="ic"><use href="#i-target"/></svg>¿Qué prefieres?</span>
+            <div class="chips c2" role="radiogroup" aria-label="Servicio elegido">
+              <label class="chip big"><input type="radio" name="servicio" value="Búsqueda prioritaria de compra" data-t checked><span><svg class="ic"><use href="#i-bolt"/></svg><b>Quiero prioridad<small>Busco por ti</small></b></span></label>
+              <label class="chip big"><input type="radio" name="servicio" value="Solo aviso gratuito (lista de espera)" data-t><span><svg class="ic"><use href="#i-hourglass"/></svg><b>Solo el aviso<small>Gratis</small></b></span></label>
+            </div>
+          </div>
+          <div class="fld" id="tAceptaWrap" style="margin-bottom:0"><label class="chk"><input type="checkbox" id="tAcepta" name="acepta_condiciones_prioridad" value="Sí" data-t><span>Entiendo que es un servicio personalizado con condiciones propias, que AG Núñez me explicará por escrito antes de empezar, y que primero se hace un estudio de mi capacidad de compra.</span></label><span class="ferr"></span></div>
+        </section>
+
+        <section class="stp" data-step="3">
+          <h3><svg class="ic"><use href="#i-search"/></svg>¿Qué buscas?</h3>
+          <p class="hint">Cuanto más concreto, más rápido te encuentro algo bueno.</p>
+
+          <div class="fld"><span class="lb"><svg class="ic"><use href="#i-pin"/></svg>¿Dónde? <span class="opt">(marca las zonas que quieras)</span></span>
+            <div class="chips" id="zonaChips"></div></div>
+          <div class="fld"><label class="lb" for="tBarrios"><svg class="ic"><use href="#i-pin"/></svg>Barrios concretos <span class="opt">(opcional)</span></label>
+            <div class="inp"><svg class="ic"><use href="#i-pin"/></svg><input id="tBarrios" name="barrios_concretos" data-t placeholder="Ej. Gràcia, Sant Antoni, Poblenou"></div></div>
+
+          <div class="g2">
+            <div class="fld"><label class="lb" for="tPres"><svg class="ic"><use href="#i-euro"/></svg>Presupuesto máx.</label>
+              <div class="inp"><svg class="ic"><use href="#i-euro"/></svg><input id="tPres" name="presupuesto_max" data-t inputmode="numeric" placeholder="Ej. 450.000"><span class="sfx">€</span></div></div>
+            <div class="fld"><label class="lb" for="tEntrada"><svg class="ic"><use href="#i-cal"/></svg>Plazo de compra deseado</label>
+              <div class="inp"><svg class="ic"><use href="#i-cal"/></svg><input id="tEntrada" name="plazo_compra" data-t type="date"></div></div>
+          </div>
+          <div class="g2">
+            <div class="stpr" data-stepper="thab" data-min="0" data-max="6"><span class="lab"><svg class="ic"><use href="#i-bed"/></svg>Habitaciones</span><span class="ctl"><button type="button" data-d="-1" aria-label="Menos habitaciones">−</button><output>1</output><button type="button" data-d="1" aria-label="Más habitaciones">+</button></span><input type="hidden" name="habitaciones_min" data-t value="1"></div>
+            <div class="stpr" data-stepper="tppl" data-min="1" data-max="8"><span class="lab"><svg class="ic"><use href="#i-people"/></svg>Personas</span><span class="ctl"><button type="button" data-d="-1" aria-label="Menos personas">−</button><output>2</output><button type="button" data-d="1" aria-label="Más personas">+</button></span><input type="hidden" name="personas" data-t value="2"></div>
+          </div>
+
+          <div class="fld"><span class="lb"><svg class="ic"><use href="#i-clock"/></svg>¿Qué urgencia tienes?</span>
+            <div class="chips c3" role="radiogroup" aria-label="Urgencia">
+              <label class="chip sm"><input type="radio" name="urgencia" value="Muy urgente (menos de 2 semanas)" data-t><span><svg class="ic"><use href="#i-bolt"/></svg>Ya mismo</span></label>
+              <label class="chip sm"><input type="radio" name="urgencia" value="En 1 o 2 meses" data-t checked><span><svg class="ic"><use href="#i-cal"/></svg>1-2 meses</span></label>
+              <label class="chip sm"><input type="radio" name="urgencia" value="Sin prisa" data-t><span><svg class="ic"><use href="#i-hourglass"/></svg>Sin prisa</span></label>
+            </div>
+          </div>
+
+          <div class="fld"><span class="lb"><svg class="ic"><use href="#i-heart"/></svg>Imprescindibles <span class="opt">(marca los que quieras)</span></span>
+            <div class="chips" id="impChips">
+              <label class="chip sm"><input type="checkbox" data-imp value="Con piscina"><span><svg class="ic"><use href="#i-bath"/></svg>Piscina</span></label>
+              <label class="chip sm"><input type="checkbox" data-imp value="Amueblado"><span><svg class="ic"><use href="#i-sofa"/></svg>Amueblado</span></label>
+              <label class="chip sm"><input type="checkbox" data-imp value="Ascensor"><span><svg class="ic"><use href="#i-piso"/></svg>Ascensor</span></label>
+              <label class="chip sm"><input type="checkbox" data-imp value="Terraza o balcón"><span><svg class="ic"><use href="#i-home"/></svg>Terraza</span></label>
+              <label class="chip sm"><input type="checkbox" data-imp value="Para reformar"><span><svg class="ic"><use href="#i-spark"/></svg>Para reformar</span></label>
+              <label class="chip sm"><input type="checkbox" data-imp value="Parking"><span><svg class="ic"><use href="#i-key"/></svg>Parking</span></label>
+            </div>
+          </div>
+
+          <div class="fld"><label class="lb" for="tNotas"><svg class="ic"><use href="#i-chat"/></svg>Lo que se te ocurra <span class="opt">(opcional)</span></label>
+            <textarea id="tNotas" name="notas" data-t rows="3" placeholder="Zona tranquila, cerca del metro, para reformar, lo que quieras…"></textarea></div>
+
+          <div class="fld" style="margin-bottom:0"><label class="chk"><input type="checkbox" id="tConsent" name="consentimiento" value="Sí" data-t><span>Acepto que Fincas A.G. Núñez use mis datos para contactarme. <a href="https://fer-benitez.github.io/consultor/privacidad.html" target="_blank" rel="noopener">Privacidad</a></span></label><span class="ferr"></span></div>
+        </section>
+      </div>
+
+      <div id="wNavBox">
+        <p class="lmsg" id="lMsg" role="status" aria-live="polite"></p>
+        <div class="wnav">
+          <button class="btn" type="button" id="wBack" hidden><svg class="ic"><use href="#i-prev"/></svg>Atrás</button>
+          <button class="btn red" type="button" id="wNext">Siguiente<svg class="ic"><use href="#i-next"/></svg></button>
+          <button class="btn red" type="submit" id="lSend" hidden><svg class="ic"><use href="#i-send"/></svg>Enviar</button>
+        </div>
+      </div>
+
+      <!-- ===== Gracias ===== -->
+      <div class="done" id="lDone" role="status">
+        <div class="cf" id="cf" aria-hidden="true"></div>
+        <div class="okc"><svg class="ic"><use href="#i-check"/></svg></div>
+        <h2 id="doneTitle">¡Recibido!</h2>
+        <p id="doneTxt">Te escribo en cuanto lo revise.</p>
+        <a class="btn wa" id="doneWa" href="#" target="_blank" rel="noopener">Escríbeme ya por WhatsApp</a>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="alertDlg" aria-labelledby="alTitle">
+    <div class="al-pop">
+      <button class="x" type="button" data-alclose aria-label="Cerrar">×</button>
+      <div class="al-head">
+        <span class="al-ic"><svg class="ic"><use href="#i-bell"/></svg></span>
+        <div>
+          <h2 id="alTitle">Que no se te escape ninguna propiedad</h2>
+          <p>Te aviso en cuanto sube uno nuevo. Elige cómo prefieres recibirlo.</p>
+        </div>
+      </div>
+    <div class="al-grid" id="alGrid">
+      <div class="al-box al-wa" id="alWa" hidden>
+        <h3><svg class="ic"><use href="#i-chat"/></svg>Canal de WhatsApp<span class="fast"><svg class="ic"><use href="#i-bolt"/></svg>Más rápido</span></h3>
+        <p class="hint">Recibe cada piso nuevo en tu móvil, sin dar tu email. Unirte es gratis y puedes salir cuando quieras.</p>
+        <a class="btn wa al-send" id="alWaBtn" href="#" target="_blank" rel="noopener"><svg class="ic"><use href="#i-chat"/></svg>Unirme al canal</a>
+      </div>
+      <form class="wiz al-box" id="alForm" novalidate aria-label="Avisos de propiedades nuevas">
+        <h3><svg class="ic"><use href="#i-mail"/></svg>Por email</h3>
+        <p class="hint">Elige tus filtros si quieres: solo te aviso de los pisos que encajen.</p>
+        <div class="fld"><label class="lb" for="alEmail"><svg class="ic"><use href="#i-mail"/></svg>Email<span class="req">*</span></label>
+          <div class="inp"><svg class="ic"><use href="#i-mail"/></svg><input id="alEmail" type="email" inputmode="email" autocomplete="email" placeholder="tu@email.com"></div><span class="ferr" id="alEmailErr"></span></div>
+        <div class="g2">
+          <div class="fld"><label class="lb" for="alPrecio"><svg class="ic"><use href="#i-euro"/></svg>Precio máx.</label>
+            <div class="inp"><svg class="ic"><use href="#i-euro"/></svg><select id="alPrecio"></select></div></div>
+          <div class="fld"><label class="lb" for="alHab"><svg class="ic"><use href="#i-bed"/></svg>Habitaciones</label>
+            <div class="inp"><svg class="ic"><use href="#i-bed"/></svg><select id="alHab"></select></div></div>
+        </div>
+        <input type="text" id="alHp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+        <div class="fld" style="margin-bottom:12px"><label class="chk"><input type="checkbox" id="alConsent"><span>Acepto recibir avisos de propiedades nuevas por email. Puedo darme de baja cuando quiera. <a href="https://fer-benitez.github.io/consultor/privacidad.html" target="_blank" rel="noopener">Privacidad</a></span></label><span class="ferr" id="alConsentErr"></span></div>
+        <button class="btn red al-send" type="submit" id="alSend"><svg class="ic"><use href="#i-bell"/></svg>Avisarme por email</button>
+        <p class="lmsg" id="alMsg" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+    </div>
+  </dialog>
+
+
+  <section class="ig" id="instagram" aria-labelledby="igTitle">
+    <!-- NOTA PARA FER: confirma el @ real de Instagram de AG Núñez; "agenapisos" es una suposición de placeholder -->
+    <div class="ig-head">
+      <div class="ig-id">
+        <div class="ring"><span><img src="agn-badge.png" alt="Fincas A.G. Núñez en Instagram" width="88" height="88" loading="lazy"></span></div>
+        <div>
+          <h2 id="igTitle">Detrás de cada propiedad</h2>
+          <a class="handle" href="https://www.instagram.com/agenapisos/" target="_blank" rel="noopener">@agenapisos</a>
+          <p>Recorridos, barrios y consejos reales, en vídeo.</p>
+        </div>
+      </div>
+      <a class="btn ig-btn" href="https://www.instagram.com/agenapisos/" target="_blank" rel="noopener">Seguir en Instagram</a>
+    </div>
+    <div class="reels" id="reels" aria-label="Últimos reels de Instagram"></div>
+    <p class="ig-note">Vídeos incrustados desde Instagram: al mostrarse, Instagram carga su propio contenido.</p>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <img src="agn-logo-color.png" alt="Fincas A.G. Núñez" width="181" height="70" loading="lazy" style="height:70px;width:auto;margin-bottom:12px;display:block">
+    © 2026 Fincas A.G. Núñez · Barcelona
+    <div class="fl">
+      <a href="https://agenapisos.com" target="_blank" rel="noopener">Web de AG Núñez</a>
+      <a href="https://fer-benitez.github.io/consultor/privacidad.html">Privacidad</a>
+      <a href="https://fer-benitez.github.io/consultor/privacidad.html#cookies" data-cookie-settings>Cookies</a>
+    </div>
+  </div>
+</footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="i18n.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" crossorigin></script>
+<script>
+(function(){
+  /* ====== CONFIGURACIÓN ====== */
+  // NOTA PARA FER: pega aquí la URL de tu Web App de Google Sheets para "Mapa de pisos en venta" (puede ser la misma hoja que la de alquiler, en otra pestaña, o una nueva). Mientras empiece por "PEGA_" se muestran datos de ejemplo (modo demo).
+  var API_URL   = 'PEGA_AQUI_TU_WEB_APP_DE_PISOS_EN_VENTA';
+  var WA_NUMBER = '34672907381';
+  var WA_CHANNEL = 'https://whatsapp.com/channel/0029VbDIheD3GJP2fI83ZT3q';   // enlace de tu canal de WhatsApp (https://whatsapp.com/channel/...). Vacío = el botón no se muestra.
+  var CENTER    = [41.3874, 2.1686];                         // Barcelona
+  /* =========================== */
+
+  var DEMO = [
+    {id:'demo1',titulo:'Piso luminoso con balcón',zona:"l'Eixample",imagen:'',link:'#',lat:41.3946,lng:2.1613,precio:420000,habitaciones:2,banos:1,m2:68,disponibilidad:'Inmediata'},
+    {id:'demo2',titulo:'Ático con terraza y vistas',zona:'Gràcia',imagen:'',link:'#',lat:41.4036,lng:2.1571,precio:695000,habitaciones:3,banos:2,m2:95,disponibilidad:'A convenir'},
+    {id:'demo3',titulo:'Piso reformado junto al metro',zona:'Sant Martí',imagen:'',link:'#',lat:41.4102,lng:2.1990,precio:325000,habitaciones:2,banos:1,m2:60,disponibilidad:'Inmediata'},
+    {id:'demo4',titulo:'Casa unifamiliar con jardín',zona:'Sarrià-Sant Gervasi',imagen:'',link:'#',lat:41.4021,lng:2.1223,precio:1080000,habitaciones:4,banos:3,m2:210,disponibilidad:'A convenir'}
+  ];
+
+  var $ = function(id){ return document.getElementById(id); };
+  var map, layer, markers = {}, all = [], shown = [];
+  var esc = function(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); };
+  var tr = window.fbT || function(s,p){ return p ? s.replace(/\{(\w+)\}/g,function(m,k){return p[k]!=null?p[k]:m;}) : s; };
+  var loc = function(){ return window.fbI18n ? fbI18n.locale() : 'es-ES'; };
+  var eur = function(n){ return n==null ? '' : n.toLocaleString(loc()) + ' €'; };
+  var base = location.href.split('#')[0].split('?')[0];
+  var piso = function(id){ return base + '?piso=' + encodeURIComponent(id); };
+  var safeUrl = function(u){ return /^https?:\/\//i.test(u) ? u : '#'; };
+  var photo = function(u){ u = safeUrl(u); var m = u.match(/^(https:\/\/res\.cloudinary\.com\/[^\/]+\/image\/upload\/)(.+?)(\.[a-z0-9]+)?$/i); return m ? m[1]+'w_900,q_auto/'+m[2]+'.jpg' : u; };
+
+  function toast(msg){ var t=$('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(function(){t.classList.remove('show');},2200); }
+  function copy(text){
+    if(navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text).then(function(){toast(tr('Enlace copiado ✓'));}).catch(function(){prompt(tr('Copia el enlace:'),text);});
+    prompt(tr('Copia el enlace:'),text);
+  }
+  function share(text,url){
+    if(navigator.share){ navigator.share({title:tr('Propiedades en venta — Fincas A.G. Núñez'),text:text,url:url}).catch(function(){}); }
+    else copy(url);
+  }
+  function wa(text){ return 'https://wa.me/'+WA_NUMBER+'?text='+encodeURIComponent(text); }
+
+  var PIN = '<div class="pin"><svg viewBox="0 0 34 42"><path d="M17 1C8.7 1 2 7.6 2 15.8 2 26.6 17 41 17 41s15-14.4 15-25.2C32 7.6 25.3 1 17 1z" fill="#0a1626" stroke="#e8a339" stroke-width="2"/><circle cx="17" cy="16" r="6" fill="#e8a339"/></svg></div>';
+
+  function initMap(){
+    map = L.map('map',{scrollWheelZoom:false,zoomControl:false}).setView(CENTER,12);
+    L.control.zoom({position:'topright'}).addTo(map);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'}).addTo(map);
+    layer = L.layerGroup().addTo(map);
+    map.on('click',hideDetail);
+  }
+
+
+  var byId = {};
+  var isMob = function(){ return window.matchMedia('(max-width:640px)').matches; };
+  function extras(p){
+    var sp = [];
+    if(p.habitaciones!=null) sp.push('<span>'+p.habitaciones+' '+tr('hab.')+'</span>');
+    if(p.banos!=null) sp.push('<span>'+p.banos+' '+(p.banos==1?tr('baño'):tr('baños'))+'</span>');
+    if(p.m2!=null) sp.push('<span>'+p.m2+' m²</span>');
+    if(p.amueblado) sp.push('<span>'+esc(tr(p.amueblado))+'</span>');
+    if(p.disponibilidad) sp.push('<span>'+tr('Libre:')+' '+esc(tr(p.disponibilidad))+'</span>');
+    return sp.join('');
+  }
+  function acts(p){
+    var pm = {t:p.titulo,z:p.zona,u:piso(p.id)};
+    var msg = tr('Hola AG Núñez, me interesa la propiedad "{t}" ({z}) que vi en vuestro mapa de pisos en venta: {u}',pm);
+    var ok = /^https?:\/\//i.test(p.link||'');
+    var reqMsg = tr('Hola AG Núñez, quiero visitar la propiedad "{t}" ({z}) que vi en vuestro mapa de pisos en venta: {u}',pm);
+    var shareBtn = '<button class="btn" type="button" data-share="'+esc(p.id)+'">'+tr('Compartir')+'</button>';
+    if(p.reservado) return '<div class="acts"><a class="btn" href="'+esc(wa(tr('Hola AG Núñez, vi en vuestro mapa la propiedad "{t}" (reservada). Avísame si cae la reserva o si tenéis algo parecido.',pm)))+'" target="_blank" rel="noopener">'+tr('Reservado · avísame si cae la reserva')+'</a><div class="row2"><a class="btn wa" href="'+esc(wa(msg))+'" target="_blank" rel="noopener">WhatsApp</a>'+shareBtn+'</div></div>';
+    if(!ok) return '<div class="acts"><a class="btn red" href="'+esc(wa(reqMsg))+'" target="_blank" rel="noopener">'+tr('Quiero visitarlo · por WhatsApp')+'</a>'+shareBtn+'</div>';
+    return '<div class="acts"><a class="btn red" href="'+esc(safeUrl(p.link))+'" target="_blank" rel="noopener">'+tr('Quiero visitarlo')+'</a>'+
+      '<div class="row2"><a class="btn wa" href="'+esc(wa(msg))+'" target="_blank" rel="noopener">WhatsApp</a>'+shareBtn+'</div></div>';
+  }
+  function pinEl(id){ var m = markers[id], e = m && m.getElement(); return e && e.querySelector('.pin'); }
+  function detailHTML(p){
+    return '<div class="dph"'+(p.imagen?' style="background-image:url(\''+esc(photo(p.imagen))+'\')"':'')+' role="img" aria-label="'+esc(tr('Foto de la propiedad en ')+p.zona)+'">'+(p.reservado?'<span class="ribbon">'+tr('RESERVADO')+'</span>':'')+
+      '<button class="d-close" type="button" aria-label="'+tr('Cerrar')+'" data-close>✕</button></div>'+
+      '<div class="bd"><span class="zona">'+esc(p.zona)+'</span><h3>'+esc(p.titulo)+'</h3>'+
+      (p.precio!=null?'<div class="pr">'+eur(p.precio)+'</div>':'')+
+      '<div class="sp">'+extras(p)+'</div>'+
+      '<div class="approx">'+tr('📍 Ubicación aproximada (pin blanco en el mapa). La dirección exacta te la doy al concertar la visita.')+'</div>'+acts(p)+'</div>';
+  }
+  function unmark(){
+    if(!sel) return;
+    var e = pinEl(sel); if(e) e.classList.remove('sel');
+    if(markers[sel]) markers[sel].setZIndexOffset(0);
+  }
+  function hideDetail(){
+    unmark(); sel = null;
+    $('detail').classList.remove('open'); $('mapwrap').classList.remove('has-detail');
+    document.querySelectorAll('.row.active').forEach(function(c){c.classList.remove('active');});
+  }
+  function select(p){
+    var m = markers[p.id]; if(!m) return;
+    if(sel && sel!==p.id) unmark();
+    sel = p.id;
+    var e = pinEl(p.id); if(e) e.classList.add('sel');
+    m.setZIndexOffset(1000);
+    setActive(p.id); history.replaceState(null,'',piso(p.id));
+    var d = $('detail'); d.innerHTML = detailHTML(p); d.scrollTop = 0; d.classList.add('open'); $('mapwrap').classList.add('has-detail');
+  }
+  var sel = null;
+
+  function emptyHTML(){ return esc(tr('No hay propiedades con esos filtros. Prueba a limpiarlos o '))+'<a style="text-decoration:underline" href="'+esc(wa(tr('Hola AG Núñez, busco una propiedad para comprar en Barcelona')))+'" target="_blank" rel="noopener">'+esc(tr('cuéntame qué buscas'))+'</a>.'; }
+  function rowHTML(p){
+    return '<span class="zona">'+esc(p.zona)+'</span><span class="tt">'+esc(p.titulo)+(p.reservado?'<span class="rs">'+tr('RESERVADO')+'</span>':'')+'</span>'+
+        (p.precio!=null?'<span class="pr">'+eur(p.precio)+'</span>':'');
+  }
+  function render(list){
+    hideDetail(); shown = list; layer.clearLayers(); markers = {}; byId = {};
+    $('navPrev').hidden = $('navNext').hidden = list.length < 2;
+    $('count').textContent = list.length + ' ' + (list.length===1?tr('propiedad'):tr('propiedades'));
+    var cards = $('cards'); cards.innerHTML=''; var em = $('emptyMsg');
+    em.hidden = !!list.length;
+    if(!list.length){
+      em.innerHTML = emptyHTML();
+      return;
+    }
+    var bounds = [];
+    list.forEach(function(p){
+      var m = L.marker([p.lat,p.lng],{icon:L.divIcon({html:(p.reservado?PIN.replace('class="pin"','class="pin res"'):PIN),className:'',iconSize:[34,42],iconAnchor:[17,40],popupAnchor:[0,-36]}),title:p.titulo,alt:p.titulo}).addTo(layer);
+      m.on('click',function(){ open(p.id); });
+      markers[p.id]=m; byId[p.id]=p; bounds.push([p.lat,p.lng]);
+
+      var b = document.createElement('button'); b.type='button'; b.className='row'; b.dataset.id=p.id;
+      b.innerHTML = rowHTML(p);
+      b.addEventListener('click',function(){ setList(false); open(p.id); });
+      cards.appendChild(b);
+    });
+    if(bounds.length) map.fitBounds(bounds,{padding:[50,50],maxZoom:15});
+  }
+  function setActive(id){ document.querySelectorAll('.row').forEach(function(c){ c.classList.toggle('active', c.dataset.id===id); }); }
+  function open(id, keepScroll){
+    var m = markers[id], p = byId[id]; if(!m || !p) return;
+    if(!keepScroll) $('mapwrap').scrollIntoView({behavior:'smooth',block: isMob() ? 'start' : 'center'});
+    var z = Math.max(map.getZoom(),15), target = m.getLatLng();
+    if(!isMob()){ target = map.unproject(map.project(target,z).subtract([176,0]),z); } /* deja libre el hueco del panel izquierdo */
+    map.flyTo(target,z,{duration:.6});
+    select(p);
+  }
+
+  function fillFilters(){
+    var v0=[$('fZona').value,$('fPrecio').value];
+    var zonas = Array.from(new Set(all.map(function(p){return p.zona;}).filter(Boolean))).sort();
+    $('fZona').innerHTML = '<option value="">'+tr('Todas')+'</option>'+zonas.map(function(z){return '<option>'+esc(z)+'</option>';}).join('');
+    var prices = all.map(function(p){return p.precio;}).filter(function(n){return n!=null;});
+    var max = prices.length ? Math.max.apply(null,prices) : 0;
+    var steps = []; for(var s=800; s<=Math.max(2500,max); s+=200) steps.push(s);
+    $('fPrecio').innerHTML = '<option value="">'+tr('Sin límite')+'</option>'+steps.map(function(s){return '<option value="'+s+'">'+tr('Hasta ')+eur(s)+'</option>';}).join('');
+    $('fZona').value=v0[0]; $('fPrecio').value=v0[1];
+    $('filters').hidden = all.length < 2;
+  }
+  function applyFilters(){
+    var z=$('fZona').value, pr=parseFloat($('fPrecio').value), h=parseInt($('fHab').value,10);
+    render(all.filter(function(p){
+      return (!z||p.zona===z) && (isNaN(pr)||p.precio==null||p.precio<=pr) && (isNaN(h)||(p.habitaciones||0)>=h);
+    }));
+  }
+
+  var stFn=function(){return '';};
+  function setStatus(m, retry){ stFn = typeof m==='function' ? m : function(){return m;}; $('statusTxt').textContent=stFn(); $('retry').hidden=!retry; }
+  function done(data,isDemo){
+    all = (data||[]).filter(function(p){return typeof p.lat==='number' && typeof p.lng==='number';});
+    $('demoBar').hidden = !isDemo;
+    fillFilters(); render(all);
+    setStatus(function(){ return all.length ? all.length+' '+(all.length===1?tr('propiedad ubicada'):tr('propiedades ubicadas'))+' · '+tr('Ubicaciones aproximadas') : tr('Ahora mismo no tengo propiedades publicadas. Escríbeme y te aviso en cuanto salga una.'); }, false);
+    var want = new URLSearchParams(location.search).get('piso');
+    if(want && markers[want]) setTimeout(function(){ open(want); },600);
+  }
+  function load(){
+    setStatus(function(){ return tr('Cargando propiedades…'); },false);
+    if(API_URL.indexOf('PEGA_')===0 || new URLSearchParams(location.search).get('demo')==='1'){ done(DEMO,true); return; }
+    fetch(API_URL).then(function(r){return r.json();}).then(function(j){
+      if(!j.success) throw new Error(j.error||'error'); done(j.data,false);
+    }).catch(function(){ setStatus(function(){ return tr('No se pudieron cargar las propiedades.'); },true); });
+  }
+
+  /* botones generales */
+  function relabelStatic(){
+    $('waTop').href = wa(tr('Hola AG Núñez, vi vuestro mapa de pisos en venta y quiero información.'));
+  }
+  relabelStatic();
+  $('copyAll').addEventListener('click',function(){ share(tr('Mira las propiedades en venta disponibles ahora en Barcelona:'),base); });
+  $('retry').addEventListener('click',load);
+  ['fZona','fPrecio','fHab'].forEach(function(id){ $(id).addEventListener('change',applyFilters); });
+  $('fClear').addEventListener('click',function(){ $('fZona').value='';$('fPrecio').value='';$('fHab').value=''; applyFilters(); });
+  document.addEventListener('click',function(e){
+    if(e.target.closest && e.target.closest('[data-close]')){ hideDetail(); return; }
+    var b = e.target.closest && e.target.closest('[data-share]'); if(!b) return;
+    var p = all.filter(function(x){return x.id===b.dataset.share;})[0]; if(!p) return;
+    share(tr('Propiedad en venta en ')+p.zona+(p.precio!=null?' · '+eur(p.precio):''), piso(p.id));
+  });
+
+
+  /* ====== REELS DE INSTAGRAM ======
+     NOTA PARA FER: confirma el @ real de Instagram de AG Núñez (aquí se ha puesto
+     "agenapisos" como suposición razonable, sin confirmar). Estos son de momento los
+     MISMOS 3 reels de muestra que ya había (mismos archivos reel1/2/3.mp4+.jpg) — decide
+     si AG Núñez quiere mantenerlos o pedir contenido propio de la agencia, y sustituye
+     estos vídeos/posters o pega aquí los enlaces de los reels reales (uno por línea,
+     entre comillas). Mientras la lista esté vacía, se muestran tarjetas que llevan al perfil. */
+  var IG_USER = 'agenapisos';
+  var REELS = [
+    { video: 'reel1.mp4', poster: 'reel1.jpg', url: 'https://www.instagram.com/agenapisos/reels/' },
+    { video: 'reel2.mp4', poster: 'reel2.jpg', url: 'https://www.instagram.com/agenapisos/reels/' },
+    { video: 'reel3.mp4', poster: 'reel3.jpg', url: 'https://www.instagram.com/agenapisos/reels/' }
+  ];
+  (function(){
+    var wrap = $('reels'); if(!wrap) return;
+    var PLAY = '<span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>';
+    function code(u){ var m = String(u).match(/instagram\.com\/(?:reel|reels|p)\/([A-Za-z0-9_-]+)/); return m ? m[1] : null; }
+    function igEmbed(c){
+      var url = 'https://www.instagram.com/reel/'+c+'/';
+      return '<blockquote class="instagram-media" data-instgrm-permalink="'+url+'" data-instgrm-version="14" data-instgrm-captioned style="background:#fff;border:0;border-radius:16px;margin:0;max-width:540px;min-width:280px;width:100%;padding:0"><a href="'+url+'" target="_blank" rel="noopener" style="color:#fff;display:block;padding:40px 16px;text-align:center;font-size:14px">'+tr('Ver reel en Instagram')+'</a></blockquote>';
+    }
+    var list = REELS.map(function(r){ return typeof r==='string' ? {url:r} : r; }).filter(function(r){ return r && (r.video || code(r.url)); });
+    if(list.length){
+      wrap.classList.add('emb');
+      var needEmbed = false;
+      list.forEach(function(it){
+        var d = document.createElement('div'); d.className='embed';
+        var c = code(it.url);
+        if(it.video){
+          d.className = 'embed vid';
+          var v = document.createElement('video');
+          v.src = it.video; if(it.poster) v.poster = it.poster;
+          v.controls = true; v.playsInline = true; v.preload = 'metadata'; v.setAttribute('playsinline','');
+          v.addEventListener('error',function(){
+            if(c){ d.className='embed'; d.innerHTML = igEmbed(c); if(window.instgrm && window.instgrm.Embeds) window.instgrm.Embeds.process(); else needEmbedLoad(); }
+            else d.remove();
+          });
+          d.appendChild(v);
+          var a = document.createElement('a'); a.className='vlink'; a.href = it.url; a.target='_blank'; a.rel='noopener';
+          a.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".9" fill="currentColor" stroke="none"/></svg><span data-vl>'+tr('Ver en Instagram')+'</span>';
+          d.appendChild(a);
+        } else { d.innerHTML = igEmbed(c); needEmbed = true; }
+        wrap.appendChild(d);
+      });
+      function needEmbedLoad(){ if(document.getElementById('igjs')) return; var sc = document.createElement('script'); sc.id='igjs'; sc.async = true; sc.src = 'https://www.instagram.com/embed.js'; document.body.appendChild(sc); }
+      if(needEmbed) needEmbedLoad();
+    } else {
+      [['Zonas','Dónde comprar en Barcelona'],['Propiedades','Recorridos por dentro'],['Consejos','Antes de comprar, mira esto']].forEach(function(t){
+        var a = document.createElement('a'); a.className='reel'; a.href='https://www.instagram.com/'+IG_USER+'/reels/'; a.target='_blank'; a.rel='noopener';
+        a.innerHTML = '<div class="bg gen"></div><div class="shade"></div>'+PLAY+'<div class="meta"><span class="tag">'+t[0]+'</span><span class="tt">'+t[1]+'</span></div>';
+        wrap.appendChild(a);
+      });
+    }
+  })();
+
+  function setList(on){ $('cards').hidden = !on; $('listBtn').setAttribute('aria-expanded', on?'true':'false'); }
+  $('listBtn').addEventListener('click',function(){ setList($('cards').hidden); });
+  function go(dir){
+    if(!shown || shown.length<2) return;
+    var i = -1; for(var k=0;k<shown.length;k++){ if(shown[k].id===sel){ i=k; break; } }
+    i = i<0 ? (dir>0 ? 0 : shown.length-1) : (i+dir+shown.length)%shown.length;
+    open(shown[i].id, true);
+  }
+  $('navPrev').addEventListener('click',function(){ go(-1); });
+  $('navNext').addEventListener('click',function(){ go(1); });
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'){ hideDetail(); setList(false); }
+    var t = e.target && e.target.tagName;
+    if((e.key==='ArrowLeft'||e.key==='ArrowRight') && t!=='INPUT' && t!=='SELECT' && t!=='TEXTAREA' && sel){ go(e.key==='ArrowRight'?1:-1); }
+  });
+  initMap(); load();
+
+  /* ---- avisos de pisos nuevos (email + canal de WhatsApp) ---- */
+  (function(){
+    var f=$('alForm'); if(!f) return;
+    var dlgA=$('alertDlg');
+    [].forEach.call(document.querySelectorAll('[data-alert]'),function(b){ b.addEventListener('click',function(){
+      dlgA.showModal(); if(window.fbTrack) fbTrack('open_alert_form');
+    }); });
+    dlgA.querySelector('[data-alclose]').addEventListener('click',function(){ dlgA.close(); });
+    dlgA.addEventListener('click',function(e){ if(e.target===dlgA) dlgA.close(); });
+    var msg=$('alMsg'), sel1=$('alPrecio'), sel2=$('alHab');
+    function build(){
+      var v1=sel1.value, v2=sel2.value;
+      sel1.innerHTML='<option value="">'+tr('Sin límite')+'</option>'+[900,1100,1300,1500,1800,2200].map(function(n){return '<option value="'+n+'">'+tr('Hasta ')+eur(n)+'</option>';}).join('');
+      sel2.innerHTML='<option value="">'+tr('Cualquiera')+'</option>'+[1,2,3].map(function(n){return '<option value="'+n+'">'+tr(n+' o más')+'</option>';}).join('');
+      sel1.value=v1; sel2.value=v2;
+    }
+    build();
+    document.addEventListener('fblang',build);
+    if(WA_CHANNEL && /^https:\/\/(www\.)?whatsapp\.com\//i.test(WA_CHANNEL)){
+      $('alWa').hidden=false; $('alWaBtn').href=WA_CHANNEL;
+      $('alWaBtn').addEventListener('click',function(){ if(window.fbTrack) fbTrack('join_whatsapp_channel'); });
+    } else { $('alGrid').classList.add('one'); }
+    var okMail=function(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v); };
+    var setErr=function(id,txt,wrap){ $(id).textContent=txt; wrap.classList.toggle('bad',!!txt); };
+    f.addEventListener('submit',function(e){
+      e.preventDefault();
+      var em=$('alEmail').value.trim(), c=$('alConsent');
+      var ok1=okMail(em), ok2=c.checked;
+      setErr('alEmailErr', ok1?'':tr('Pon un email válido, por ejemplo nombre@correo.com'), $('alEmail').closest('.fld'));
+      setErr('alConsentErr', ok2?'':tr('Necesito tu OK para poder contactarte'), c.closest('.fld'));
+      msg.className='lmsg'; msg.textContent='';
+      if(!ok1||!ok2) return;
+      var btn=$('alSend'); btn.disabled=true; msg.textContent=tr('Enviando…');
+      var q='?action=subscribe&email='+encodeURIComponent(em)+'&lang='+encodeURIComponent(window.fbI18n?fbI18n.lang():'es')+'&precio='+encodeURIComponent(sel1.value)+'&hab='+encodeURIComponent(sel2.value)+'&consent=1&hp='+encodeURIComponent($('alHp').value);
+      fetch(API_URL+q).then(function(r){return r.json();}).then(function(j){
+        if(j.success){
+          msg.className='lmsg ok'; msg.textContent = j.status==='exists' ? tr('Ya estabas suscrito. ¡Gracias!') : tr('Casi listo: te he enviado un email para confirmar tu suscripción. Mira también en spam.');
+          if(window.fbTrack) fbTrack('subscribe_email',{status:j.status});
+          if(j.status!=='exists'){ f.reset(); build(); }
+        } else if(j.error==='email'){ setErr('alEmailErr', tr('Pon un email válido, por ejemplo nombre@correo.com'), $('alEmail').closest('.fld')); msg.textContent=''; }
+        else if(j.error==='busy'){ msg.className='lmsg err'; msg.textContent=tr('Ahora mismo hay muchas solicitudes. Prueba mañana o escríbeme por WhatsApp.'); }
+        else throw 0;
+      }).catch(function(){ msg.className='lmsg err'; msg.textContent=tr('No se pudo suscribir. Inténtalo de nuevo o escríbeme por WhatsApp.'); })
+        .then(function(){ btn.disabled=false; });
+    });
+    f.addEventListener('input',function(e){ if(e.target.id==='alEmail' && okMail(e.target.value.trim())) setErr('alEmailErr','',e.target.closest('.fld')); });
+    f.addEventListener('change',function(e){ if(e.target.id==='alConsent' && e.target.checked) setErr('alConsentErr','',e.target.closest('.fld')); });
+  })();
+  /* cambio de idioma: repinta lo que genera JS */
+  document.addEventListener('fblang',function(){
+    relabelStatic();
+    if(all.length) fillFilters();
+    $('statusTxt').textContent = stFn();
+    if(shown && all.length){
+      $('count').textContent = shown.length + ' ' + (shown.length===1?tr('propiedad'):tr('propiedades'));
+      [].forEach.call($('cards').children,function(b){ var p=byId[b.dataset.id]; if(p) b.innerHTML=rowHTML(p); });
+      if(!shown.length && all.length) $('emptyMsg').innerHTML = emptyHTML();
+      if(sel && byId[sel]){ $('detail').innerHTML = detailHTML(byId[sel]); }
+    }
+    [].forEach.call(document.querySelectorAll('.vlink [data-vl]'),function(x){ x.textContent = tr('Ver en Instagram'); });
+  });
+
+  /* ---- formulario de captación (Web3Forms) ---- */
+  (function(){
+    var $$ = function(id){ return document.getElementById(id); };
+    var dlg=$$('leadDlg'), f=$$('leadForm'), msg=$$('lMsg');
+    var sendO=$$('lSend'), bNext=$$('wNext'), bBack=$$('wBack');
+    function T(m){ return m==='owner' ? [tr('Cuéntame sobre tu piso'),tr('Tres pasos rápidos, menos de dos minutos. Te respondo yo personalmente.'),'Propietario'] : [tr('Búsqueda prioritaria de piso'),tr('Tres pasos. Yo busco por ti y tú vas primero.'),'Comprador prioritario']; }
+    var WA = '34672907381';
+    var BARRIOS = {
+      'Ciutat Vella':['el Raval','el Gòtic','la Barceloneta','Sant Pere, Santa Caterina i la Ribera'],
+      'Eixample':['el Fort Pienc','la Sagrada Família','la Dreta de l\'Eixample','l\'Antiga Esquerra de l\'Eixample','la Nova Esquerra de l\'Eixample','Sant Antoni'],
+      'Sants-Montjuïc':['el Poble-sec','la Marina del Prat Vermell','la Marina de Port','la Font de la Guatlla','Hostafrancs','la Bordeta','Sants-Badal','Sants'],
+      'Les Corts':['les Corts','la Maternitat i Sant Ramon','Pedralbes'],
+      'Sarrià-Sant Gervasi':['Vallvidrera, el Tibidabo i les Planes','Sarrià','les Tres Torres','Sant Gervasi-la Bonanova','Sant Gervasi-Galvany','el Putxet i el Farró'],
+      'Gràcia':['Vallcarca i els Penitents','el Coll','la Salut','la Vila de Gràcia','el Camp d\'en Grassot i Gràcia Nova'],
+      'Horta-Guinardó':['el Baix Guinardó','el Guinardó','Can Baró','el Carmel','la Font d\'en Fargues','Horta','la Clota','Montbau','Sant Genís dels Agudells','la Vall d\'Hebron'],
+      'Nou Barris':['Porta','Vilapicina i la Torre Llobeta','el Turó de la Peira','Can Peguera','la Guineueta','Canyelles','les Roquetes','Verdun','la Prosperitat','la Trinitat Nova','Torre Baró','Ciutat Meridiana','Vallbona'],
+      'Sant Andreu':['la Trinitat Vella','Baró de Viver','el Bon Pastor','Sant Andreu','la Sagrera','el Congrés i els Indians','Navas'],
+      'Sant Martí':['el Camp de l\'Arpa del Clot','el Clot','el Parc i la Llacuna del Poblenou','la Vila Olímpica del Poblenou','el Poblenou','Diagonal Mar i el Front Marítim','el Besòs i el Maresme','Provençals del Poblenou','Sant Martí de Provençals','la Verneda i la Pau'],
+      'Área metropolitana':['L\'Hospitalet de Llobregat','Badalona','Santa Coloma de Gramenet','Sant Adrià de Besòs','Cornellà de Llobregat','Esplugues de Llobregat','Sant Cugat del Vallès']
+    };
+    function buildBarrios(){
+      var cur=$$('oBarrio').value;
+      var h='<option value="">'+tr('Elige tu barrio…')+'</option>';
+      Object.keys(BARRIOS).forEach(function(d){
+        h+='<optgroup label="'+tr(d)+'">'+BARRIOS[d].map(function(b){return '<option value="'+b+' ('+d+')">'+b+'</option>';}).join('')+'</optgroup>';
+      });
+      h+='<optgroup label="'+tr('Otro')+'"><option value="Otro municipio o zona">'+tr('Otro municipio o zona…')+'</option></optgroup>';
+      $$('oBarrio').innerHTML=h; $$('oBarrio').value=cur;
+    }
+    buildBarrios();
+
+    /* ---- estado / pasos ---- */
+    var mode_='owner', step=1, TOTAL=3, touchedSup=false;
+    var secs=[], lis=[], bars=[];
+    function bind(){ var r=$$(mode_==='owner'?'fOwner':'fTen'); secs=[].slice.call(r.querySelectorAll('.stp')); lis=[].slice.call(r.querySelectorAll('li[data-s]')); bars=[].slice.call(r.querySelectorAll('.wbar')); }
+    var ico=function(id){ return '<svg class="ic"><use href="#'+id+'"/></svg>'; };
+    function setStep(n, focus){
+      step=n;
+      secs.forEach(function(s){ s.classList.toggle('on', +s.dataset.step===n); });
+      lis.forEach(function(li){
+        var s=+li.dataset.s, dot=li.querySelector('.dot');
+        li.classList.toggle('on', s===n); li.classList.toggle('done', s<n);
+        dot.innerHTML = s<n ? ico('i-check') : ico(dot.dataset.ico);
+      });
+      bars.forEach(function(b,i){ b.classList.toggle('full', n>i+1); });
+      bBack.hidden = n===1; bNext.hidden = n===TOTAL; sendO.hidden = n!==TOTAL;
+      msg.textContent=''; msg.className='lmsg';
+      dlg.scrollTop=0;
+      if(focus && window.matchMedia('(hover:hover)').matches){ var i=secs[n-1].querySelector('input:not([type=hidden]):not([type=radio]):not([type=checkbox]),select'); if(i) setTimeout(function(){i.focus({preventScroll:true});},60); }
+      if(window.fbTrack) fbTrack('lead_step',{step:n});
+    }
+
+    /* ---- validación ---- */
+    function mark(inp, ok, text){
+      var w=inp.closest('.fld'); w.classList.remove('bad'); void w.offsetWidth;
+      if(!ok) w.classList.add('bad');
+      var e=w.querySelector('.ferr'); if(e) e.textContent = ok ? '' : text;
+      return ok;
+    }
+    var okMail=function(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v); };
+    var okTel=function(v){ var d=v.replace(/\D/g,''); return d.length>=9 && d.length<=15; };
+    function v1(){
+      var p=mode_==='owner'?'o':'t';
+      var a=mark($$(p+'Nombre'), $$(p+'Nombre').value.trim().length>=2, tr('Dime tu nombre para saber cómo llamarte'));
+      var b=mark($$(p+'Wa'), okTel($$(p+'Wa').value), tr('Pon un WhatsApp válido (mínimo 9 cifras)'));
+      var c=mark($$(p+'Email'), okMail($$(p+'Email').value.trim()), tr('Pon un email válido, por ejemplo nombre@correo.com'));
+      return a&&b&&c;
+    }
+    function v3(){ var c=$$(mode_==='owner'?'oConsent':'tConsent'); return mark(c, c.checked, tr('Necesito tu OK para poder contactarte')); }
+    function prio(){ var r=f.querySelector('input[name=servicio][data-t]:checked'); return !!r && r.value.indexOf('prioritaria')!==-1; }
+    function v2t(){ if(!prio()) return true; return mark($$('tAcepta'), $$('tAcepta').checked, tr('Marca esta casilla para seguir con la búsqueda prioritaria')); }
+    function firstBad(){ var b=f.querySelector('.stp.on .fld.bad input, .stp.on .fld.bad select'); if(b && b.focus) b.focus({preventScroll:false}); }
+
+    bNext.addEventListener('click',function(){
+      if(step===1 && !v1()){ msg.className='lmsg err'; msg.textContent=tr('Faltan datos obligatorios (*)'); firstBad(); return; }
+      if(step===2 && mode_==='tenant' && !v2t()){ msg.className='lmsg err'; msg.textContent=tr('Necesito tu confirmación para continuar'); return; }
+      setStep(step+1,true);
+    });
+    bBack.addEventListener('click',function(){ setStep(step-1,false); });
+    f.addEventListener('keydown',function(e){
+      if(e.key!=='Enter') return;
+      var t=e.target.tagName; if(t==='TEXTAREA'||t==='BUTTON') return;
+      e.preventDefault();
+      if(step<TOTAL) bNext.click(); else f.requestSubmit(sendO);
+    });
+
+    /* ---- controles: steppers, personas, superficie, condicionales ---- */
+    var pplRow=$$('pplRow'); pplRow.innerHTML=new Array(9).join(ico('i-user'));
+    function paintPpl(n){ [].forEach.call(pplRow.children,function(s,i){ s.classList.toggle('on', i<n); }); }
+    function stepper(box, v){
+      var min=+box.dataset.min, max=+box.dataset.max; v=Math.max(min,Math.min(max,v));
+      box.querySelector('output').textContent=v; box.querySelector('input').value=v;
+      if(box.dataset.stepper==='ppl') paintPpl(v);
+    }
+    f.addEventListener('click',function(e){
+      var b=e.target.closest && e.target.closest('.stpr button'); if(!b) return;
+      var box=b.closest('.stpr'); stepper(box, (+box.querySelector('input').value)+(+b.dataset.d));
+    });
+    var rSup=$$('rSup');
+    rSup.addEventListener('input',function(){
+      touchedSup=true; $$('oSup').value=rSup.value; $$('rSupV').innerHTML=rSup.value+' <small>m²</small>';
+    });
+    f.addEventListener('change',function(e){
+      var t=e.target;
+      if(t.name==='tipo_inmueble') $$('tipoOtroWrap').hidden = t.value!=='Otro';
+      if(t.id==='oBarrio') $$('barrioOtroWrap').hidden = t.value.indexOf('Otro municipio')!==0;
+      if(t.name==='situacion'){ $$('sitLibre').hidden = t.value!=='Libre'; $$('sitAlq').hidden = t.value!=='Alquilado'; }
+      if((t.id==='oConsent'||t.id==='tConsent'||t.id==='tAcepta') && t.checked) mark(t,true,'');
+      if(t.name==='servicio' && t.hasAttribute('data-t')) $$('tAceptaWrap').hidden=!prio();
+    });
+    f.addEventListener('input',function(e){
+      var t=e.target; if(t.closest && t.closest('.fld.bad') && ['oNombre','oWa','oEmail','tNombre','tWa','tEmail'].indexOf(t.id)!==-1){
+        var ok = /Nombre$/.test(t.id) ? t.value.trim().length>=2 : /Wa$/.test(t.id) ? okTel(t.value) : okMail(t.value.trim());
+        if(ok) mark(t,true,'');
+      }
+    });
+
+    function resetWizard(){
+      f.reset();
+      [].forEach.call(f.querySelectorAll('.fld.bad'),function(w){ w.classList.remove('bad'); var e=w.querySelector('.ferr'); if(e) e.textContent=''; });
+      [].forEach.call(f.querySelectorAll('.stpr'),function(b){ var d={hab:2,ban:1,ppl:2,thab:1,tppl:2}[b.dataset.stepper]; stepper(b,d); });
+      touchedSup=false; rSup.value=60; $$('oSup').value=''; $$('rSupV').innerHTML='<small>'+tr('Desliza para elegir')+'</small>';
+      ['tipoOtroWrap','barrioOtroWrap','sitLibre','sitAlq'].forEach(function(i){ $$(i).hidden=true; });
+      $$('tAceptaWrap').hidden=false;
+      $$('lDone').classList.remove('on'); $$('lHead').hidden=false; $$('wNavBox').hidden=false;
+      setStep(1,false);
+    }
+
+    /* ---- modo (propietario / inquilino) ---- */
+    function mode(m){
+      mode_=m;
+      var tt=T(m);
+      $$('leadTitle').textContent=tt[0]; $$('leadSub').textContent=tt[1];
+      $$('lTipo').value=tt[2];
+      $$('lSubject').value='Mapa de pisos en venta · '+tt[2]+': nuevo contacto';
+      var o=m==='owner';
+      $$('fOwner').hidden=!o; $$('fTen').hidden=o;
+      f.querySelectorAll('[data-o]').forEach(function(e){e.disabled=!o;});
+      f.querySelectorAll('[data-t]').forEach(function(e){e.disabled=o;});
+      bind(); setStep(1,false);
+    }
+    document.querySelectorAll('[data-lead]').forEach(function(b){b.addEventListener('click',function(){
+      resetWizard(); mode(b.getAttribute('data-lead')); dlg.showModal();
+      if(window.fbTrack) fbTrack('open_lead_form',{tipo:b.getAttribute('data-lead')});
+    });});
+    dlg.querySelector('[data-lclose]').addEventListener('click',function(){dlg.close();});
+    dlg.addEventListener('click',function(e){ if(e.target===dlg) dlg.close(); });
+
+    /* ---- envío ---- */
+    function confetti(){
+      var c=$$('cf'); c.innerHTML=''; var cols=['#e8a339','#f4c469','#ffe1b8','#46779f','#f3f5fa'];
+      for(var i=0;i<34;i++){ var p=document.createElement('i'); p.style.left=(Math.random()*100)+'%'; p.style.background=cols[i%cols.length]; p.style.animationDelay=(Math.random()*.7)+'s'; p.style.transform='rotate('+Math.floor(Math.random()*180)+'deg)'; c.appendChild(p); }
+    }
+    function showDone(nombre, owner, free){
+      $$('lHead').hidden=true; $$('fOwner').hidden=true; $$('fTen').hidden=true; $$('wNavBox').hidden=true;
+      var first=(nombre||'').trim().split(/\s+/)[0];
+      $$('doneTitle').textContent = first ? tr('¡Recibido, {n}!',{n:first}) : tr('¡Recibido!');
+      $$('doneTxt').textContent = tr(owner ? 'Reviso los datos de tu piso y te escribo por WhatsApp para contarte cuánto puedes pedir por él y cómo lo haríamos.' : free ? 'Te escribo por WhatsApp en cuanto entre un piso que encaje contigo.' : 'Te escribo por WhatsApp para hacer el estudio de tu capacidad de compra y empezar a buscar por ti.');
+      $$('doneWa').href='https://wa.me/'+WA+'?text='+encodeURIComponent(tr(owner?'Hola AG Núñez, acabo de enviaros los datos de mi propiedad desde vuestro mapa de pisos en venta.':'Hola AG Núñez, acabo de dejaros lo que busco desde vuestro mapa de pisos en venta.'));
+      $$('lDone').classList.add('on'); confetti();
+    }
+    f.addEventListener('submit',function(e){
+      e.preventDefault();
+      var owner = mode_==='owner', btn = sendO, m = msg;
+      if(!v1()){ setStep(1,true); msg.className='lmsg err'; msg.textContent=tr('Faltan datos obligatorios (*)'); firstBad(); return; }
+      if(!owner && !v2t()){ setStep(2,false); msg.className='lmsg err'; msg.textContent=tr('Necesito tu confirmación para continuar'); return; }
+      if(!v3()){ return; }
+      btn.disabled=true; m.className='lmsg'; m.textContent=tr('Enviando…');
+      var fd=new FormData(f);
+      fd.set('idioma', window.fbI18n ? fbI18n.lang() : 'es');
+      if(owner){
+        var perfil=[].map.call(f.querySelectorAll('[data-perfil]:checked'),function(i){return i.value;}).join(', ');
+        if(perfil) fd.set('perfil_comprador_ideal', perfil);
+        if(!touchedSup) fd.delete('superficie_m2');
+        var sit=fd.get('situacion');
+        if(sit!=='Libre') fd.delete('disponible');
+        if(sit!=='Alquilado'){ fd.delete('inquilino_desde'); fd.delete('renta_actual'); }
+        if(fd.get('tipo_inmueble')!=='Otro') fd.delete('tipo_otro');
+        if((fd.get('barrio')||'').indexOf('Otro municipio')!==0) fd.delete('zona_otra');
+      } else {
+        var zs=[].map.call(f.querySelectorAll('[data-zona]:checked'),function(i){return i.value;}).join(', ');
+        if(zs) fd.set('zonas', zs);
+        var im=[].map.call(f.querySelectorAll('[data-imp]:checked'),function(i){return i.value;}).join(', ');
+        if(im) fd.set('imprescindibles', im);
+        if(!prio()){ fd.delete('acepta_condiciones_prioridad'); }
+      }
+      Array.from(fd.keys()).forEach(function(k){ if(fd.get(k)==='') fd.delete(k); });
+      fetch(f.action,{method:'POST',headers:{'Accept':'application/json'},body:fd})
+        .then(function(r){return r.json();})
+        .then(function(j){
+          if(j.success){
+            if(window.fbTrack) fbTrack('generate_lead',{form:'mapa_'+fd.get('tipo')});
+            showDone(fd.get('nombre'), owner, !owner && !prio());
+          } else throw 0;
+        })
+                .catch(function(){ m.className='lmsg err'; m.textContent=tr('No se pudo enviar. Escríbeme por WhatsApp y lo vemos.'); })
+        .then(function(){ btn.disabled=false; });
+    });
+    function buildZonas(){
+      var on=[].map.call(f.querySelectorAll('[data-zona]:checked'),function(i){return i.value;});
+      var z=Object.keys(BARRIOS).concat(['Me da igual']);
+      $$('zonaChips').innerHTML=z.map(function(n){ return '<label class="chip sm"><input type="checkbox" data-zona value="'+n+'"'+(on.indexOf(n)!==-1?' checked':'')+'><span>'+ico(n==='Me da igual'?'i-spark':'i-pin')+tr(n)+'</span></label>'; }).join('');
+    }
+    buildZonas();
+    document.addEventListener('fblang',function(){
+      var tt=T(mode_); $$('leadTitle').textContent=tt[0]; $$('leadSub').textContent=tt[1];
+      buildBarrios(); buildZonas();
+      if(!touchedSup) $$('rSupV').innerHTML='<small>'+tr('Desliza para elegir')+'</small>';
+    });
+    resetWizard(); mode('owner');
+  })();
+})();
+</script>
+<script src="site.js" defer></script>
+</body>
+</html>
