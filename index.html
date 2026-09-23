@@ -57,6 +57,8 @@
   .btn.gold{background:linear-gradient(115deg,#6b430e 0%,#9c6a1c 40%,#e8a339 70%,#f4c469 100%);background-size:180% 100%;border-color:#c98a2a;color:var(--black);font-weight:800;box-shadow:0 10px 26px -10px rgba(140,95,20,.55);transition:background-position .5s var(--ease),transform .2s var(--ease),box-shadow .2s}
   .btn.gold:hover{background-position:100% 0;transform:translateY(-2px);box-shadow:0 14px 30px -10px rgba(140,95,20,.75)}
   .btn.wa{background:var(--wa);border-color:var(--wa);}
+  .btn.ideal{background:#7cb92e;border-color:#7cb92e;color:#0d1a04!important;font-weight:800;}
+  .btn.ideal:hover{background:#8fd033;}
   .hero{padding:34px 0 18px;}
   .eyebrow{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;padding-bottom:9px;border-bottom:3px solid var(--red);margin-bottom:16px;}
   .hero h1{font-size:clamp(28px,4.2vw,46px);max-width:760px;}
@@ -423,7 +425,12 @@
 <main class="wrap">
   <section class="hero">
     <span class="eyebrow">Venta · Barcelona</span>
-    <div class="hero-row"><h1>Propiedades en venta disponibles ahora<span class="count" id="count">…</span></h1><button class="bellbtn bell-hero" type="button" data-alert aria-label="Avísame de propiedades nuevas" title="Avísame de propiedades nuevas"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 17V11a6 6 0 0112 0v6l2 2H4z"/><path d="M10 21a2 2 0 004 0"/></svg><i class="bdot" aria-hidden="true"></i></button></div>
+    <!-- NOTA PARA FER: la campana de "avísame de novedades" está oculta (hidden) porque su backend
+         (action=subscribe) vive en el Apps Script dedicado del mapa de alquiler (MAP_API_URL en el
+         panel), del que no tengo el código fuente aquí. Si quieres activarla para venta, hay que
+         añadir ese mismo "action=subscribe" (con su hoja de suscriptores) al Apps Script de venta,
+         y luego quitar el atributo hidden de los dos botones .bellbtn de abajo. -->
+    <div class="hero-row"><h1>Propiedades en venta disponibles ahora<span class="count" id="count">…</span></h1><button class="bellbtn bell-hero" type="button" data-alert aria-label="Avísame de propiedades nuevas" title="Avísame de propiedades nuevas" hidden><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 17V11a6 6 0 0112 0v6l2 2H4z"/><path d="M10 21a2 2 0 004 0"/></svg><i class="bdot" aria-hidden="true"></i></button></div>
     <p>Mira dónde está cada propiedad, su precio y sus fotos. Cuando una te encaje, pide la visita desde su ficha: te contesto yo directamente.</p>
   </section>
 
@@ -437,7 +444,7 @@
   <div class="listbar">
     <div class="listrow">
           <button class="listbtn" id="listBtn" type="button" aria-expanded="false" aria-controls="cards"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M6.5 13h11M6.5 16.5h11M6.5 20h11"/></svg><span>Ver lista de propiedades</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg></button>
-      <button class="bellbtn bell-list" type="button" data-alert aria-label="Avísame de propiedades nuevas" title="Avísame de propiedades nuevas"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 17V11a6 6 0 0112 0v6l2 2H4z"/><path d="M10 21a2 2 0 004 0"/></svg><i class="bdot" aria-hidden="true"></i></button>
+      <button class="bellbtn bell-list" type="button" data-alert aria-label="Avísame de propiedades nuevas" title="Avísame de propiedades nuevas" hidden><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 17V11a6 6 0 0112 0v6l2 2H4z"/><path d="M10 21a2 2 0 004 0"/></svg><i class="bdot" aria-hidden="true"></i></button>
     </div>
     <div class="cards" id="cards" aria-label="Lista de propiedades" hidden></div>
   </div>
@@ -814,7 +821,7 @@
     <!-- NOTA PARA FER: confirma el @ real de Instagram de AG Núñez; "agenapisos" es una suposición de placeholder -->
     <div class="ig-head">
       <div class="ig-id">
-        <div class="ring"><span><img src="agn-badge.png" alt="Fincas A.G. Núñez en Instagram" width="88" height="88" loading="lazy"></span></div>
+        <div class="ring"><span><img src="fer-amarillo.webp" alt="Fernando Benítez, Fincas A.G. Núñez, en Instagram" width="88" height="88" loading="lazy"></span></div>
         <div>
           <h2 id="igTitle">Detrás de cada propiedad</h2>
           <a class="handle" href="https://www.instagram.com/agenapisos/" target="_blank" rel="noopener">@agenapisos</a>
@@ -846,18 +853,20 @@
 <script>
 (function(){
   /* ====== CONFIGURACIÓN ====== */
-  // NOTA PARA FER: pega aquí la URL de tu Web App de Google Sheets para "Mapa de pisos en venta" (puede ser la misma hoja que la de alquiler, en otra pestaña, o una nueva). Mientras empiece por "PEGA_" se muestran datos de ejemplo (modo demo).
-  var API_URL   = 'PEGA_AQUI_TU_WEB_APP_DE_PISOS_EN_VENTA';
+  // Mismo Apps Script del panel de gestión (GESTION/index.html), sección "Propiedades en venta".
+  // Se llama con "?tipo=propiedades_venta" (ver más abajo, en load()).
+  var API_URL   = 'https://script.google.com/macros/s/AKfycbzwJe2nw_bpxIqsZKvW3mj1eMkG4OkTSPYjrkD6BvPbXze5Q1z0e90kUMqcsB-k-hlgMw/exec';
   var WA_NUMBER = '34672907381';
   var WA_CHANNEL = 'https://whatsapp.com/channel/0029VbDIheD3GJP2fI83ZT3q';   // enlace de tu canal de WhatsApp (https://whatsapp.com/channel/...). Vacío = el botón no se muestra.
   var CENTER    = [41.3874, 2.1686];                         // Barcelona
   /* =========================== */
 
   var DEMO = [
-    {id:'demo1',titulo:'Piso luminoso con balcón',zona:"l'Eixample",imagen:'',link:'#',lat:41.3946,lng:2.1613,precio:420000,habitaciones:2,banos:1,m2:68,disponibilidad:'Inmediata'},
-    {id:'demo2',titulo:'Ático con terraza y vistas',zona:'Gràcia',imagen:'',link:'#',lat:41.4036,lng:2.1571,precio:695000,habitaciones:3,banos:2,m2:95,disponibilidad:'A convenir'},
-    {id:'demo3',titulo:'Piso reformado junto al metro',zona:'Sant Martí',imagen:'',link:'#',lat:41.4102,lng:2.1990,precio:325000,habitaciones:2,banos:1,m2:60,disponibilidad:'Inmediata'},
-    {id:'demo4',titulo:'Casa unifamiliar con jardín',zona:'Sarrià-Sant Gervasi',imagen:'',link:'#',lat:41.4021,lng:2.1223,precio:1080000,habitaciones:4,banos:3,m2:210,disponibilidad:'A convenir'}
+    /* NOTA PARA FER: `idealista` = URL del anuncio real en Idealista de cada piso (demo con URLs de ejemplo) */
+    {id:'demo1',titulo:'Piso luminoso con balcón',zona:"l'Eixample",imagen:'',idealista:'https://www.idealista.com/inmueble/00000001/',lat:41.3946,lng:2.1613,precio:420000,habitaciones:2,banos:1,m2:68,disponibilidad:'Inmediata'},
+    {id:'demo2',titulo:'Ático con terraza y vistas',zona:'Gràcia',imagen:'',idealista:'https://www.idealista.com/inmueble/00000002/',lat:41.4036,lng:2.1571,precio:695000,habitaciones:3,banos:2,m2:95,disponibilidad:'A convenir'},
+    {id:'demo3',titulo:'Piso reformado junto al metro',zona:'Sant Martí',imagen:'',idealista:'https://www.idealista.com/inmueble/00000003/',lat:41.4102,lng:2.1990,precio:325000,habitaciones:2,banos:1,m2:60,disponibilidad:'Inmediata'},
+    {id:'demo4',titulo:'Casa unifamiliar con jardín',zona:'Sarrià-Sant Gervasi',imagen:'',idealista:'https://www.idealista.com/inmueble/00000004/',lat:41.4021,lng:2.1223,precio:1080000,habitaciones:4,banos:3,m2:210,disponibilidad:'A convenir'}
   ];
 
   var $ = function(id){ return document.getElementById(id); };
@@ -905,15 +914,19 @@
     return sp.join('');
   }
   function acts(p){
+    /* NOTA PARA FER: todas las propiedades se publican también en Idealista — el botón
+       "Ver en Idealista" usa el campo `idealista` (o `link`, por compatibilidad con la
+       hoja de cálculo) de cada fila. Pon ahí la URL completa del anuncio en Idealista. */
     var pm = {t:p.titulo,z:p.zona,u:piso(p.id)};
     var msg = tr('Hola AG Núñez, me interesa la propiedad "{t}" ({z}) que vi en vuestro mapa de pisos en venta: {u}',pm);
-    var ok = /^https?:\/\//i.test(p.link||'');
     var reqMsg = tr('Hola AG Núñez, quiero visitar la propiedad "{t}" ({z}) que vi en vuestro mapa de pisos en venta: {u}',pm);
+    var idealUrl = p.idealista || p.link;
+    var idealOk = /^https?:\/\//i.test(idealUrl||'');
     var shareBtn = '<button class="btn" type="button" data-share="'+esc(p.id)+'">'+tr('Compartir')+'</button>';
-    if(p.reservado) return '<div class="acts"><a class="btn" href="'+esc(wa(tr('Hola AG Núñez, vi en vuestro mapa la propiedad "{t}" (reservada). Avísame si cae la reserva o si tenéis algo parecido.',pm)))+'" target="_blank" rel="noopener">'+tr('Reservado · avísame si cae la reserva')+'</a><div class="row2"><a class="btn wa" href="'+esc(wa(msg))+'" target="_blank" rel="noopener">WhatsApp</a>'+shareBtn+'</div></div>';
-    if(!ok) return '<div class="acts"><a class="btn red" href="'+esc(wa(reqMsg))+'" target="_blank" rel="noopener">'+tr('Quiero visitarlo · por WhatsApp')+'</a>'+shareBtn+'</div>';
-    return '<div class="acts"><a class="btn red" href="'+esc(safeUrl(p.link))+'" target="_blank" rel="noopener">'+tr('Quiero visitarlo')+'</a>'+
-      '<div class="row2"><a class="btn wa" href="'+esc(wa(msg))+'" target="_blank" rel="noopener">WhatsApp</a>'+shareBtn+'</div></div>';
+    var idealBtn = idealOk ? '<a class="btn ideal" href="'+esc(safeUrl(idealUrl))+'" target="_blank" rel="noopener">'+tr('Ver en Idealista')+'</a>' : '';
+    var secondary = idealBtn ? ('<div class="row2">'+idealBtn+shareBtn+'</div>') : shareBtn;
+    if(p.reservado) return '<div class="acts"><a class="btn" href="'+esc(wa(tr('Hola AG Núñez, vi en vuestro mapa la propiedad "{t}" (reservada). Avísame si cae la reserva o si tenéis algo parecido.',pm)))+'" target="_blank" rel="noopener">'+tr('Reservado · avísame si cae la reserva')+'</a><div class="row2"><a class="btn wa" href="'+esc(wa(msg))+'" target="_blank" rel="noopener">WhatsApp</a>'+(idealBtn||shareBtn)+'</div>'+(idealBtn?shareBtn:'')+'</div>';
+    return '<div class="acts"><a class="btn red" href="'+esc(wa(reqMsg))+'" target="_blank" rel="noopener">'+tr('Quiero visitarlo · por WhatsApp')+'</a>'+secondary+'</div>';
   }
   function pinEl(id){ var m = markers[id], e = m && m.getElement(); return e && e.querySelector('.pin'); }
   function detailHTML(p){
@@ -1011,11 +1024,42 @@
     var want = new URLSearchParams(location.search).get('piso');
     if(want && markers[want]) setTimeout(function(){ open(want); },600);
   }
+  /* Convierte una fila cruda de la hoja "PropiedadesVenta" (tal como la devuelve
+     el Apps Script del panel, con las cabeceras reales: Dirección, Imagen, Link,
+     Fecha, Estado, Precio, Barrio, Metros, Habitaciones, Descripción, Fotos, Lat, Lng)
+     al formato que usa este mapa. Las propiedades "Vendida" no se muestran. */
+  function hashId(s){ s=String(s||''); var h=0; for(var i=0;i<s.length;i++){ h=((h<<5)-h+s.charCodeAt(i))|0; } return 'v'+Math.abs(h).toString(36); }
+  function numFrom(s){ if(s==null||s==='') return null; var n=parseFloat(String(s).replace(/[^\d.,]/g,'').replace(/\./g,'').replace(',','.')); return isNaN(n)?null:n; }
+  function intFrom(s){ if(s==null||s==='') return null; var n=parseInt(String(s).replace(/[^\d]/g,''),10); return isNaN(n)?null:n; }
+  function normalizeVenta(rows){
+    return (rows||[]).map(function(r){
+      var estado = String(r['Estado']||'').trim();
+      if(estado==='Vendida') return null;
+      var fotos = String(r['Fotos']||'').split('|').map(function(s){return s.trim();}).filter(Boolean);
+      var direccion = String(r['Dirección']||'').trim();
+      var link = String(r['Link']||'').trim();
+      var lat = parseFloat(r['Lat']), lng = parseFloat(r['Lng']);
+      if(!isFinite(lat)||!isFinite(lng)) return null; /* sin ubicación no se puede pintar el pin */
+      return {
+        id: hashId(direccion+'|'+link),
+        titulo: direccion || tr('Propiedad en venta'),
+        zona: String(r['Barrio']||'').trim(),
+        imagen: String(r['Imagen']||fotos[0]||'').trim(),
+        idealista: link,
+        lat: lat, lng: lng,
+        precio: numFrom(r['Precio']),
+        habitaciones: intFrom(r['Habitaciones']),
+        m2: numFrom(r['Metros']),
+        disponibilidad: '',
+        reservado: estado==='Reservada'
+      };
+    }).filter(Boolean);
+  }
   function load(){
     setStatus(function(){ return tr('Cargando propiedades…'); },false);
     if(API_URL.indexOf('PEGA_')===0 || new URLSearchParams(location.search).get('demo')==='1'){ done(DEMO,true); return; }
-    fetch(API_URL).then(function(r){return r.json();}).then(function(j){
-      if(!j.success) throw new Error(j.error||'error'); done(j.data,false);
+    fetch(API_URL+'?tipo=propiedades_venta').then(function(r){return r.json();}).then(function(j){
+      if(!j.success) throw new Error(j.error||'error'); done(normalizeVenta(j.data),false);
     }).catch(function(){ setStatus(function(){ return tr('No se pudieron cargar las propiedades.'); },true); });
   }
 
