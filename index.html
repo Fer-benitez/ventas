@@ -1040,6 +1040,9 @@
       var link = String(r['Link']||'').trim();
       var lat = parseFloat(r['Lat']), lng = parseFloat(r['Lng']);
       if(!isFinite(lat)||!isFinite(lng)) return null; /* sin ubicación no se puede pintar el pin */
+      /* red de seguridad: unas coordenadas fuera de rango real (ej. un error
+         de formato en la hoja) nunca deben poder reventar el zoom del mapa */
+      if(Math.abs(lat)>90||Math.abs(lng)>180) return null;
       return {
         id: hashId(direccion+'|'+link),
         titulo: direccion || tr('Propiedad en venta'),
