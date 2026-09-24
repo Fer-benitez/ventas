@@ -3574,6 +3574,66 @@
     await geocodarDireccion(pvDireccion.value.trim(), btn, (lat, lng)=> setPvLocation(lat, lng, 16));
   });
 
+  // Automático: en cuanto Fer termina de escribir la dirección (sin tener que pulsar nada),
+  // se busca sola y se coloca el pin. El botón de arriba sigue disponible por si hay que
+  // repetir la búsqueda o la dirección no se encontró.
+  pvDireccion.addEventListener('blur', async ()=>{
+    const direccion = pvDireccion.value.trim();
+    if(!direccion || pvLat.value) return; // ya tiene ubicación o no hay nada que buscar
+    ensurePvMap();
+    setTimeout(()=>{ if(pvMap) pvMap.invalidateSize(); }, 50);
+    await geocodarSilencioso(direccion, '').then(res=>{ if(res) setPvLocation(res.lat, res.lng, 16); });
+  });
+
+  // Versión "silenciosa" de la búsqueda de dirección: sin alerts ni botones, para
+  // usar en segundo plano (autocompletar ubicación de propiedades ya existentes,
+  // o al escribir la dirección al dar de alta una nueva).
+  async function geocodarSilencioso(direccion, extra){
+    if(!direccion) return null;
+    try{
+      const q = encodeURIComponent(direccion + (extra ? (', ' + extra) : '') + ', Barcelona, España');
+      const resp = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=es&q=' + q);
+      const results = await resp.json();
+      if(results && results.length > 0){
+        return { lat: parseFloat(results[0].lat), lng: parseFloat(results[0].lon) };
+      }
+    } catch(err){ /* se puede reintentar más adelante, a mano o en la próxima carga */ }
+    return null;
+  }
+
+  // Rellena solas, en segundo plano, las propiedades que ya existen en la hoja y
+  // todavía no tienen Lat/Lng — así Fer no tiene que entrar en cada una a mano.
+  // Va una por una y espera >1s entre cada búsqueda para no saturar el servicio
+  // gratuito de geocodificación (Nominatim/OpenStreetMap).
+  let autoGeoEnMarcha = false;
+  async function autoGeolocalizarPendientes(){
+    if(autoGeoEnMarcha) return;
+    autoGeoEnMarcha = true;
+    try{
+      const pendientes = cachedPropiedadesVenta.filter(p=>
+        String(p['Estado']||'').trim() !== 'Vendida' &&
+        !(p['Lat'] && p['Lng']) &&
+        String(p['Dirección']||'').trim() &&
+        !p.__geoIntentado
+      );
+      for(const p of pendientes){
+        p.__geoIntentado = true;
+        const res = await geocodarSilencioso(String(p['Dirección']).trim(), String(p['Barrio']||'').trim());
+        if(res){
+          try{
+            await fetch(APPS_SCRIPT_URL_VENTA, {
+              method:'POST', mode:'no-cors',
+              body: JSON.stringify({ action:'actualizar_ubicacion_propiedad_venta', direccion: p['Dirección'], link: p['Link'], lat: res.lat.toFixed(6), lng: res.lng.toFixed(6) })
+            });
+            p['Lat'] = res.lat.toFixed(6); p['Lng'] = res.lng.toFixed(6);
+            renderPropiedadesVentaCards();
+          } catch(err){ /* se reintentará en la próxima carga del panel */ }
+        }
+        await new Promise(r=>setTimeout(r, 1200)); // 1 búsqueda por segundo aprox., límite del servicio gratuito
+      }
+    } finally { autoGeoEnMarcha = false; }
+  }
+
   let uploadedPropVentaImageUrls = []; // todas las fotos subidas; la primera es la de portada
   pvFoto.addEventListener('change', ()=>{
     const files = Array.from(pvFoto.files || []);
@@ -3694,6 +3754,7 @@
       cachedPropiedadesVenta = json.data;
       renderPropiedadesVentaCards();
       populateLvPropiedadSelect();
+      autoGeolocalizarPendientes(); // rellena en segundo plano las que no tengan ubicación aún
     } catch(err){
       loadingPropVenta.style.display = 'none';
       emptyPropVenta.textContent = 'No se pudo conectar con la hoja.';
