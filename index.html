@@ -25,21 +25,21 @@
 <meta name="twitter:image" content="https://fer-benitez.github.io/pisosenventa/og-venta.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" crossorigin>
 <style>
   /* ---- paleta "venta" — carbón profundo + dorado envejecido + hueso ---- */
   :root{--black:#0a1626;--black-2:#0f2038;--black-3:#16294a;--line:rgba(150,178,210,.16);--white:#f3f5fa;--muted:#8ea3bf;--red:#e8a339;--red-dim:#9c6a1c;--glow:rgba(232,163,57,.34);--crimson:#d92d2d;--crimson-dim:#7a1a1a;--ink:#3a0f12;--ink-2:#5c161b;--wa:#1fa855;--ease:cubic-bezier(.22,.68,0,1);}
   *{margin:0;padding:0;box-sizing:border-box;}
   [hidden]{display:none!important;}
-  body{background:var(--black);color:var(--white);font-family:'Plus Jakarta Sans',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
   a{color:inherit;text-decoration:none;}
-  h1,h2,h3{font-family:'Fraunces',serif;font-weight:600;line-height:1.1;letter-spacing:-.01em;}
+  h1,h2,h3{font-family:'Montserrat',sans-serif;font-weight:700;line-height:1.1;letter-spacing:-.01em;}
   :focus-visible{outline:2px solid var(--red);outline-offset:3px;}
   .wrap{max-width:1240px;margin:0 auto;padding:0 20px;}
   header{border-bottom:1px solid var(--line);}
   .top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 0;}
-  .brand{font-family:'Fraunces',serif;font-weight:700;text-transform:uppercase;font-size:16px;letter-spacing:.02em;}
+  .brand{font-family:'Montserrat',sans-serif;font-weight:700;text-transform:uppercase;font-size:16px;letter-spacing:.02em;}
   .brand span{color:var(--red);}
   .agn-logo{height:42px;width:auto;display:block;}
   .top-actions{display:flex;gap:10px;}
@@ -74,7 +74,7 @@
   .op-btn.op-venta.active{background:linear-gradient(135deg,#e8a339,#f4c469);color:var(--black);border-color:transparent;}
   .op-btn.op-alquiler.active{background:linear-gradient(135deg,#5b8dff,#1e4fb8);color:#fff;border-color:transparent;}
   .listbar{margin:0 0 12px;position:relative;z-index:1300}
-  .listbtn{display:inline-flex;align-items:center;gap:10px;background:var(--black-2);color:var(--white);border:1px solid var(--line);border-radius:12px;padding:10px 16px 10px 12px;font:700 14px 'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:border-color .25s var(--ease)}
+  .listbtn{display:inline-flex;align-items:center;gap:10px;background:var(--black-2);color:var(--white);border:1px solid var(--line);border-radius:12px;padding:10px 16px 10px 12px;font:700 14px 'Inter',sans-serif;cursor:pointer;transition:border-color .25s var(--ease)}
   .listbtn:hover,.listbtn[aria-expanded="true"]{border-color:var(--red)}
   .listbtn svg{width:26px;height:26px;stroke:var(--red);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
   .listbtn .chev{width:14px;height:14px;stroke:var(--muted);transition:transform .25s var(--ease)}
@@ -86,11 +86,11 @@
   .row:hover,.row.active{background:var(--black-3)}
   .row.active{box-shadow:inset 3px 0 0 var(--red)}
   .row .zona{grid-column:1;font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--red)}
-  .row .tt{grid-column:1;font-family:'Fraunces',serif;font-weight:600;font-size:15px;line-height:1.25}
+  .row .tt{grid-column:1;font-family:'Montserrat',sans-serif;font-weight:700;font-size:15px;line-height:1.25}
   .row .pr{grid-column:2;grid-row:1 / span 2;font-weight:800;font-size:17px;white-space:nowrap;text-align:right}
   .row .pr small{font-weight:500;color:var(--muted);font-size:12px}
-  .row .rs{display:inline-block;margin-left:8px;background:var(--ink-2);color:#ffd9c0;border:1px solid rgba(255,217,192,.35);font:800 9px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:.12em;padding:3px 7px;border-radius:999px;vertical-align:middle}
-  .ribbon{position:absolute;top:12px;left:12px;z-index:2;background:var(--ink-2);color:#ffd9c0;border:1px solid rgba(255,217,192,.35);font:800 11px/1 'Plus Jakarta Sans',sans-serif;letter-spacing:.14em;padding:7px 11px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.4);}
+  .row .rs{display:inline-block;margin-left:8px;background:var(--ink-2);color:#ffd9c0;border:1px solid rgba(255,217,192,.35);font:700 9px/1 'Inter',sans-serif;letter-spacing:.12em;padding:3px 7px;border-radius:999px;vertical-align:middle}
+  .ribbon{position:absolute;top:12px;left:12px;z-index:2;background:var(--ink-2);color:#ffd9c0;border:1px solid rgba(255,217,192,.35);font:700 11px/1 'Inter',sans-serif;letter-spacing:.14em;padding:7px 11px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.4);}
   .pin.res path{fill:var(--ink-2)}.pin.res circle{fill:#ffd9c0}
   .leaflet-tile-pane{filter:grayscale(.55) sepia(.25) hue-rotate(180deg) brightness(.75) contrast(1.08) saturate(.55);}
   .leaflet-container{background:#0a1626;}
@@ -145,6 +145,22 @@
   .detail .acts{display:grid;gap:8px;margin-top:4px;}
   .detail .acts .btn{color:var(--white)!important;}
   .detail .row2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .detail .dph{cursor:pointer;}
+  .detail .agn-badge{position:absolute;top:12px;left:12px;z-index:2;height:40px;width:auto;border-radius:8px;box-shadow:0 6px 16px rgba(0,0,0,.45);background:#fff;padding:3px 7px;display:block;}
+  .detail .facts{display:flex;flex-wrap:wrap;gap:9px 16px;margin:2px 0 0;}
+  .detail .facts .f{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--white);}
+  .detail .facts .f svg{width:17px;height:17px;color:#fff;stroke-width:2;flex:none;}
+  .detail .desc{font-size:13px;line-height:1.55;color:#cfd6e3;margin:2px 0 0;}
+  .detail .legal{margin-top:8px;padding-top:12px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:7px 16px;font-size:11px;color:var(--muted);letter-spacing:.01em;}
+  .detail .legal b{color:#cfd6e3;font-weight:700;}
+  .lightbox{display:none;position:fixed;inset:0;z-index:3000;background:rgba(6,10,20,.92);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);align-items:center;justify-content:center;}
+  .lightbox.open{display:flex;animation:dIn .25s var(--ease);}
+  .lightbox img{max-width:min(92vw,900px);max-height:82vh;border-radius:14px;box-shadow:0 30px 70px rgba(0,0,0,.6);object-fit:contain;}
+  .lightbox .lb-close{position:absolute;top:18px;right:18px;width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(0,0,0,.55);color:#fff;font-size:18px;cursor:pointer;}
+  .lightbox .lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:52px;height:52px;border-radius:50%;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.3);color:#fff;display:grid;place-items:center;cursor:pointer;padding:0;}
+  .lightbox .lb-prev{left:16px}.lightbox .lb-next{right:16px}
+  .lightbox .lb-count{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);font-size:12.5px;color:#fff;background:rgba(0,0,0,.5);padding:5px 12px;border-radius:999px;}
+  @media(max-width:640px){.lightbox .lb-nav{width:42px;height:42px}.lightbox .lb-prev{left:8px}.lightbox .lb-next{right:8px}}
   .pin.sel{transform:scale(1.25);filter:drop-shadow(0 0 10px rgba(255,255,255,.55));z-index:5;}
   .pin.sel path{fill:#fff;stroke:#fff;}
   .pin.sel circle{fill:var(--red);}
@@ -261,14 +277,14 @@
   .stpr button{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--black-3);color:#fff;font-size:20px;line-height:1;cursor:pointer;transition:background .2s,transform .15s}
   .stpr button:hover{background:var(--red);border-color:var(--red)}
   .stpr button:active{transform:scale(.88)}
-  .stpr output{min-width:34px;text-align:center;font:800 19px 'Plus Jakarta Sans',sans-serif}
+  .stpr output{min-width:34px;text-align:center;font:700 19px 'Inter',sans-serif}
   .ppl{display:flex;gap:4px;margin:10px 4px 0;flex-wrap:wrap}
   .ppl .ic{width:26px;height:26px;color:#3a3a3a;transition:color .25s,transform .25s var(--ease)}
   .ppl .ic.on{color:var(--red);transform:translateY(-3px)}
   .rng{background:var(--black);border:1px solid var(--line);border-radius:14px;padding:14px 16px 12px}
   .rng .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-  .rng .rv{font:800 24px 'Plus Jakarta Sans',sans-serif}
-  .rng .rv small{font:600 13px 'Plus Jakarta Sans',sans-serif;color:var(--muted)}
+  .rng .rv{font:700 24px 'Inter',sans-serif}
+  .rng .rv small{font:600 13px 'Inter',sans-serif;color:var(--muted)}
   .rng input[type=range]{width:100%;accent-color:var(--red);height:28px;cursor:pointer}
   .cond{margin-top:12px;padding:14px;border:1px dashed rgba(255,255,255,.18);border-radius:14px;animation:stpIn .35s var(--ease)}
   .cond[hidden]{display:none}
@@ -292,7 +308,7 @@
   /* ---- inquilino: servicio prioritario ---- */
   .vs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .vs>div{display:flex;flex-direction:column;gap:6px;padding:14px;border-radius:14px;font-size:12.5px;line-height:1.45;color:var(--muted)}
-  .vs b{font:800 14px 'Plus Jakarta Sans',sans-serif;color:#fff}
+  .vs b{font:700 14px 'Inter',sans-serif;color:#fff}
   .vs .ic{width:24px;height:24px}
   .vs-a{background:var(--black);border:1px solid var(--line)}
   .vs-a .ic{color:var(--muted)}
@@ -301,7 +317,7 @@
   .price{margin-top:12px;border:1px solid var(--line);border-radius:16px;background:var(--black);padding:16px}
   .pr-top{display:flex;align-items:center;gap:12px;font-size:15px}
   .pr-top>.ic{width:34px;height:34px;color:var(--red);flex:none}
-  .pr-top b{font:800 19px 'Plus Jakarta Sans',sans-serif;color:#fff;display:block}
+  .pr-top b{font:700 19px 'Inter',sans-serif;color:#fff;display:block}
   .pr-top span{color:var(--muted);font-size:13px;display:block;margin-top:2px}
   .pr-list{list-style:none;margin:14px 0;padding:0;display:grid;gap:11px}
   .pr-list li{display:flex;gap:10px;font-size:13px;line-height:1.5;color:#cfcac3}
@@ -311,7 +327,7 @@
   .calc label{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
   .calc label .ic{width:15px;height:15px;color:var(--red)}
   .calc-out{margin-top:10px;font-size:13.5px;color:var(--muted);line-height:1.6}
-  .calc-out b{font:800 22px 'Plus Jakarta Sans',sans-serif;color:#fff;display:block}
+  .calc-out b{font:700 22px 'Inter',sans-serif;color:#fff;display:block}
   #tAceptaWrap{margin-top:12px}
   #tAceptaWrap[hidden]{display:none}
   @media(max-width:520px){.vs{grid-template-columns:1fr}}
@@ -357,7 +373,7 @@
   .al-send .ic{width:18px;height:18px}
   .al-wa{display:flex;flex-direction:column;background:linear-gradient(160deg,rgba(31,168,85,.16),rgba(31,168,85,.03));border-color:rgba(31,168,85,.5)}
   .al-wa h3 .ic{color:#4ade80}
-  .fast{margin-left:auto;display:inline-flex;align-items:center;gap:4px;background:linear-gradient(115deg,#2c4f6e,#46779f);color:#f3f5fa;font:800 10.5px 'Plus Jakarta Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:5px 10px 5px 7px;border-radius:999px;white-space:nowrap;box-shadow:0 6px 16px -6px rgba(20,50,70,.7)}
+  .fast{margin-left:auto;display:inline-flex;align-items:center;gap:4px;background:linear-gradient(115deg,#2c4f6e,#46779f);color:#f3f5fa;font:700 10.5px 'Inter',sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:5px 10px 5px 7px;border-radius:999px;white-space:nowrap;box-shadow:0 6px 16px -6px rgba(20,50,70,.7)}
   .al-wa h3 .fast .ic{width:14px;height:14px;color:#f3f5fa;fill:#f3f5fa;stroke:none;animation:zap 1.6s ease-in-out infinite}
   @keyframes zap{0%,60%,100%{transform:scale(1);opacity:1}70%{transform:scale(1.35) rotate(-8deg)}80%{transform:scale(1);opacity:.55}90%{transform:scale(1.25) rotate(6deg);opacity:1}}
   @media(prefers-reduced-motion:reduce){.al-wa h3 .fast .ic{animation:none}}
@@ -399,7 +415,7 @@
   .reel .play svg{width:28px;height:28px;margin-left:4px;fill:#fff;}
   .reel .meta{position:absolute;left:18px;right:18px;bottom:18px;display:flex;flex-direction:column;gap:6px;}
   .reel .tag{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--red);}
-  .reel .tt{font-family:'Fraunces',serif;font-weight:600;font-size:20px;line-height:1.15;}
+  .reel .tt{font-family:'Montserrat',sans-serif;font-weight:700;font-size:20px;line-height:1.15;}
   .reel iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff;}
   .reels.emb .embed.vid{flex-direction:column;align-items:stretch;gap:12px;max-width:380px;margin:0 auto;width:100%}
   .reels.emb .embed.vid video{width:100%;height:auto;max-height:78vh;display:block;background:#000;border-radius:18px;border:1px solid var(--line);object-fit:contain}
@@ -856,6 +872,13 @@
     </div>
   </div>
 </footer>
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Fotos de la propiedad">
+  <button class="lb-close" type="button" data-lb-close aria-label="Cerrar">✕</button>
+  <button class="lb-nav lb-prev" type="button" data-lb-prev aria-label="Foto anterior"><svg class="ic" style="width:22px;height:22px;stroke:#fff"><use href="#i-prev"/></svg></button>
+  <img id="lbImg" alt="">
+  <button class="lb-nav lb-next" type="button" data-lb-next aria-label="Foto siguiente"><svg class="ic" style="width:22px;height:22px;stroke:#fff"><use href="#i-next"/></svg></button>
+  <span class="lb-count" id="lbCount"></span>
+</div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="i18n.js"></script>
@@ -869,6 +892,10 @@
   var WA_NUMBER = '34672907381';
   var WA_CHANNEL = 'https://whatsapp.com/channel/0029VbDIheD3GJP2fI83ZT3q';   // enlace de tu canal de WhatsApp (https://whatsapp.com/channel/...). Vacío = el botón no se muestra.
   var CENTER    = [41.3874, 2.1686];                         // Barcelona
+  // NOTA PARA FER: pon aquí tus números de registro reales. Si los dejas vacíos, esa línea
+  // simplemente no se muestra en la ficha (el CEE sí se muestra siempre, ver más abajo).
+  var AICAT_NUM = '';   // ej. 'AICAT 1234'
+  var API_NUM   = '';   // ej. 'API 5678'
   /* =========================== */
 
   var DEMO = [
@@ -936,20 +963,34 @@
     var reqMsg = tr('Hola AG Núñez, quiero visitar la propiedad "{t}" ({z}) que vi en vuestro mapa de pisos en venta: {u}',pm);
     var idealUrl = p.idealista || p.link;
     var idealOk = /^https?:\/\//i.test(idealUrl||'');
-    var shareBtn = '<button class="btn" type="button" data-share="'+esc(p.id)+'">'+tr('Compartir')+'</button>';
+    var shareBtn = '<button class="btn red" type="button" data-share="'+esc(p.id)+'">'+tr('Compartir')+'</button>';
     var idealBtn = idealOk ? '<a class="btn ideal" href="'+esc(safeUrl(idealUrl))+'" target="_blank" rel="noopener">'+tr('Ver en Idealista')+'</a>' : '';
     var secondary = idealBtn ? ('<div class="row2">'+idealBtn+shareBtn+'</div>') : shareBtn;
     if(p.reservado) return '<div class="acts"><a class="btn" href="'+esc(wa(tr('Hola AG Núñez, vi en vuestro mapa la propiedad "{t}" (reservada). Avísame si cae la reserva o si tenéis algo parecido.',pm)))+'" target="_blank" rel="noopener">'+tr('Reservado · avísame si cae la reserva')+'</a><div class="row2"><a class="btn wa" href="'+esc(wa(msg))+'" target="_blank" rel="noopener">WhatsApp</a>'+(idealBtn||shareBtn)+'</div>'+(idealBtn?shareBtn:'')+'</div>';
-    return '<div class="acts"><a class="btn red" href="'+esc(wa(reqMsg))+'" target="_blank" rel="noopener">'+tr('Quiero visitarlo · por WhatsApp')+'</a>'+secondary+'</div>';
+    return '<div class="acts"><a class="btn wa" href="'+esc(wa(reqMsg))+'" target="_blank" rel="noopener">'+tr('Quiero visitarlo · por WhatsApp')+'</a>'+secondary+'</div>';
+  }
+  function fact(icon,text){ return text ? '<span class="f"><svg class="ic"><use href="#'+icon+'"/></svg>'+esc(text)+'</span>' : ''; }
+  function legalHTML(p){
+    var items = [];
+    if(AICAT_NUM) items.push('<span><b>'+esc(tr('Nº AICAT'))+':</b> '+esc(AICAT_NUM)+'</span>');
+    if(API_NUM) items.push('<span><b>'+esc(tr('Nº API'))+':</b> '+esc(API_NUM)+'</span>');
+    items.push('<span><b>'+esc(tr('CEE'))+':</b> '+esc(p.cee || tr('en trámite'))+'</span>');
+    return '<div class="legal">'+items.join('')+'</div>';
   }
   function pinEl(id){ var m = markers[id], e = m && m.getElement(); return e && e.querySelector('.pin'); }
   function detailHTML(p){
-    return '<div class="dph"'+(p.imagen?' style="background-image:url(\''+esc(photo(p.imagen))+'\')"':'')+' role="img" aria-label="'+esc(tr('Foto de la propiedad en ')+p.zona)+'">'+(p.reservado?'<span class="ribbon">'+tr('RESERVADO')+'</span>':'')+
+    var fotos = (p.fotos&&p.fotos.length) ? p.fotos : (p.imagen?[p.imagen]:[]);
+    return '<div class="dph"'+(p.imagen?' style="background-image:url(\''+esc(photo(p.imagen))+'\')"':'')+
+      (fotos.length?' data-lightbox=\''+esc(JSON.stringify(fotos))+'\' role="button" tabindex="0"':' role="img"')+
+      ' aria-label="'+esc(fotos.length?tr('Ver fotos de la propiedad en ')+p.zona:tr('Foto de la propiedad en ')+p.zona)+'">'+
+      '<img class="agn-badge" src="agn-logo-color.png" alt="Fincas A.G. Núñez" width="241" height="93">'+
+      (p.reservado?'<span class="ribbon">'+tr('RESERVADO')+'</span>':'')+
       '<button class="d-close" type="button" aria-label="'+tr('Cerrar')+'" data-close>✕</button></div>'+
-      '<div class="bd"><span class="zona">'+esc(p.zona)+'</span><h3>'+esc(p.titulo)+'</h3>'+
+      '<div class="bd"><span class="zona">'+esc(p.zona)+'</span><h3>'+esc(p.calle||p.titulo)+'</h3>'+
       (p.precio!=null?'<div class="pr">'+eur(p.precio)+'</div>':'')+
-      '<div class="sp">'+extras(p)+'</div>'+
-      '<div class="approx">'+tr('📍 Ubicación aproximada (pin blanco en el mapa). La dirección exacta te la doy al concertar la visita.')+'</div>'+acts(p)+'</div>';
+      '<div class="facts">'+fact('i-bed',p.habitaciones!=null?(p.habitaciones+' '+tr('hab.')):'')+fact('i-pin',p.zona)+fact('i-ruler',p.m2!=null?(p.m2+' m²'):'')+'</div>'+
+      (p.descripcion?'<p class="desc">'+esc(p.descripcion)+'</p>':'')+
+      '<div class="approx">'+tr('📍 Ubicación aproximada (pin blanco en el mapa). La dirección exacta te la doy al concertar la visita.')+'</div>'+acts(p)+legalHTML(p)+'</div>';
   }
   function unmark(){
     if(!sel) return;
@@ -1047,6 +1088,13 @@
   function hashId(s){ s=String(s||''); var h=0; for(var i=0;i<s.length;i++){ h=((h<<5)-h+s.charCodeAt(i))|0; } return 'v'+Math.abs(h).toString(36); }
   function numFrom(s){ if(s==null||s==='') return null; var n=parseFloat(String(s).replace(/[^\d.,]/g,'').replace(/\./g,'').replace(',','.')); return isNaN(n)?null:n; }
   function intFrom(s){ if(s==null||s==='') return null; var n=parseInt(String(s).replace(/[^\d]/g,''),10); return isNaN(n)?null:n; }
+  /* Para la ficha del mapa solo debe verse el nombre de la calle, nunca el número
+     (por privacidad/seguridad hasta que el interesado concierte la visita). */
+  function soloCalle(dir){
+    var d = String(dir||'').trim();
+    var s = d.replace(/,\s*(n[ºo°]?\.?\s*)?\d+\s*[a-zA-Z]?°?\s*(,?\s*(bis|dup(?:licado)?|esc\.?\s*\w+|pta\.?\s*\w+|\d+º?\s*\w*))*\s*$/i,'').trim();
+    return s || d;
+  }
   function normalizeVenta(rows){
     return (rows||[]).map(function(r){
       var estado = String(r['Estado']||'').trim();
@@ -1063,8 +1111,12 @@
       return {
         id: hashId(direccion+'|'+link),
         titulo: direccion || (operacion==='Alquiler' ? tr('Propiedad en alquiler') : tr('Propiedad en venta')),
+        calle: direccion ? soloCalle(direccion) : '',
         zona: String(r['Barrio']||'').trim(),
         imagen: String(r['Imagen']||fotos[0]||'').trim(),
+        fotos: fotos,
+        descripcion: String(r['Descripción']||'').trim(),
+        cee: String(r['Certificado energético']||r['CEE']||'').trim(),
         idealista: link,
         lat: lat, lng: lng,
         precio: numFrom(r['Precio']),
@@ -1105,9 +1157,42 @@
   });
   document.addEventListener('click',function(e){
     if(e.target.closest && e.target.closest('[data-close]')){ hideDetail(); return; }
+    var lb = e.target.closest && e.target.closest('[data-lightbox]');
+    if(lb){ try{ openLightbox(JSON.parse(lb.getAttribute('data-lightbox')),0); }catch(err){} return; }
     var b = e.target.closest && e.target.closest('[data-share]'); if(!b) return;
     var p = all.filter(function(x){return x.id===b.dataset.share;})[0]; if(!p) return;
     share(tr('Propiedad en venta en ')+p.zona+(p.precio!=null?' · '+eur(p.precio):''), piso(p.id));
+  });
+  document.addEventListener('keydown',function(e){
+    var lbox = $('lightbox');
+    if(lbox.classList.contains('open')){
+      if(e.key==='Escape') closeLightbox();
+      else if(e.key==='ArrowLeft') lbNav(-1);
+      else if(e.key==='ArrowRight') lbNav(1);
+      return;
+    }
+    if((e.key==='Enter'||e.key===' ') && e.target.closest && e.target.closest('[data-lightbox]')){
+      e.preventDefault();
+      try{ openLightbox(JSON.parse(e.target.closest('[data-lightbox]').getAttribute('data-lightbox')),0); }catch(err){}
+    }
+  });
+  var lbFotos = [], lbIdx = 0;
+  function lbShow(){
+    var img = $('lbImg'); img.src = photo(lbFotos[lbIdx]); img.alt = '';
+    var cnt = $('lbCount'); cnt.textContent = (lbIdx+1)+' / '+lbFotos.length; cnt.hidden = lbFotos.length<2;
+    document.querySelectorAll('#lightbox .lb-nav').forEach(function(b){ b.hidden = lbFotos.length<2; });
+  }
+  function openLightbox(fotos, start){
+    fotos = (fotos||[]).filter(Boolean); if(!fotos.length) return;
+    lbFotos = fotos; lbIdx = Math.max(0, Math.min(start||0, fotos.length-1));
+    lbShow(); $('lightbox').classList.add('open');
+  }
+  function closeLightbox(){ $('lightbox').classList.remove('open'); }
+  function lbNav(d){ if(!lbFotos.length) return; lbIdx = (lbIdx+d+lbFotos.length)%lbFotos.length; lbShow(); }
+  $('lightbox').addEventListener('click',function(e){
+    if(e.target===this || (e.target.closest && e.target.closest('[data-lb-close]'))) closeLightbox();
+    else if(e.target.closest && e.target.closest('[data-lb-prev]')) lbNav(-1);
+    else if(e.target.closest && e.target.closest('[data-lb-next]')) lbNav(1);
   });
 
 
