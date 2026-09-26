@@ -150,9 +150,13 @@
   .detail .facts{display:flex;flex-wrap:wrap;gap:9px 16px;margin:2px 0 0;}
   .detail .facts .f{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--white);}
   .detail .facts .f svg{width:17px;height:17px;color:#fff;stroke-width:2;flex:none;}
-  .detail .desc{font-size:13px;line-height:1.55;color:#cfd6e3;margin:2px 0 0;}
-  .detail .legal{margin-top:8px;padding-top:12px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:7px 16px;font-size:11px;color:var(--muted);letter-spacing:.01em;}
-  .detail .legal b{color:#cfd6e3;font-weight:700;}
+  .detail .descwrap{display:flex;flex-direction:column;align-items:flex-start;gap:4px;margin:2px 0 0;}
+  .detail .desc{font-size:13px;line-height:1.55;color:#cfd6e3;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  .detail .descwrap.open .desc{-webkit-line-clamp:unset;overflow:visible;}
+  .detail .desc-toggle{background:none;border:0;padding:0;font:700 12px 'Inter',sans-serif;color:var(--red);cursor:pointer;text-decoration:underline;text-underline-offset:2px;}
+  .detail .legal{margin-top:10px;padding-top:12px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:8px;}
+  .detail .legal .lg{display:inline-flex;align-items:center;gap:5px;padding:8px 13px;border-radius:999px;background:var(--black-3);border:1px solid var(--line);font-size:11.5px;font-weight:700;color:var(--muted);letter-spacing:.02em;}
+  .detail .legal .lg b{color:#cfd6e3;font-weight:800;}
   .lightbox{display:none;position:fixed;inset:0;z-index:3000;background:rgba(6,10,20,.92);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);align-items:center;justify-content:center;}
   .lightbox.open{display:flex;animation:dIn .25s var(--ease);}
   .lightbox img{max-width:min(92vw,900px);max-height:82vh;border-radius:14px;box-shadow:0 30px 70px rgba(0,0,0,.6);object-fit:contain;}
@@ -894,8 +898,8 @@
   var CENTER    = [41.3874, 2.1686];                         // Barcelona
   // NOTA PARA FER: pon aquí tus números de registro reales. Si los dejas vacíos, esa línea
   // simplemente no se muestra en la ficha (el CEE sí se muestra siempre, ver más abajo).
-  var AICAT_NUM = '';   // ej. 'AICAT 1234'
-  var API_NUM   = '';   // ej. 'API 5678'
+  var AICAT_NUM = '7491';
+  var API_NUM   = '3474';
   /* =========================== */
 
   var DEMO = [
@@ -972,9 +976,9 @@
   function fact(icon,text){ return text ? '<span class="f"><svg class="ic"><use href="#'+icon+'"/></svg>'+esc(text)+'</span>' : ''; }
   function legalHTML(p){
     var items = [];
-    if(AICAT_NUM) items.push('<span><b>'+esc(tr('Nº AICAT'))+':</b> '+esc(AICAT_NUM)+'</span>');
-    if(API_NUM) items.push('<span><b>'+esc(tr('Nº API'))+':</b> '+esc(API_NUM)+'</span>');
-    items.push('<span><b>'+esc(tr('CEE'))+':</b> '+esc(p.cee || tr('en trámite'))+'</span>');
+    if(AICAT_NUM) items.push('<span class="lg"><b>'+esc(tr('Nº AICAT'))+'</b> '+esc(AICAT_NUM)+'</span>');
+    if(API_NUM) items.push('<span class="lg"><b>'+esc(tr('Nº API'))+'</b> '+esc(API_NUM)+'</span>');
+    items.push('<span class="lg"><b>'+esc(tr('CEE'))+'</b> '+esc(p.cee || tr('en trámite'))+'</span>');
     return '<div class="legal">'+items.join('')+'</div>';
   }
   function pinEl(id){ var m = markers[id], e = m && m.getElement(); return e && e.querySelector('.pin'); }
@@ -989,7 +993,7 @@
       '<div class="bd"><span class="zona">'+esc(p.zona)+'</span><h3>'+esc(p.calle||p.titulo)+'</h3>'+
       (p.precio!=null?'<div class="pr">'+eur(p.precio)+'</div>':'')+
       '<div class="facts">'+fact('i-bed',p.habitaciones!=null?(p.habitaciones+' '+tr('hab.')):'')+fact('i-pin',p.zona)+fact('i-ruler',p.m2!=null?(p.m2+' m²'):'')+'</div>'+
-      (p.descripcion?'<p class="desc">'+esc(p.descripcion)+'</p>':'')+
+      (p.descripcion?('<div class="descwrap"><p class="desc">'+esc(p.descripcion)+'</p><button type="button" class="desc-toggle" data-desc-toggle>'+tr('Ver más')+'</button></div>'):'')+
       '<div class="approx">'+tr('📍 Ubicación aproximada (pin blanco en el mapa). La dirección exacta te la doy al concertar la visita.')+'</div>'+acts(p)+legalHTML(p)+'</div>';
   }
   function unmark(){
@@ -1159,6 +1163,8 @@
     if(e.target.closest && e.target.closest('[data-close]')){ hideDetail(); return; }
     var lb = e.target.closest && e.target.closest('[data-lightbox]');
     if(lb){ try{ openLightbox(JSON.parse(lb.getAttribute('data-lightbox')),0); }catch(err){} return; }
+    var dt = e.target.closest && e.target.closest('[data-desc-toggle]');
+    if(dt){ var wrap = dt.closest('.descwrap'); if(wrap){ var isOpen = wrap.classList.toggle('open'); dt.textContent = isOpen ? tr('Ver menos') : tr('Ver más'); } return; }
     var b = e.target.closest && e.target.closest('[data-share]'); if(!b) return;
     var p = all.filter(function(x){return x.id===b.dataset.share;})[0]; if(!p) return;
     share(tr('Propiedad en venta en ')+p.zona+(p.precio!=null?' · '+eur(p.precio):''), piso(p.id));
