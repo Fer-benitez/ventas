@@ -186,6 +186,13 @@
   .detail .xinfo .xtitle{flex-basis:100%;font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);}
   .detail .xinfo .xline{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:var(--white);background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:999px;padding:5px 10px;}
   .detail .xinfo .xline svg{width:14px;height:14px;color:var(--red);stroke-width:2;flex:none;}
+  .detail .xinfo .xline svg.logo{width:16px;height:16px;}
+  .detail .xinfo .xtransp{width:100%;}
+  .detail .xinfo .xtransp summary{list-style:none;cursor:pointer;font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:6px;user-select:none;}
+  .detail .xinfo .xtransp summary::-webkit-details-marker{display:none;}
+  .detail .xinfo .xtransp summary::after{content:'▾';font-size:11px;color:var(--muted);transition:transform .2s var(--ease);}
+  .detail .xinfo .xtransp[open] summary::after{transform:rotate(180deg);}
+  .detail .xinfo .xtransp .xrow{margin-top:9px;}
   .detail .xinfo .f{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--white);}
   .detail .xinfo .f svg{width:16px;height:16px;color:#fff;stroke-width:2;flex:none;}
   .detail .legal{margin:10px -18px -20px;padding:14px 18px 18px;background:#000;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
@@ -590,6 +597,8 @@
     <symbol id="i-hospital" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M12 8v8M8 12h8"/></symbol>
     <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15 9l-2 6-6 2 2-6z"/></symbol>
     <symbol id="i-elevator" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M10 8l2-2 2 2M10 16l2 2 2-2"/></symbol>
+    <symbol id="i-metro-logo" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" fill="#e2231a" stroke="none"/><text x="12" y="16.5" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="13" fill="#fff" stroke="none">M</text></symbol>
+    <symbol id="i-cercanias-logo" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" fill="#ff6a00" stroke="none"/><text x="12" y="16.5" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="12" fill="#fff" stroke="none">C</text></symbol>
   </defs></svg>
 
   <dialog id="leadDlg" aria-labelledby="leadTitle">
@@ -1055,10 +1064,12 @@
        muestran como icono + número/nombre de línea, agrupadas por medio. */
     var rows = [];
     var transp = [];
+    (p.metroEst||[]).forEach(function(e){ transp.push('<span class="xline"><svg class="ic logo"><use href="#i-metro-logo"/></svg>'+esc(e)+'</span>'); });
+    (p.cercaniasEst||[]).forEach(function(e){ transp.push('<span class="xline"><svg class="ic logo"><use href="#i-cercanias-logo"/></svg>'+esc(e)+'</span>'); });
     (p.metro||[]).forEach(function(l){ transp.push('<span class="xline"><svg class="ic"><use href="#i-metro"/></svg>'+esc(l)+'</span>'); });
     (p.tren||[]).forEach(function(l){ transp.push('<span class="xline"><svg class="ic"><use href="#i-train"/></svg>'+esc(l)+'</span>'); });
     (p.bus||[]).forEach(function(l){ transp.push('<span class="xline"><svg class="ic"><use href="#i-bus"/></svg>'+esc(l)+'</span>'); });
-    if(transp.length) rows.push('<div class="xrow"><span class="xtitle">'+esc(tr('Transporte cercano'))+'</span>'+transp.join('')+'</div>');
+    if(transp.length) rows.push('<details class="xtransp"><summary>'+esc(tr('Transporte cercano'))+'</summary><div class="xrow">'+transp.join('')+'</div></details>');
     var otros = [];
     if(p.hospitales) otros.push(fact('i-hospital', p.hospitales));
     if(p.orientacion) otros.push(fact('i-compass', tr(p.orientacion)));
@@ -1234,6 +1245,8 @@
         metro: [r['Metro1'], r['Metro2'], r['Metro3']].map(function(v){return String(v||'').trim();}).filter(Boolean),
         tren: [r['Tren1'], r['Tren2'], r['Tren3']].map(function(v){return String(v||'').trim();}).filter(Boolean),
         bus: [r['Bus1'], r['Bus2'], r['Bus3']].map(function(v){return String(v||'').trim();}).filter(Boolean),
+        metroEst: [r['MetroEst1'], r['MetroEst2'], r['MetroEst3']].map(function(v){return String(v||'').trim();}).filter(Boolean),
+        cercaniasEst: [r['CercaniasEst1'], r['CercaniasEst2'], r['CercaniasEst3']].map(function(v){return String(v||'').trim();}).filter(Boolean),
         hospitales: String(r['Hospitales']||'').trim(),
         orientacion: String(r['Orientación']||'').trim(),
         estadoPropiedad: String(r['EstadoPropiedad']||'').trim(),
