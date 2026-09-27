@@ -310,6 +310,7 @@
       'Carte des appartements à vendre disponibles maintenant à Barcelone. Voyez zone, prix et photos, et demandez une visite directement à Fincas A.G. Núñez.'],
     /* --- datos extra del inmueble (transporte, hospitales, orientación, estado, ascensor, año, ITE, IBI, gastos) --- */
     ['Transporte cercano', 'Nearby transport', 'Verkehrsanbindung', 'Transports à proximité'],
+    ['Transporte y más info', 'Transport and more info', 'Verkehr und weitere Infos', 'Transports et plus d’infos'],
     ['Con ascensor', 'With lift', 'Mit Aufzug', 'Avec ascenseur'],
     ['Sin ascensor', 'No lift', 'Ohne Aufzug', 'Sans ascenseur'],
     ['Año {a}', 'Year {a}', 'Baujahr {a}', 'Année {a}'],
