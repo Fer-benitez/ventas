@@ -92,10 +92,10 @@
     ['Hola AG Núñez, acabo de dejaros lo que busco desde vuestro mapa de pisos en venta.', 'Hi AG Núñez, I’ve just left you what I’m looking for from your for-sale map.', 'Hallo AG Núñez, ich habe Ihnen soeben meine Suchkriterien über Ihre Verkaufskarte hinterlassen.', 'Bonjour AG Núñez, je viens de vous laisser ce que je recherche depuis votre carte des ventes.'],
     /* --- bloque de contacto --- */
     ['¿Tienes una propiedad para vender o buscas comprar con prioridad?', 'Do you have a property to sell, or are you looking to buy with priority?', 'Sie haben eine Immobilie zu verkaufen oder suchen eine mit Vorrang zu kaufen?', 'Vous avez un bien à vendre ou vous cherchez à acheter en priorité ?'],
-    ['En AG Núñez gestionamos cada operación de compraventa directamente. Cuéntanos tu caso y te respondemos personalmente, sin intermediarios.',
-      'At AG Núñez we handle every sale directly. Tell us your case and we’ll reply personally, no middlemen.',
-      'Bei AG Núñez betreuen wir jeden Verkauf direkt. Schildern Sie uns Ihren Fall, wir antworten persönlich, ohne Zwischenhändler.',
-      'Chez AG Núñez, nous gérons chaque vente directement. Racontez-nous votre cas, nous vous répondons personnellement, sans intermédiaires.'],
+    ['Te ayudo a vender tu casa en tiempo récord. Trabajo y colaboro con importantes agencias consolidadas de Barcelona, lo que multiplica la visibilidad de tu propiedad y acelera la venta. Cuéntame tu caso y te respondo yo personalmente, sin intermediarios.',
+      'I’ll help you sell your home in record time. I work and collaborate with major established agencies in Barcelona, multiplying your property’s visibility and speeding up the sale. Tell me your case and I’ll reply personally, no middlemen.',
+      'Ich helfe Ihnen, Ihre Immobilie in Rekordzeit zu verkaufen. Ich arbeite und kooperiere mit wichtigen etablierten Agenturen in Barcelona, was die Sichtbarkeit Ihrer Immobilie erhöht und den Verkauf beschleunigt. Schildern Sie mir Ihren Fall, ich antworte Ihnen persönlich, ohne Zwischenhändler.',
+      'Je vous aide à vendre votre bien en un temps record. Je travaille et collabore avec d’importantes agences établies à Barcelone, ce qui multiplie la visibilité de votre bien et accélère la vente. Racontez-moi votre cas, je vous réponds personnellement, sans intermédiaires.'],
     ['Tengo un piso para vender', 'I have a flat to sell', 'Ich habe eine Wohnung zu verkaufen', 'J’ai un appartement à vendre'],
     ['Busco piso para comprar y quiero prioridad', 'I’m looking to buy a flat and want priority', 'Ich suche eine Wohnung zum Kauf und möchte Vorrang', 'Je cherche un appartement à acheter, en priorité'],
     /* --- asistente: común --- */
@@ -250,7 +250,7 @@
     ['Avísame de propiedades nuevas', 'Alert me about new properties', 'Über neue Immobilien benachrichtigen', 'Me prévenir des nouveaux biens'],
     ['Avisos de propiedades nuevas', 'New-property alerts', 'Benachrichtigungen zu neuen Immobilien', 'Alertes nouveaux biens'],
     /* --- Instagram, pie --- */
-    ['Detrás de cada propiedad', 'Behind every property', 'Hinter jeder Immobilie', 'Derrière chaque bien'],
+    ['DENTRO de cada propiedad', 'INSIDE every property', 'IN jeder Immobilie', 'À L’INTÉRIEUR de chaque bien'],
     ['Recorridos, barrios y consejos reales, en vídeo.', 'Walk-throughs, neighbourhoods and real advice, on video.', 'Rundgänge, Viertel und echte Tipps, im Video.', 'Visites, quartiers et vrais conseils, en vidéo.'],
     ['Seguir en Instagram', 'Follow on Instagram', 'Auf Instagram folgen', 'Suivre sur Instagram'],
     ['Vídeos incrustados desde Instagram: al mostrarse, Instagram carga su propio contenido.', 'Videos embedded from Instagram: when shown, Instagram loads its own content.', 'Von Instagram eingebettete Videos: Beim Anzeigen lädt Instagram eigene Inhalte.', 'Vidéos intégrées depuis Instagram : à l’affichage, Instagram charge son propre contenu.'],
