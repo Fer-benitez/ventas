@@ -307,7 +307,31 @@
     ['Mapa de pisos en venta disponibles ahora en Barcelona. Mira zona, precio y fotos, y pide visita directamente con Fincas A.G. Núñez.',
       'Map of flats for sale right now in Barcelona. See area, price and photos, and request a visit directly with Fincas A.G. Núñez.',
       'Karte der aktuell verfügbaren Wohnungen zum Verkauf in Barcelona. Sehen Sie Lage, Preis und Fotos und fragen Sie die Besichtigung direkt bei Fincas A.G. Núñez an.',
-      'Carte des appartements à vendre disponibles maintenant à Barcelone. Voyez zone, prix et photos, et demandez une visite directement à Fincas A.G. Núñez.']
+      'Carte des appartements à vendre disponibles maintenant à Barcelone. Voyez zone, prix et photos, et demandez une visite directement à Fincas A.G. Núñez.'],
+    /* --- datos extra del inmueble (transporte, hospitales, orientación, estado, ascensor, año, ITE, IBI, gastos) --- */
+    ['Transporte cercano', 'Nearby transport', 'Verkehrsanbindung', 'Transports à proximité'],
+    ['Con ascensor', 'With lift', 'Mit Aufzug', 'Avec ascenseur'],
+    ['Sin ascensor', 'No lift', 'Ohne Aufzug', 'Sans ascenseur'],
+    ['Año {a}', 'Year {a}', 'Baujahr {a}', 'Année {a}'],
+    ['ITE: {v}', 'Building inspection: {v}', 'Gebäudeinspektion: {v}', 'Inspection technique : {v}'],
+    ['IBI: {v}', 'Property tax: {v}', 'Grundsteuer: {v}', 'Taxe foncière : {v}'],
+    ['Comunidad: {v}', 'Community fees: {v}', 'Hausgeld: {v}', 'Charges de copropriété : {v}'],
+    ['Norte', 'North', 'Norden', 'Nord'],
+    ['Sur', 'South', 'Süden', 'Sud'],
+    ['Este', 'East', 'Osten', 'Est'],
+    ['Oeste', 'West', 'Westen', 'Ouest'],
+    ['Noreste', 'Northeast', 'Nordosten', 'Nord-Est'],
+    ['Noroeste', 'Northwest', 'Nordwesten', 'Nord-Ouest'],
+    ['Sureste', 'Southeast', 'Südosten', 'Sud-Est'],
+    ['Suroeste', 'Southwest', 'Südwesten', 'Sud-Ouest'],
+    ['A reformar', 'Needs renovation', 'Renovierungsbedürftig', 'À rénover'],
+    ['Buen estado', 'Good condition', 'Guter Zustand', 'Bon état'],
+    ['Reformado', 'Renovated', 'Renoviert', 'Rénové'],
+    ['Obra nueva', 'New build', 'Neubau', 'Neuf'],
+    ['No requiere', 'Not required', 'Nicht erforderlich', 'Non requis'],
+    ['Pasada', 'Passed', 'Bestanden', 'Réalisée'],
+    ['Pendiente', 'Pending', 'Ausstehend', 'En attente'],
+    ['En trámite', 'In progress', 'In Bearbeitung', 'En cours']
   ];
 
   /* bloques con marcas <b> (elementos con data-h="clave") */

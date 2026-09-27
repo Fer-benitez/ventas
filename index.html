@@ -181,6 +181,13 @@
   .detail .desc{font-size:13px;line-height:1.55;color:#cfd6e3;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
   .detail .descwrap.open .desc{-webkit-line-clamp:unset;overflow:visible;}
   .detail .desc-toggle{background:none;border:0;padding:0;font:700 12px 'Inter',sans-serif;color:var(--red);cursor:pointer;text-decoration:underline;text-underline-offset:2px;}
+  .detail .xinfo{margin:12px 0 0;padding:12px 14px;background:var(--black-3);border:1px solid var(--line);border-radius:10px;display:flex;flex-direction:column;gap:9px;}
+  .detail .xinfo .xrow{display:flex;flex-wrap:wrap;gap:7px 10px;align-items:center;}
+  .detail .xinfo .xtitle{flex-basis:100%;font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);}
+  .detail .xinfo .xline{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:var(--white);background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:999px;padding:5px 10px;}
+  .detail .xinfo .xline svg{width:14px;height:14px;color:var(--red);stroke-width:2;flex:none;}
+  .detail .xinfo .f{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--white);}
+  .detail .xinfo .f svg{width:16px;height:16px;color:#fff;stroke-width:2;flex:none;}
   .detail .legal{margin:10px -18px -20px;padding:14px 18px 18px;background:#000;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
   .detail .legal .lg{display:inline-flex;align-items:center;gap:5px;padding:8px 13px;border-radius:999px;background:var(--black-3);border:1px solid var(--line);font-size:11.5px;font-weight:700;color:var(--muted);letter-spacing:.02em;}
   .detail .legal .lg b{color:#cfd6e3;font-weight:800;}
@@ -577,6 +584,12 @@
     <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol>
     <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/></symbol>
     <symbol id="i-hourglass" viewBox="0 0 24 24"><path d="M6 3h12M6 21h12M7 3c0 5 5 6 5 9s-5 4-5 9M17 3c0 5-5 6-5 9s5 4 5 9"/></symbol>
+    <symbol id="i-metro" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="14" rx="4"/><path d="M5 12h14M8 21l-2-3M18 21l-2-3"/><circle cx="9" cy="17" r="1"/><circle cx="15" cy="17" r="1"/></symbol>
+    <symbol id="i-train" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="12" rx="3"/><path d="M4 10h16M8 16l-2 4M16 16l2 4"/><circle cx="8.5" cy="13" r="1"/><circle cx="15.5" cy="13" r="1"/></symbol>
+    <symbol id="i-bus" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M3 12h18M7 17v2M17 17v2"/><circle cx="7" cy="19" r="1.4"/><circle cx="17" cy="19" r="1.4"/></symbol>
+    <symbol id="i-hospital" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M12 8v8M8 12h8"/></symbol>
+    <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15 9l-2 6-6 2 2-6z"/></symbol>
+    <symbol id="i-elevator" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M10 8l2-2 2 2M10 16l2 2 2-2"/></symbol>
   </defs></svg>
 
   <dialog id="leadDlg" aria-labelledby="leadTitle">
@@ -1036,6 +1049,29 @@
     return '<div class="acts"><a class="btn wa" href="'+esc(wa(reqMsg))+'" target="_blank" rel="noopener">'+tr('Quiero visitarlo · por WhatsApp')+'</a>'+secondary+'</div>';
   }
   function fact(icon,text){ return text ? '<span class="f"><svg class="ic"><use href="#'+icon+'"/></svg>'+esc(text)+'</span>' : ''; }
+  function extraInfoHTML(p){
+    /* NOTA PARA FER: cada dato de aquí es opcional — si no lo rellenas en el
+       panel, simplemente no aparece en la ficha. Las líneas de transporte se
+       muestran como icono + número/nombre de línea, agrupadas por medio. */
+    var rows = [];
+    var transp = [];
+    (p.metro||[]).forEach(function(l){ transp.push('<span class="xline"><svg class="ic"><use href="#i-metro"/></svg>'+esc(l)+'</span>'); });
+    (p.tren||[]).forEach(function(l){ transp.push('<span class="xline"><svg class="ic"><use href="#i-train"/></svg>'+esc(l)+'</span>'); });
+    (p.bus||[]).forEach(function(l){ transp.push('<span class="xline"><svg class="ic"><use href="#i-bus"/></svg>'+esc(l)+'</span>'); });
+    if(transp.length) rows.push('<div class="xrow"><span class="xtitle">'+esc(tr('Transporte cercano'))+'</span>'+transp.join('')+'</div>');
+    var otros = [];
+    if(p.hospitales) otros.push(fact('i-hospital', p.hospitales));
+    if(p.orientacion) otros.push(fact('i-compass', tr(p.orientacion)));
+    if(p.estadoPropiedad) otros.push(fact('i-spark', tr(p.estadoPropiedad)));
+    if(p.ascensor) otros.push(fact('i-elevator', p.ascensor==='Sí' ? tr('Con ascensor') : tr('Sin ascensor')));
+    if(p.anyoConstruccion) otros.push(fact('i-cal', tr('Año {a}',{a:p.anyoConstruccion})));
+    if(p.ite) otros.push(fact('i-doc', tr('ITE: {v}',{v:tr(p.ite)})));
+    if(p.ibi) otros.push(fact('i-euro', tr('IBI: {v}',{v:p.ibi})));
+    if(p.gastosComunidad) otros.push(fact('i-euro', tr('Comunidad: {v}',{v:p.gastosComunidad})));
+    if(otros.length) rows.push('<div class="xrow">'+otros.join('')+'</div>');
+    if(!rows.length) return '';
+    return '<div class="xinfo">'+rows.join('')+'</div>';
+  }
   function legalHTML(p){
     var items = [];
     if(AICAT_NUM) items.push('<span class="lg"><b>'+esc(tr('Nº AICAT'))+'</b> '+esc(AICAT_NUM)+'</span>');
@@ -1057,6 +1093,7 @@
       (p.precio!=null?'<div class="pr">'+eur(p.precio)+'</div>':'')+
       '<div class="facts">'+fact('i-bed',p.habitaciones!=null?(p.habitaciones+' '+tr('hab.')):'')+fact('i-pin',p.zona)+fact('i-ruler',p.m2!=null?(p.m2+' m²'):'')+'</div>'+
       (p.descripcion?('<div class="descwrap"><p class="desc">'+esc(p.descripcion)+'</p><button type="button" class="desc-toggle" data-desc-toggle>'+tr('Ver más')+'</button></div>'):'')+
+      extraInfoHTML(p)+
       '<div class="approx">'+tr('📍 Ubicación aproximada (pin blanco en el mapa). La dirección exacta te la doy al concertar la visita.')+'</div>'+acts(p)+legalHTML(p)+'</div>';
   }
   function unmark(){
@@ -1191,7 +1228,20 @@
         m2: numFrom(r['Metros']),
         disponibilidad: '',
         reservado: estado==='Reservada',
-        operacion: operacion
+        operacion: operacion,
+        // NUEVO (27 sept 2026): datos extra opcionales — solo se muestran en la
+        // ficha pública cuando tienen valor (ver extraInfoHTML).
+        metro: [r['Metro1'], r['Metro2'], r['Metro3']].map(function(v){return String(v||'').trim();}).filter(Boolean),
+        tren: [r['Tren1'], r['Tren2'], r['Tren3']].map(function(v){return String(v||'').trim();}).filter(Boolean),
+        bus: [r['Bus1'], r['Bus2'], r['Bus3']].map(function(v){return String(v||'').trim();}).filter(Boolean),
+        hospitales: String(r['Hospitales']||'').trim(),
+        orientacion: String(r['Orientación']||'').trim(),
+        estadoPropiedad: String(r['EstadoPropiedad']||'').trim(),
+        ascensor: String(r['Ascensor']||'').trim(),
+        anyoConstruccion: String(r['AñoConstrucción']||'').trim(),
+        ite: String(r['ITE']||'').trim(),
+        ibi: String(r['IBI']||'').trim(),
+        gastosComunidad: String(r['GastosComunidad']||'').trim()
       };
     }).filter(Boolean);
   }
