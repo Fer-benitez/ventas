@@ -491,12 +491,7 @@
 <main class="wrap">
   <section class="hero">
     <span class="eyebrow">Venta · Barcelona</span>
-    <!-- NOTA PARA FER: la campana de "avísame de novedades" está oculta (hidden) porque su backend
-         (action=subscribe) vive en el Apps Script dedicado del mapa de alquiler (MAP_API_URL en el
-         panel), del que no tengo el código fuente aquí. Si quieres activarla para venta, hay que
-         añadir ese mismo "action=subscribe" (con su hoja de suscriptores) al Apps Script de venta,
-         y luego quitar el atributo hidden de los dos botones .bellbtn de abajo. -->
-    <div class="hero-row"><h1>Propiedades en venta disponibles ahora<span class="count" id="count">…</span></h1><button class="bellbtn bell-hero" type="button" data-alert aria-label="Avísame de propiedades nuevas" title="Avísame de propiedades nuevas" hidden><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 17V11a6 6 0 0112 0v6l2 2H4z"/><path d="M10 21a2 2 0 004 0"/></svg><i class="bdot" aria-hidden="true"></i></button></div>
+    <div class="hero-row"><h1>Propiedades en venta disponibles ahora<span class="count" id="count">…</span></h1><button class="bellbtn bell-hero" type="button" data-alert aria-label="Avísame de propiedades nuevas" title="Avísame de propiedades nuevas"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 17V11a6 6 0 0112 0v6l2 2H4z"/><path d="M10 21a2 2 0 004 0"/></svg><i class="bdot" aria-hidden="true"></i></button></div>
     <p>Mira dónde está cada propiedad, su precio y sus fotos. Cuando una te encaje, pide la visita desde su ficha: te contesto yo directamente.</p>
   </section>
 
@@ -515,7 +510,7 @@
   <div class="listbar">
     <div class="listrow">
           <button class="listbtn" id="listBtn" type="button" aria-expanded="false" aria-controls="cards"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5L12 3l9 7.5"/><path d="M6.5 13h11M6.5 16.5h11M6.5 20h11"/></svg><span>Ver lista de propiedades</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg></button>
-      <button class="bellbtn bell-list" type="button" data-alert aria-label="Avísame de propiedades nuevas" title="Avísame de propiedades nuevas" hidden><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 17V11a6 6 0 0112 0v6l2 2H4z"/><path d="M10 21a2 2 0 004 0"/></svg><i class="bdot" aria-hidden="true"></i></button>
+      <button class="bellbtn bell-list" type="button" data-alert aria-label="Avísame de propiedades nuevas" title="Avísame de propiedades nuevas"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 17V11a6 6 0 0112 0v6l2 2H4z"/><path d="M10 21a2 2 0 004 0"/></svg><i class="bdot" aria-hidden="true"></i></button>
     </div>
     <div class="cards" id="cards" aria-label="Lista de propiedades" hidden></div>
   </div>
