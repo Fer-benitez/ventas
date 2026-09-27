@@ -29,7 +29,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" crossorigin>
 <style>
   /* ---- paleta "venta" — carbón profundo + dorado envejecido + hueso ---- */
-  :root{--black:#0a1626;--black-2:#0f2038;--black-3:#16294a;--line:rgba(150,178,210,.16);--white:#f3f5fa;--muted:#8ea3bf;--red:#e8a339;--red-dim:#9c6a1c;--glow:rgba(232,163,57,.34);--crimson:#d92d2d;--crimson-dim:#7a1a1a;--ink:#3a0f12;--ink-2:#5c161b;--wa:#1fa855;--ease:cubic-bezier(.22,.68,0,1);}
+  :root{--black:#17181a;--black-2:#1e2023;--black-3:#292b2f;--line:rgba(200,200,208,.14);--white:#f3f5fa;--muted:#9a9ca3;--red:#e8a339;--red-dim:#9c6a1c;--glow:rgba(232,163,57,.34);--crimson:#d92d2d;--crimson-dim:#7a1a1a;--ink:#3a0f12;--ink-2:#5c161b;--wa:#1fa855;--ease:cubic-bezier(.22,.68,0,1);}
   *{margin:0;padding:0;box-sizing:border-box;}
   [hidden]{display:none!important;}
   body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
@@ -89,15 +89,13 @@
   .filters select{background:var(--black-2);color:var(--white);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:600 14px Inter,sans-serif;min-width:150px;}
   .filters .clear{align-self:flex-end;}
   .op-filters{display:flex;gap:12px;margin:22px 0 0;}
-  .op-btn{flex:0 0 auto;display:inline-flex;align-items:center;gap:8px;padding:13px 26px;border-radius:999px;font-weight:800;font-size:14.5px;font-family:'Montserrat',sans-serif;border:1.5px solid var(--line);background:var(--black-2);color:var(--muted);cursor:pointer;transition:transform .15s var(--ease),box-shadow .15s var(--ease),opacity .18s var(--ease);
-    box-shadow:0 1px 0 rgba(255,255,255,.06) inset,0 -3px 6px rgba(0,0,0,.35) inset,0 6px 14px -4px rgba(0,0,0,.5);}
-  .op-btn .op-ic{width:19px;height:19px;flex:none;}
-  .op-btn:hover{transform:translateY(-1px);}
-  .op-btn:active{transform:scale(.96) translateY(1px);box-shadow:0 2px 5px rgba(0,0,0,.4) inset;}
-  .op-btn.op-venta.active{background:linear-gradient(160deg,#f4c469,#e8a339 55%,#c9862a);color:var(--black);border-color:transparent;
-    box-shadow:0 1px 0 rgba(255,255,255,.55) inset,0 -4px 8px rgba(120,70,10,.45) inset,0 8px 18px -6px rgba(232,163,57,.55);}
-  .op-btn.op-alquiler.active{background:linear-gradient(160deg,#7ea6ff,#5b8dff 55%,#1e4fb8);color:#fff;border-color:transparent;
-    box-shadow:0 1px 0 rgba(255,255,255,.4) inset,0 -4px 8px rgba(10,30,90,.5) inset,0 8px 18px -6px rgba(91,141,255,.55);}
+  .op-btn{flex:0 0 auto;display:inline-flex;align-items:center;gap:9px;padding:12px 25px;border-radius:999px;font-weight:700;font-size:14px;letter-spacing:.01em;font-family:'Montserrat',sans-serif;border:1.5px solid rgba(255,255,255,.16);background:rgba(255,255,255,.04);color:var(--muted);cursor:pointer;transition:transform .15s var(--ease),box-shadow .15s var(--ease),background .2s,border-color .2s,color .2s;}
+  .op-btn .op-ic{width:18px;height:18px;flex:none;}
+  .op-btn:hover{border-color:rgba(255,255,255,.32);color:var(--white);}
+  .op-btn:active{transform:scale(.96);}
+  .op-btn.active{background:linear-gradient(160deg,#ef4444,#E2231A 55%,#a3160f);color:#fff;border-color:transparent;
+    box-shadow:0 1px 0 rgba(255,255,255,.3) inset,0 -3px 7px rgba(80,10,8,.5) inset,0 8px 18px -6px rgba(226,35,26,.5);}
+  .op-btn.active:active{box-shadow:0 2px 5px rgba(0,0,0,.4) inset;}
   .listbar{margin:0 0 12px;position:relative;z-index:1300}
   .listbtn{display:inline-flex;align-items:center;gap:10px;background:var(--black-2);color:var(--white);border:1px solid var(--line);border-radius:12px;padding:10px 16px 10px 12px;font:700 14px 'Inter',sans-serif;cursor:pointer;transition:border-color .25s var(--ease)}
   .listbtn:hover,.listbtn[aria-expanded="true"]{border-color:var(--red)}
@@ -117,8 +115,8 @@
   .row .rs{display:inline-block;margin-left:8px;background:var(--ink-2);color:#ffd9c0;border:1px solid rgba(255,217,192,.35);font:700 9px/1 'Inter',sans-serif;letter-spacing:.12em;padding:3px 7px;border-radius:999px;vertical-align:middle}
   .ribbon{position:absolute;top:12px;left:12px;z-index:2;background:var(--ink-2);color:#ffd9c0;border:1px solid rgba(255,217,192,.35);font:700 11px/1 'Inter',sans-serif;letter-spacing:.14em;padding:7px 11px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.4);}
   .pin.res path{fill:var(--ink-2)}.pin.res circle{fill:#ffd9c0}
-  .leaflet-tile-pane{filter:brightness(.85) contrast(1.05) saturate(1.15);}
-  .leaflet-container{background:#0a1626;}
+  .leaflet-tile-pane{filter:brightness(.85) contrast(1.05) saturate(.75);}
+  .leaflet-container{background:#17181a;}
   #map{height:min(70vh,660px);min-height:540px;border-radius:16px;border:1px solid var(--line);margin-top:6px;background:var(--black-2);}
   .status{margin:12px 2px 0;font-size:13.5px;color:var(--muted);display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
   .status button{font-size:12.5px;padding:7px 14px;}
@@ -220,7 +218,7 @@
   .cta{align-items:center;gap:28px;}
 
   .cta-btns{display:flex;flex-wrap:wrap;gap:10px;}
-  dialog#leadDlg{margin:auto;border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,#132640,#0a1626);color:var(--white);padding:0;width:min(580px,calc(100vw - 20px));max-height:calc(100dvh - 20px);overflow:auto;box-shadow:0 40px 90px rgba(0,0,0,.7);}
+  dialog#leadDlg{margin:auto;border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,#1e2023,#17181a);color:var(--white);padding:0;width:min(580px,calc(100vw - 20px));max-height:calc(100dvh - 20px);overflow:auto;box-shadow:0 40px 90px rgba(0,0,0,.7);}
   dialog#leadDlg::backdrop{background:rgba(0,0,0,.75);backdrop-filter:blur(4px);}
   dialog#leadDlg[open]{animation:dlgIn .35s var(--ease)}
   @keyframes dlgIn{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
@@ -375,7 +373,7 @@
   .listrow{display:flex;align-items:center;gap:14px}
   .bell-list{display:none;width:46px;height:46px}
   @media(max-width:640px){.bell-hero{display:none}.bell-list{display:inline-grid}.bell-list .ic{width:23px;height:23px}}
-  dialog#alertDlg{margin:auto;border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,#132640,#0a1626);color:var(--white);padding:0;width:min(720px,calc(100vw - 20px));max-height:calc(100dvh - 20px);overflow:auto;box-shadow:0 40px 90px rgba(0,0,0,.7)}
+  dialog#alertDlg{margin:auto;border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,#1e2023,#17181a);color:var(--white);padding:0;width:min(720px,calc(100vw - 20px));max-height:calc(100dvh - 20px);overflow:auto;box-shadow:0 40px 90px rgba(0,0,0,.7)}
   dialog#alertDlg::backdrop{background:rgba(0,0,0,.75);backdrop-filter:blur(4px)}
   dialog#alertDlg[open]{animation:dlgIn .35s var(--ease)}
   .al-pop{position:relative;padding:26px 22px 22px}
@@ -436,7 +434,7 @@
   .reel:hover{transform:translateY(-8px) rotate(-.6deg);box-shadow:0 30px 60px -20px var(--glow);border-color:var(--red);}
   .reel:nth-child(even):hover{transform:translateY(-8px) rotate(.6deg);}
   .reel .bg{position:absolute;inset:0;background-size:cover;background-position:center;}
-  .reel .bg.gen{background:radial-gradient(120% 70% at 20% 0%,rgba(232,163,57,.55),transparent 60%),radial-gradient(90% 60% at 100% 100%,rgba(217,45,45,.30),transparent 60%),linear-gradient(160deg,#16294a,#0a1626);}
+  .reel .bg.gen{background:radial-gradient(120% 70% at 20% 0%,rgba(232,163,57,.55),transparent 60%),radial-gradient(90% 60% at 100% 100%,rgba(217,45,45,.30),transparent 60%),linear-gradient(160deg,#292b2f,#17181a);}
   .reel .bg.gen::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(255,255,255,.035) 0 2px,transparent 2px 18px);}
   .reel .shade{position:absolute;inset:0;background:linear-gradient(0deg,rgba(9,9,9,.92),transparent 55%);}
   .reel .play{position:absolute;left:50%;top:44%;width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;background:rgba(255,255,255,.14);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.35);display:grid;place-items:center;transition:transform .3s var(--ease),background .3s;}
@@ -463,7 +461,7 @@
 <div id="demoBar" class="demo" hidden>MODO DEMO — datos de ejemplo. Configura <b>API_URL</b> en index.html para mostrar tus propiedades en venta reales.</div>
 <header>
   <div class="wrap top">
-    <div class="brandrow" aria-label="HabiClic"><span class="habiclic-logo"><span class="big">H</span><span class="small">ABI</span><span class="big c">C</span><span class="small">LIC</span></span></div>
+    <div class="brandrow" aria-label="HabiClic" style="margin-left:22px"><span class="habiclic-logo"><span class="big">H</span><span class="small">ABI</span><span class="big c">C</span><span class="small">LIC</span></span></div>
     <div class="lang" id="lang">
       <button type="button" class="lang-toggle" id="langToggle" aria-haspopup="true" aria-expanded="false" aria-label="Idioma / Language / Sprache / Langue">
         <span class="lang-flag" id="langFlag" aria-hidden="true"><svg viewBox="0 0 32 32" preserveAspectRatio="xMidYMid slice"><rect width="32" height="32" fill="#c60b1e"/><rect y="8" width="32" height="16" fill="#ffc400"/></svg></span>
@@ -992,9 +990,9 @@
     } catch(e){}
   }
 
-  var PIN = '<div class="pin"><svg viewBox="0 0 34 42"><path d="M17 1C8.7 1 2 7.6 2 15.8 2 26.6 17 41 17 41s15-14.4 15-25.2C32 7.6 25.3 1 17 1z" fill="#0a1626" stroke="#e8a339" stroke-width="2"/><circle cx="17" cy="16" r="6" fill="#e8a339"/></svg></div>';
+  var PIN = '<div class="pin"><svg viewBox="0 0 34 42"><path d="M17 1C8.7 1 2 7.6 2 15.8 2 26.6 17 41 17 41s15-14.4 15-25.2C32 7.6 25.3 1 17 1z" fill="#17181a" stroke="#e8a339" stroke-width="2"/><circle cx="17" cy="16" r="6" fill="#e8a339"/></svg></div>';
   // Alquiler usa el mismo pin en azul, para distinguirlo de venta (dorado) de un vistazo.
-  var PIN_ALQUILER = '<div class="pin"><svg viewBox="0 0 34 42"><path d="M17 1C8.7 1 2 7.6 2 15.8 2 26.6 17 41 17 41s15-14.4 15-25.2C32 7.6 25.3 1 17 1z" fill="#0a1626" stroke="#5b8dff" stroke-width="2"/><circle cx="17" cy="16" r="6" fill="#5b8dff"/></svg></div>';
+  var PIN_ALQUILER = '<div class="pin"><svg viewBox="0 0 34 42"><path d="M17 1C8.7 1 2 7.6 2 15.8 2 26.6 17 41 17 41s15-14.4 15-25.2C32 7.6 25.3 1 17 1z" fill="#17181a" stroke="#5b8dff" stroke-width="2"/><circle cx="17" cy="16" r="6" fill="#5b8dff"/></svg></div>';
   // Qué sectores se muestran (Venta y/o Alquiler); ambos activos por defecto.
   var opActivos = { Venta: true, Alquiler: true };
 
