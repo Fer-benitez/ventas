@@ -67,6 +67,7 @@
     ['Nº API', 'API No.', 'API-Nr.', 'N° API'],
     ['CEE', 'Energy rating (CEE)', 'Energieausweis (CEE)', 'DPE (CEE)'],
     ['en trámite', 'in progress', 'in Bearbeitung', 'en cours'],
+    ['Un producto de Fincas A.G. Núñez', 'A Fincas A.G. Núñez product', 'Ein Produkt von Fincas A.G. Núñez', 'Un produit de Fincas A.G. Núñez'],
     ['Enlace copiado ✓', 'Link copied ✓', 'Link kopiert ✓', 'Lien copié ✓'],
     ['Copia el enlace:', 'Copy the link:', 'Link kopieren:', 'Copiez le lien :'],
     ['Propiedades en venta — Fincas A.G. Núñez', 'Properties for sale — Fincas A.G. Núñez', 'Immobilien zum Verkauf — Fincas A.G. Núñez', 'Biens à vendre — Fincas A.G. Núñez'],
