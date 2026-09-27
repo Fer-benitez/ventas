@@ -15,6 +15,8 @@
       'Sehen Sie, wo jede Immobilie liegt, was sie kostet und wie sie aussieht. Wenn eine passt, fragen Sie die Besichtigung direkt im Exposé an: Ich antworte Ihnen persönlich.',
       'Voyez où se trouve chaque bien, son prix et ses photos. Quand l’un vous plaît, demandez la visite depuis sa fiche : je vous réponds personnellement.'],
     /* --- filtros y lista --- */
+    ['Compra', 'Buy', 'Kauf', 'Achat'],
+    ['Alquiler', 'Rent', 'Miete', 'Location'],
     ['Zona', 'Area', 'Gegend', 'Zone'],
     ['Todas', 'All', 'Alle', 'Toutes'],
     ['Presupuesto máx.', 'Max. budget', 'Max. Budget', 'Budget max.'],
