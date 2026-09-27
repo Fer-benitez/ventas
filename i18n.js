@@ -256,6 +256,7 @@
     ['Seguir en Instagram', 'Follow on Instagram', 'Auf Instagram folgen', 'Suivre sur Instagram'],
     ['Vídeos incrustados desde Instagram: al mostrarse, Instagram carga su propio contenido.', 'Videos embedded from Instagram: when shown, Instagram loads its own content.', 'Von Instagram eingebettete Videos: Beim Anzeigen lädt Instagram eigene Inhalte.', 'Vidéos intégrées depuis Instagram : à l’affichage, Instagram charge son propre contenu.'],
     ['Ver en Instagram', 'View on Instagram', 'Auf Instagram ansehen', 'Voir sur Instagram'],
+    ['Más detalles', 'More details', 'Mehr Details', 'Plus de détails'],
     ['Ver reel en Instagram', 'View reel on Instagram', 'Reel auf Instagram ansehen', 'Voir le reel sur Instagram'],
     ['© 2026 Fincas A.G. Núñez · Barcelona', '© 2026 Fincas A.G. Núñez · Barcelona', '© 2026 Fincas A.G. Núñez · Barcelona', '© 2026 Fincas A.G. Núñez · Barcelone'],
     ['Web de AG Núñez', 'AG Núñez’s website', 'Webseite von AG Núñez', 'Site d’AG Núñez'],
