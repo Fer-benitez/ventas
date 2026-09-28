@@ -195,6 +195,33 @@
   .detail .legal{margin:10px -18px -20px;padding:14px 18px 18px;background:#000;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
   .detail .legal .lg{display:inline-flex;align-items:center;gap:5px;padding:8px 13px;border-radius:999px;background:var(--black-3);border:1px solid var(--line);font-size:11.5px;font-weight:700;color:var(--muted);letter-spacing:.02em;}
   .detail .legal .lg b{color:#cfd6e3;font-weight:800;}
+  /* Mini certificado energético: consumo/emisiones con letra A-G, se amplía al pulsarlo */
+  .cee-chip{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 4px;border-radius:4px;font-size:11px;font-weight:800;line-height:1;}
+  .cee-chip.big{min-width:34px;height:34px;font-size:19px;border-radius:6px;}
+  .cee-badge{display:flex;flex-direction:column;gap:3px;padding:6px 10px;border-radius:10px;background:var(--black-3);border:1px solid var(--line);cursor:pointer;font-family:inherit;}
+  .cee-badge:hover{border-color:rgba(255,255,255,.3);}
+  .cee-row{display:inline-flex;align-items:center;gap:6px;}
+  .cee-txt{font-size:10.5px;font-weight:700;color:var(--muted);white-space:nowrap;}
+  .cee-overlay{display:none;position:fixed;inset:0;z-index:3100;background:rgba(6,10,20,.85);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px;}
+  .cee-overlay.open{display:flex;}
+  .cee-card{position:relative;background:var(--black-2);border:1px solid var(--line);border-radius:16px;padding:26px 24px 22px;max-width:340px;width:100%;box-shadow:0 30px 70px rgba(0,0,0,.6);}
+  .cee-card h4{margin:0 0 16px;font-size:15px;color:var(--white);}
+  .cee-close{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.4);color:#fff;font-size:15px;cursor:pointer;}
+  .cee-big-row{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+  .cee-big-row:last-child{margin-bottom:0;}
+  .cee-big-label{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;}
+  .cee-big-val{display:block;font-size:15px;font-weight:700;color:var(--white);margin-top:2px;}
+  /* Datos del alquiler de vivienda: última renta, rango, índice de referencia */
+  .detail .alq-vivienda{margin:12px 0 0;padding:12px 14px;background:var(--black-3);border:1px solid var(--line);border-radius:10px;display:flex;flex-direction:column;gap:8px;}
+  .detail .alq-vivienda .alq-line{font-size:13px;color:var(--white);}
+  .detail .alq-vivienda .idx-title{font-size:10.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);}
+  .detail .alq-vivienda .idx-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+  .detail .alq-vivienda .idx-box{border-radius:9px;padding:9px 6px;text-align:center;color:#fff;}
+  .detail .alq-vivienda .idx-box.idx-b{background:#2f6fed;}
+  .detail .alq-vivienda .idx-box.idx-r{background:var(--red);}
+  .detail .alq-vivienda .idx-lbl{display:block;font-size:10.5px;font-weight:700;opacity:.9;}
+  .detail .alq-vivienda .idx-val{display:block;font-size:13.5px;font-weight:800;margin-top:2px;}
+  @media(max-width:640px){.detail .alq-vivienda .idx-row{gap:6px;}.detail .alq-vivienda .idx-box{padding:7px 4px;}.detail .alq-vivienda .idx-val{font-size:12px;}}
   .detail .legal .legal-logo{margin-left:auto;height:34px;width:auto;}
   .detail .legal .legal-caption{flex-basis:100%;font-size:10.5px;color:var(--muted);letter-spacing:.03em;text-align:right;margin-top:2px;}
   @media(max-width:640px){.detail .legal{margin:10px -16px -18px;padding:14px 16px 18px;}}
@@ -1080,13 +1107,65 @@
     if(!rows.length) return '';
     return '<details class="xinfo xtransp"><summary>'+esc(tr('Transporte y más info'))+'</summary>'+rows.join('')+'</details>';
   }
+  // Escala de colores oficial de la etiqueta de eficiencia energética (A-G).
+  var CEE_COLORS = { A:'#00a651', B:'#4cb848', C:'#a9cf39', D:'#fff200', E:'#fdb913', F:'#f7941d', G:'#ed1c24' };
+  var CEE_TEXT_DARK = { C:1, D:1 }; // estas dos letras van con texto oscuro por legibilidad
+  function ceeChip(letra, grande){
+    if(!letra || !CEE_COLORS[letra]) return '';
+    var cl = grande ? 'cee-chip big' : 'cee-chip';
+    return '<span class="'+cl+'" style="background:'+CEE_COLORS[letra]+';color:'+(CEE_TEXT_DARK[letra]?'#1a1a1a':'#fff')+'">'+esc(letra)+'</span>';
+  }
+  function ceeBadgeHTML(p){
+    // Certificado energético estructurado (consumo/emisiones con letra A-G):
+    // un mini certificado que, al pulsarlo, se abre en grande. Si la propiedad
+    // solo tiene el CEE antiguo en texto libre, se muestra igual que antes.
+    var tieneEstructurado = p.ceeConsumoLetra || p.ceeEmisionesLetra;
+    if(!tieneEstructurado){
+      return '<span class="lg"><b>'+esc(tr('CEE'))+'</b> '+esc(p.cee || tr('en trámite'))+'</span>';
+    }
+    var mini = '<button type="button" class="cee-badge" data-ceebadge="'+esc(p.id)+'" aria-label="'+esc(tr('Ver certificado energético completo'))+'">'+
+      (p.ceeConsumoLetra ? ('<span class="cee-row">'+ceeChip(p.ceeConsumoLetra)+'<span class="cee-txt">'+esc(p.ceeConsumoValor||'')+'</span></span>') : '')+
+      (p.ceeEmisionesLetra ? ('<span class="cee-row">'+ceeChip(p.ceeEmisionesLetra)+'<span class="cee-txt">'+esc(p.ceeEmisionesValor||'')+'</span></span>') : '')+
+      '</button>';
+    return mini;
+  }
+  function ceeOverlayHTML(p){
+    if(!(p.ceeConsumoLetra || p.ceeEmisionesLetra)) return '';
+    return '<div class="cee-overlay" id="ceeOverlay-'+esc(p.id)+'" data-ceeoverlay="'+esc(p.id)+'">'+
+      '<div class="cee-card">'+
+        '<button type="button" class="cee-close" data-ceeclose aria-label="'+esc(tr('Cerrar'))+'">✕</button>'+
+        '<h4>'+esc(tr('Certificado energético'))+'</h4>'+
+        (p.ceeConsumoLetra ? ('<div class="cee-big-row">'+ceeChip(p.ceeConsumoLetra,true)+'<div><span class="cee-big-label">'+esc(tr('Consumo de energía'))+'</span><span class="cee-big-val">'+esc(p.ceeConsumoValor||'')+'</span></div></div>') : '')+
+        (p.ceeEmisionesLetra ? ('<div class="cee-big-row">'+ceeChip(p.ceeEmisionesLetra,true)+'<div><span class="cee-big-label">'+esc(tr('Emisiones de CO₂'))+'</span><span class="cee-big-val">'+esc(p.ceeEmisionesValor||'')+'</span></div></div>') : '')+
+      '</div></div>';
+  }
+  function alquilerViviendaHTML(p){
+    // Datos del alquiler de vivienda (Incasòl): solo aplican cuando la propiedad
+    // es de Alquiler y no es un Local, y solo se pintan los que estén rellenos.
+    if(p.operacion!=='Alquiler' || p.subtipo==='Local') return '';
+    var partes = [];
+    if(p.ultimaRenta) partes.push('<div class="alq-line">'+esc(tr('Última renta devengada:'))+' <b>'+esc(p.ultimaRenta)+' €</b></div>');
+    if(p.rentaRangoMin && p.rentaRangoMax) partes.push('<div class="alq-line">'+esc(tr('Rango de valores de alquiler de vivienda: de entre {min} € y {max} €',{min:p.rentaRangoMin,max:p.rentaRangoMax}))+'</div>');
+    var tieneIndex = p.indexAreaInferior || p.indexValor || p.indexAreaSuperior;
+    var indexHTML = '';
+    if(tieneIndex){
+      indexHTML = '<div class="idx-title">'+esc(tr('Índex de referència de preus de lloguer'))+'</div>'+
+        '<div class="idx-row">'+
+          '<div class="idx-box idx-b"><span class="idx-lbl">'+esc(tr('Área inferior'))+'</span><span class="idx-val">'+esc(p.indexAreaInferior||'—')+' €/m²</span></div>'+
+          '<div class="idx-box idx-r"><span class="idx-lbl">'+esc(tr('Índex'))+'</span><span class="idx-val">'+esc(p.indexValor||'—')+' €/m²</span></div>'+
+          '<div class="idx-box idx-b"><span class="idx-lbl">'+esc(tr('Área superior'))+'</span><span class="idx-val">'+esc(p.indexAreaSuperior||'—')+' €/m²</span></div>'+
+        '</div>';
+    }
+    if(!partes.length && !indexHTML) return '';
+    return '<div class="alq-vivienda">'+partes.join('')+indexHTML+'</div>';
+  }
   function legalHTML(p){
     var items = [];
     if(AICAT_NUM) items.push('<span class="lg"><b>'+esc(tr('Nº AICAT'))+'</b> '+esc(AICAT_NUM)+'</span>');
     if(API_NUM) items.push('<span class="lg"><b>'+esc(tr('Nº API'))+'</b> '+esc(API_NUM)+'</span>');
-    items.push('<span class="lg"><b>'+esc(tr('CEE'))+'</b> '+esc(p.cee || tr('en trámite'))+'</span>');
+    items.push(ceeBadgeHTML(p));
     return '<div class="legal">'+items.join('')+'<img class="legal-logo" src="agn-logo-color.png" alt="Fincas A.G. Núñez" width="241" height="93">'+
-      '<span class="legal-caption">'+esc(tr('Un producto de Fincas A.G. Núñez'))+'</span></div>';
+      '<span class="legal-caption">'+esc(tr('Un producto de Fincas A.G. Núñez'))+'</span></div>'+ceeOverlayHTML(p);
   }
   function pinEl(id){ var m = markers[id], e = m && m.getElement(); return e && e.querySelector('.pin'); }
   function detailHTML(p){
@@ -1102,7 +1181,7 @@
       '<div class="facts">'+fact('i-bed',p.habitaciones!=null?(p.habitaciones+' '+tr('hab.')):'')+fact('i-pin',p.zona)+fact('i-ruler',p.m2!=null?(p.m2+' m²'):'')+'</div>'+
       (p.descripcion?('<div class="descwrap"><p class="desc">'+esc(p.descripcion)+'</p><button type="button" class="desc-toggle" data-desc-toggle>'+tr('Ver más')+'</button></div>'):'')+
       extraInfoHTML(p)+
-      '<div class="approx">'+tr('📍 Ubicación aproximada (pin blanco en el mapa). La dirección exacta te la doy al concertar la visita.')+'</div>'+acts(p)+legalHTML(p)+'</div>';
+      '<div class="approx">'+tr('📍 Ubicación aproximada (pin blanco en el mapa). La dirección exacta te la doy al concertar la visita.')+'</div>'+acts(p)+alquilerViviendaHTML(p)+legalHTML(p)+'</div>';
   }
   function unmark(){
     if(!sel) return;
@@ -1251,7 +1330,22 @@
         anyoConstruccion: String(r['AñoConstrucción']||'').trim(),
         ite: String(r['ITE']||'').trim(),
         ibi: String(r['IBI']||'').trim(),
-        gastosComunidad: String(r['GastosComunidad']||'').trim()
+        gastosComunidad: String(r['GastosComunidad']||'').trim(),
+        // NUEVO (28 sept 2026): subtipo (Vivienda/Local) — necesario para saber
+        // si mostrar los datos de alquiler de vivienda. Certificado energético
+        // estructurado (consumo/emisiones con letra A-G) y datos del alquiler
+        // de vivienda (Incasòl): última renta, rango y índice de referencia.
+        subtipo: String(r['Subtipo']||'Vivienda').trim() || 'Vivienda',
+        ceeConsumoLetra: String(r['CEE Consumo Letra']||'').trim().toUpperCase(),
+        ceeConsumoValor: String(r['CEE Consumo Valor']||'').trim(),
+        ceeEmisionesLetra: String(r['CEE Emisiones Letra']||'').trim().toUpperCase(),
+        ceeEmisionesValor: String(r['CEE Emisiones Valor']||'').trim(),
+        ultimaRenta: String(r['UltimaRenta']||'').trim(),
+        rentaRangoMin: String(r['RentaRangoMin']||'').trim(),
+        rentaRangoMax: String(r['RentaRangoMax']||'').trim(),
+        indexAreaInferior: String(r['IndexAreaInferior']||'').trim(),
+        indexValor: String(r['IndexValor']||'').trim(),
+        indexAreaSuperior: String(r['IndexAreaSuperior']||'').trim()
       };
     }).filter(Boolean);
   }
@@ -1289,6 +1383,10 @@
     if(lb){ try{ openLightbox(JSON.parse(lb.getAttribute('data-lightbox')),0); }catch(err){} return; }
     var dt = e.target.closest && e.target.closest('[data-desc-toggle]');
     if(dt){ var wrap = dt.closest('.descwrap'); if(wrap){ var isOpen = wrap.classList.toggle('open'); dt.textContent = isOpen ? tr('Ver menos') : tr('Ver más'); } return; }
+    var ceeBtn = e.target.closest && e.target.closest('[data-ceebadge]');
+    if(ceeBtn){ var ov = document.getElementById('ceeOverlay-'+ceeBtn.getAttribute('data-ceebadge')); if(ov) ov.classList.add('open'); return; }
+    if(e.target.closest && e.target.closest('[data-ceeclose]')){ var ovc = e.target.closest('.cee-overlay'); if(ovc) ovc.classList.remove('open'); return; }
+    if(e.target.classList && e.target.classList.contains('cee-overlay')){ e.target.classList.remove('open'); return; }
     var b = e.target.closest && e.target.closest('[data-share]'); if(!b) return;
     var p = all.filter(function(x){return x.id===b.dataset.share;})[0]; if(!p) return;
     share(tr('Propiedad en venta en ')+p.zona+(p.precio!=null?' · '+eur(p.precio):''), piso(p.id));
@@ -1301,6 +1399,7 @@
       else if(e.key==='ArrowRight') lbNav(1);
       return;
     }
+    if(e.key==='Escape'){ var openOv = document.querySelector('.cee-overlay.open'); if(openOv) openOv.classList.remove('open'); }
     if((e.key==='Enter'||e.key===' ') && e.target.closest && e.target.closest('[data-lightbox]')){
       e.preventDefault();
       try{ openLightbox(JSON.parse(e.target.closest('[data-lightbox]').getAttribute('data-lightbox')),0); }catch(err){}
