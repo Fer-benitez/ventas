@@ -338,6 +338,7 @@
     ['Certificado energético', 'Energy certificate', 'Energieausweis', 'Diagnostic de performance énergétique'],
     ['Consumo de energía', 'Energy consumption', 'Energieverbrauch', 'Consommation d’énergie'],
     ['Emisiones de CO₂', 'CO₂ emissions', 'CO₂-Emissionen', 'Émissions de CO₂'],
+    ['Código de registro:', 'Registration code:', 'Registrierungscode:', 'Code d’enregistrement :'],
     ['Última renta devengada:', 'Last rent charged:', 'Zuletzt erhobene Miete:', 'Dernier loyer perçu :'],
     ['Rango de valores de alquiler de vivienda: de entre {min} € y {max} €', 'Rental value range: between €{min} and €{max}', 'Mietpreisspanne: zwischen {min} € und {max} €', 'Fourchette de loyers : entre {min} € et {max} €'],
     ['Índex de referència de preus de lloguer', 'Rent reference price index', 'Referenzindex für Mietpreise', 'Indice de référence des prix des loyers'],

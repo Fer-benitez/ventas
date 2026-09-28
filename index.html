@@ -211,6 +211,8 @@
   .cee-big-row:last-child{margin-bottom:0;}
   .cee-big-label{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;}
   .cee-big-val{display:block;font-size:15px;font-weight:700;color:var(--white);margin-top:2px;}
+  .cee-codigo{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font-size:11.5px;color:var(--muted);}
+  .cee-codigo b{color:var(--white);}
   /* Datos del alquiler de vivienda: última renta, rango, índice de referencia */
   .detail .alq-vivienda{margin:12px 0 0;padding:12px 14px;background:var(--black-3);border:1px solid var(--line);border-radius:10px;display:flex;flex-direction:column;gap:8px;}
   .detail .alq-vivienda .alq-line{font-size:13px;color:var(--white);}
@@ -1137,6 +1139,7 @@
         '<h4>'+esc(tr('Certificado energético'))+'</h4>'+
         (p.ceeConsumoLetra ? ('<div class="cee-big-row">'+ceeChip(p.ceeConsumoLetra,true)+'<div><span class="cee-big-label">'+esc(tr('Consumo de energía'))+'</span><span class="cee-big-val">'+esc(p.ceeConsumoValor||'')+'</span></div></div>') : '')+
         (p.ceeEmisionesLetra ? ('<div class="cee-big-row">'+ceeChip(p.ceeEmisionesLetra,true)+'<div><span class="cee-big-label">'+esc(tr('Emisiones de CO₂'))+'</span><span class="cee-big-val">'+esc(p.ceeEmisionesValor||'')+'</span></div></div>') : '')+
+        (p.ceeCodigo ? ('<div class="cee-codigo">'+esc(tr('Código de registro:'))+' <b>'+esc(p.ceeCodigo)+'</b></div>') : '')+
       '</div></div>';
   }
   function alquilerViviendaHTML(p){
@@ -1336,6 +1339,7 @@
         // estructurado (consumo/emisiones con letra A-G) y datos del alquiler
         // de vivienda (Incasòl): última renta, rango y índice de referencia.
         subtipo: String(r['Subtipo']||'Vivienda').trim() || 'Vivienda',
+        ceeCodigo: String(r['CEE Código Registro']||'').trim(),
         ceeConsumoLetra: String(r['CEE Consumo Letra']||'').trim().toUpperCase(),
         ceeConsumoValor: String(r['CEE Consumo Valor']||'').trim(),
         ceeEmisionesLetra: String(r['CEE Emisiones Letra']||'').trim().toUpperCase(),
