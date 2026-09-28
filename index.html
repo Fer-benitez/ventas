@@ -1171,6 +1171,15 @@
       '<span class="legal-caption">'+esc(tr('Un producto de Fincas A.G. Núñez'))+'</span></div>'+ceeOverlayHTML(p);
   }
   function pinEl(id){ var m = markers[id], e = m && m.getElement(); return e && e.querySelector('.pin'); }
+  function descripcionLocalizada(p){
+    // Descripción en 4 idiomas (ES/EN/DE/FR): se muestra la del idioma activo
+    // del visitante, y si esa traducción está vacía se cae de vuelta al
+    // español para no dejar la ficha sin texto.
+    var l = window.fbI18n ? fbI18n.lang() : 'es';
+    var campo = { es:'descripcion', en:'descripcionEn', de:'descripcionDe', fr:'descripcionFr' }[l] || 'descripcion';
+    var texto = (p[campo] || '').toString().trim();
+    return texto || p.descripcion || '';
+  }
   function detailHTML(p){
     var fotos = (p.fotos&&p.fotos.length) ? p.fotos : (p.imagen?[p.imagen]:[]);
     return '<div class="dph"'+(p.imagen?' style="background-image:url(\''+esc(photo(p.imagen))+'\')"':'')+
@@ -1182,7 +1191,7 @@
       '<div class="bd"><span class="zona">'+esc(p.zona)+'</span><h3>'+esc(p.calle||p.titulo)+'</h3>'+
       (p.precio!=null?'<div class="pr">'+eur(p.precio)+'</div>':'')+
       '<div class="facts">'+fact('i-bed',p.habitaciones!=null?(p.habitaciones+' '+tr('hab.')):'')+fact('i-pin',p.zona)+fact('i-ruler',p.m2!=null?(p.m2+' m²'):'')+'</div>'+
-      (p.descripcion?('<div class="descwrap"><p class="desc">'+esc(p.descripcion)+'</p><button type="button" class="desc-toggle" data-desc-toggle>'+tr('Ver más')+'</button></div>'):'')+
+      (descripcionLocalizada(p)?('<div class="descwrap"><p class="desc">'+esc(descripcionLocalizada(p))+'</p><button type="button" class="desc-toggle" data-desc-toggle>'+tr('Ver más')+'</button></div>'):'')+
       extraInfoHTML(p)+
       '<div class="approx">'+tr('📍 Ubicación aproximada (pin blanco en el mapa). La dirección exacta te la doy al concertar la visita.')+'</div>'+acts(p)+alquilerViviendaHTML(p)+legalHTML(p)+'</div>';
   }
@@ -1310,6 +1319,9 @@
         imagen: String(r['Imagen']||fotos[0]||'').trim(),
         fotos: fotos,
         descripcion: String(r['Descripción']||'').trim(),
+        descripcionEn: String(r['Descripción EN']||'').trim(),
+        descripcionDe: String(r['Descripción DE']||'').trim(),
+        descripcionFr: String(r['Descripción FR']||'').trim(),
         cee: String(r['Certificado energético']||r['CEE']||'').trim(),
         idealista: link,
         lat: lat, lng: lng,
