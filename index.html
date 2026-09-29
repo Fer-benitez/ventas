@@ -100,6 +100,10 @@
   .op-btn:active{transform:scale(.96);}
   .op-btn.active{background:#E2231A;color:#fff;}
   .op-btn.active:hover{background:#ef4444;}
+  /* El botón de Alquiler va en azul, a juego con los pines de alquiler del mapa
+     (los de venta son rojos, los de alquiler azules). */
+  .op-btn.op-alquiler.active{background:#3468d8;}
+  .op-btn.op-alquiler.active:hover{background:#4a7ce8;}
   .listbar{margin:0 0 12px;position:relative;z-index:1300}
   .listbtn{display:inline-flex;align-items:center;gap:10px;background:var(--black-2);color:var(--white);border:1px solid var(--line);border-radius:12px;padding:10px 16px 10px 12px;font:700 14px 'Inter',sans-serif;cursor:pointer;transition:border-color .25s var(--ease)}
   .listbtn:hover,.listbtn[aria-expanded="true"]{border-color:var(--red)}
@@ -207,12 +211,26 @@
   .cee-card{position:relative;background:var(--black-2);border:1px solid var(--line);border-radius:16px;padding:26px 24px 22px;max-width:340px;width:100%;box-shadow:0 30px 70px rgba(0,0,0,.6);}
   .cee-card h4{margin:0 0 16px;font-size:15px;color:var(--white);}
   .cee-close{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.4);color:#fff;font-size:15px;cursor:pointer;}
-  .cee-big-row{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+  .cee-big-row{margin-bottom:18px;}
   .cee-big-row:last-child{margin-bottom:0;}
-  .cee-big-label{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;}
-  .cee-big-val{display:block;font-size:15px;font-weight:700;color:var(--white);margin-top:2px;}
+  .cee-big-label{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin-bottom:8px;}
+  .cee-big-val{display:block;font-size:14px;font-weight:700;color:var(--white);margin-top:8px;}
   .cee-codigo{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font-size:11.5px;color:var(--muted);}
   .cee-codigo b{color:var(--white);}
+  /* Escala oficial A-G del certificado energético, con la letra de la
+     propiedad resaltada, igual que en la etiqueta impresa real. */
+  .cee-scale{display:flex;flex-direction:column;gap:3px;}
+  .cee-scale-row{
+    display:flex;align-items:center;height:22px;padding-left:9px;
+    font-size:12px;font-weight:800;color:#fff;font-family:'Inter',sans-serif;
+    clip-path:polygon(0 0,88% 0,100% 50%,88% 100%,0 100%);
+    opacity:.4;transition:opacity .2s var(--ease);
+  }
+  .cee-scale-row.active{
+    opacity:1;outline:2px solid #fff;outline-offset:-2px;
+  }
+  .cee-scale-row .cee-scale-arrow{margin-left:auto;margin-right:14px;font-size:11px;display:none;}
+  .cee-scale-row.active .cee-scale-arrow{display:inline;}
   /* Datos del alquiler de vivienda: última renta, rango, índice de referencia */
   .detail .alq-vivienda{margin:12px 0 0;padding:12px 14px;background:var(--black-3);border:1px solid var(--line);border-radius:10px;display:flex;flex-direction:column;gap:8px;}
   .detail .alq-vivienda .alq-line{font-size:13px;color:var(--white);}
@@ -1136,14 +1154,28 @@
       '</button>';
     return mini;
   }
+  // Escala vertical A-G, igual que la etiqueta oficial impresa: 7 franjas de
+  // color con flecha, cada vez más largas de A (verde, corta) a G (roja,
+  // larga), con la letra de la propiedad resaltada y una marca "◀ Aquí".
+  var CEE_ESCALA_ANCHOS = { A:'46%', B:'56%', C:'66%', D:'76%', E:'86%', F:'93%', G:'100%' };
+  function ceeEscalaHTML(letraActiva){
+    if(!letraActiva || !CEE_COLORS[letraActiva]) return '';
+    var letras = ['A','B','C','D','E','F','G'];
+    return '<div class="cee-scale">'+letras.map(function(l){
+      var activa = l===letraActiva;
+      return '<div class="cee-scale-row'+(activa?' active':'')+'" style="width:'+CEE_ESCALA_ANCHOS[l]+';background:'+CEE_COLORS[l]+';color:'+(CEE_TEXT_DARK[l]?'#1a1a1a':'#fff')+'">'+
+        esc(l)+'<span class="cee-scale-arrow">◀ '+esc(tr('Aquí'))+'</span>'+
+      '</div>';
+    }).join('')+'</div>';
+  }
   function ceeOverlayHTML(p){
     if(!(p.ceeConsumoLetra || p.ceeEmisionesLetra || p.ceeCodigo)) return '';
     return '<div class="cee-overlay" id="ceeOverlay-'+esc(p.id)+'" data-ceeoverlay="'+esc(p.id)+'">'+
       '<div class="cee-card">'+
         '<button type="button" class="cee-close" data-ceeclose aria-label="'+esc(tr('Cerrar'))+'">✕</button>'+
         '<h4>'+esc(tr('Certificado energético'))+'</h4>'+
-        (p.ceeConsumoLetra ? ('<div class="cee-big-row">'+ceeChip(p.ceeConsumoLetra,true)+'<div><span class="cee-big-label">'+esc(tr('Consumo de energía'))+'</span><span class="cee-big-val">'+esc(p.ceeConsumoValor||'')+'</span></div></div>') : '')+
-        (p.ceeEmisionesLetra ? ('<div class="cee-big-row">'+ceeChip(p.ceeEmisionesLetra,true)+'<div><span class="cee-big-label">'+esc(tr('Emisiones de CO₂'))+'</span><span class="cee-big-val">'+esc(p.ceeEmisionesValor||'')+'</span></div></div>') : '')+
+        (p.ceeConsumoLetra ? ('<div class="cee-big-row"><span class="cee-big-label">'+esc(tr('Consumo de energía'))+'</span>'+ceeEscalaHTML(p.ceeConsumoLetra)+(p.ceeConsumoValor?('<span class="cee-big-val">'+esc(p.ceeConsumoValor)+'</span>'):'')+'</div>') : '')+
+        (p.ceeEmisionesLetra ? ('<div class="cee-big-row"><span class="cee-big-label">'+esc(tr('Emisiones de CO₂'))+'</span>'+ceeEscalaHTML(p.ceeEmisionesLetra)+(p.ceeEmisionesValor?('<span class="cee-big-val">'+esc(p.ceeEmisionesValor)+'</span>'):'')+'</div>') : '')+
         (p.ceeCodigo ? ('<div class="cee-codigo">'+esc(tr('Código de registro:'))+' <b>'+esc(p.ceeCodigo)+'</b></div>') : '')+
       '</div></div>';
   }
