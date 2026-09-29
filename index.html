@@ -4477,7 +4477,13 @@
           if(nLineasMetro) partes.push(nLineasMetro + ' línea' + (nLineasMetro>1?'s':'') + ' de metro');
           if(nLineasTren) partes.push(nLineasTren + ' línea' + (nLineasTren>1?'s':'') + ' de tren/rodalies');
           if(nBus) partes.push(nBus + ' línea' + (nBus>1?'s':'') + ' de bus');
-          mostrarPvEstadoGenerico('pvTransporteAutoStatus', 'Detectado y rellenado: ' + partes.join(', ') + '. Revisa antes de guardar.', true);
+          // Si parte de la búsqueda falló (ej. las líneas se consultaron bien
+          // pero las estaciones/bus fallaron por red), no lo ocultamos: puede
+          // que falte algo aunque el resultado no esté vacío del todo.
+          const avisoParcial = Array.isArray(json.avisos) && json.avisos.length
+            ? ' ⚠️ Parte de la búsqueda falló (' + json.avisos.join(' | ') + ') — pulsa otra vez para reintentarlo.'
+            : '';
+          mostrarPvEstadoGenerico('pvTransporteAutoStatus', 'Detectado y rellenado: ' + partes.join(', ') + '. Revisa antes de guardar.' + avisoParcial, !avisoParcial);
         }
       } else {
         // Incluimos el detalle técnico (json.debug) si lo hay, para poder
