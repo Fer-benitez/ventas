@@ -1120,19 +1120,24 @@
   function ceeBadgeHTML(p){
     // Certificado energético estructurado (consumo/emisiones con letra A-G):
     // un mini certificado que, al pulsarlo, se abre en grande. Si la propiedad
-    // solo tiene el CEE antiguo en texto libre, se muestra igual que antes.
+    // solo tiene el CEE antiguo en texto libre y ningún código de registro,
+    // se muestra un texto simple no interactivo, igual que antes.
     var tieneEstructurado = p.ceeConsumoLetra || p.ceeEmisionesLetra;
-    if(!tieneEstructurado){
+    var tieneAlgoQueMostrar = tieneEstructurado || p.ceeCodigo;
+    if(!tieneAlgoQueMostrar){
       return '<span class="lg"><b>'+esc(tr('CEE'))+'</b> '+esc(p.cee || tr('en trámite'))+'</span>';
     }
+    // Aunque solo haya código de registro (sin letra de consumo/emisiones todavía),
+    // el badge sigue siendo pulsable para poder ver ese código en el overlay.
     var mini = '<button type="button" class="cee-badge" data-ceebadge="'+esc(p.id)+'" aria-label="'+esc(tr('Ver certificado energético completo'))+'">'+
       (p.ceeConsumoLetra ? ('<span class="cee-row">'+ceeChip(p.ceeConsumoLetra)+'<span class="cee-txt">'+esc(p.ceeConsumoValor||'')+'</span></span>') : '')+
       (p.ceeEmisionesLetra ? ('<span class="cee-row">'+ceeChip(p.ceeEmisionesLetra)+'<span class="cee-txt">'+esc(p.ceeEmisionesValor||'')+'</span></span>') : '')+
+      (!tieneEstructurado ? ('<span class="cee-row"><span class="cee-txt"><b>'+esc(tr('CEE'))+'</b> '+esc(p.cee || tr('en trámite'))+'</span></span>') : '')+
       '</button>';
     return mini;
   }
   function ceeOverlayHTML(p){
-    if(!(p.ceeConsumoLetra || p.ceeEmisionesLetra)) return '';
+    if(!(p.ceeConsumoLetra || p.ceeEmisionesLetra || p.ceeCodigo)) return '';
     return '<div class="cee-overlay" id="ceeOverlay-'+esc(p.id)+'" data-ceeoverlay="'+esc(p.id)+'">'+
       '<div class="cee-card">'+
         '<button type="button" class="cee-close" data-ceeclose aria-label="'+esc(tr('Cerrar'))+'">✕</button>'+
