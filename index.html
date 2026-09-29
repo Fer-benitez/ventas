@@ -206,31 +206,36 @@
   .cee-badge:hover{border-color:rgba(255,255,255,.3);}
   .cee-row{display:inline-flex;align-items:center;gap:6px;}
   .cee-txt{font-size:10.5px;font-weight:700;color:var(--muted);white-space:nowrap;}
-  .cee-overlay{display:none;position:fixed;inset:0;z-index:3100;background:rgba(6,10,20,.85);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px;}
+  /* El overlay cuelga directamente de <body> (ver el <div id="ceeOverlay">
+     cerca del final del documento), nunca dentro de la ficha del piso, para
+     que "position:fixed" se centre siempre en la pantalla real en cualquier
+     tamaño de ventana — de ahí que ya no exista un overlay por propiedad. */
+  .cee-overlay{display:none;position:fixed;inset:0;z-index:5000;background:rgba(6,10,20,.78);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px;}
   .cee-overlay.open{display:flex;}
-  .cee-card{position:relative;background:var(--black-2);border:1px solid var(--line);border-radius:16px;padding:26px 24px 22px;max-width:340px;width:100%;box-shadow:0 30px 70px rgba(0,0,0,.6);}
-  .cee-card h4{margin:0 0 16px;font-size:15px;color:var(--white);}
-  .cee-close{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.4);color:#fff;font-size:15px;cursor:pointer;}
-  .cee-big-row{margin-bottom:18px;}
-  .cee-big-row:last-child{margin-bottom:0;}
-  .cee-big-label{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin-bottom:8px;}
-  .cee-big-val{display:block;font-size:14px;font-weight:700;color:var(--white);margin-top:8px;}
-  .cee-codigo{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font-size:11.5px;color:var(--muted);}
-  .cee-codigo b{color:var(--white);}
-  /* Escala oficial A-G del certificado energético, con la letra de la
-     propiedad resaltada, igual que en la etiqueta impresa real. */
-  .cee-scale{display:flex;flex-direction:column;gap:3px;}
+  /* Reproducción de la etiqueta oficial de certificado energético español:
+     fondo blanco, título en naranja, flechas de color A→G y "banderines"
+     negros señalando el valor de consumo/emisiones en su franja. */
+  .cee-card{position:relative;background:#fff;border-radius:14px;padding:26px 22px 20px;max-width:360px;width:100%;box-shadow:0 30px 70px rgba(0,0,0,.5);font-family:'Inter',sans-serif;}
+  .cee-close{position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:50%;border:1px solid rgba(0,0,0,.12);background:#f3f3f3;color:#333;font-size:14px;cursor:pointer;line-height:1;}
+  .cee-card-title{font-family:'Comfortaa','Montserrat',sans-serif;font-weight:700;font-size:20px;color:#f5941f;margin:0 0 16px;padding-right:26px;}
+  .cee-label-wrap{position:relative;}
+  .cee-scale{display:flex;flex-direction:column;gap:4px;}
   .cee-scale-row{
-    display:flex;align-items:center;height:22px;padding-left:9px;
-    font-size:12px;font-weight:800;color:#fff;font-family:'Inter',sans-serif;
+    display:flex;align-items:center;height:28px;padding-left:12px;box-sizing:border-box;
+    font-size:15px;font-weight:800;color:#fff;font-family:'Inter',sans-serif;
     clip-path:polygon(0 0,88% 0,100% 50%,88% 100%,0 100%);
-    opacity:.4;transition:opacity .2s var(--ease);
   }
-  .cee-scale-row.active{
-    opacity:1;outline:2px solid #fff;outline-offset:-2px;
+  .cee-tags{position:absolute;left:0;top:0;right:0;pointer-events:none;}
+  .cee-tag{
+    position:absolute;height:28px;display:flex;align-items:center;justify-content:center;
+    min-width:64px;padding:0 14px 0 10px;background:#1a1a1a;color:#fff;font-weight:800;font-size:15px;
+    clip-path:polygon(14px 0,100% 0,100% 100%,14px 100%,0 50%);
   }
-  .cee-scale-row .cee-scale-arrow{margin-left:auto;margin-right:14px;font-size:11px;display:none;}
-  .cee-scale-row.active .cee-scale-arrow{display:inline;}
+  .cee-metrics{display:flex;justify-content:flex-end;gap:22px;margin-top:10px;}
+  .cee-metric{text-align:center;font-size:11.5px;font-weight:700;color:#555;max-width:64px;line-height:1.25;}
+  .cee-codigo{margin-top:16px;padding-top:12px;border-top:1px solid #eee;font-size:11.5px;color:#777;}
+  .cee-codigo b{color:#222;}
+  .cee-codigo:empty{display:none;}
   /* Datos del alquiler de vivienda: última renta, rango, índice de referencia */
   .detail .alq-vivienda{margin:12px 0 0;padding:12px 14px;background:var(--black-3);border:1px solid var(--line);border-radius:10px;display:flex;flex-direction:column;gap:8px;}
   .detail .alq-vivienda .alq-line{font-size:13px;color:var(--white);}
@@ -991,6 +996,23 @@
   <button class="lb-nav lb-next" type="button" data-lb-next aria-label="Foto siguiente"><svg class="ic" style="width:22px;height:22px;stroke:#fff"><use href="#i-next"/></svg></button>
   <span class="lb-count" id="lbCount"></span>
 </div>
+<!-- Certificado energético: UN solo overlay compartido, colgado directamente
+     de <body> (no dentro de la ficha de cada piso) para que "position:fixed"
+     siempre se centre en la pantalla real — si vive dentro del panel de
+     detalle, en escritorio ese panel puede convertirse sin querer en su
+     "contenedor" y el overlay se ve mal posicionado o no se ve. -->
+<div class="cee-overlay" id="ceeOverlay">
+  <div class="cee-card">
+    <button type="button" class="cee-close" data-ceeclose aria-label="Cerrar">✕</button>
+    <div class="cee-card-title" id="ceeCardTitle">Certificado Energético</div>
+    <div class="cee-label-wrap">
+      <div class="cee-scale" id="ceeScale"></div>
+      <div class="cee-tags" id="ceeTags"></div>
+    </div>
+    <div class="cee-metrics" id="ceeMetrics"></div>
+    <div class="cee-codigo" id="ceeCodigoLine"></div>
+  </div>
+</div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="i18n.js"></script>
@@ -1155,29 +1177,35 @@
     return mini;
   }
   // Escala vertical A-G, igual que la etiqueta oficial impresa: 7 franjas de
-  // color con flecha, cada vez más largas de A (verde, corta) a G (roja,
-  // larga), con la letra de la propiedad resaltada y una marca "◀ Aquí".
+  // color con flecha, siempre todas a color completo (como en la etiqueta
+  // real), con "banderines" negros señalando el valor de consumo y/o
+  // emisiones en su franja correspondiente.
   var CEE_ESCALA_ANCHOS = { A:'46%', B:'56%', C:'66%', D:'76%', E:'86%', F:'93%', G:'100%' };
-  function ceeEscalaHTML(letraActiva){
-    if(!letraActiva || !CEE_COLORS[letraActiva]) return '';
-    var letras = ['A','B','C','D','E','F','G'];
-    return '<div class="cee-scale">'+letras.map(function(l){
-      var activa = l===letraActiva;
-      return '<div class="cee-scale-row'+(activa?' active':'')+'" style="width:'+CEE_ESCALA_ANCHOS[l]+';background:'+CEE_COLORS[l]+';color:'+(CEE_TEXT_DARK[l]?'#1a1a1a':'#fff')+'">'+
-        esc(l)+'<span class="cee-scale-arrow">◀ '+esc(tr('Aquí'))+'</span>'+
-      '</div>';
-    }).join('')+'</div>';
-  }
-  function ceeOverlayHTML(p){
-    if(!(p.ceeConsumoLetra || p.ceeEmisionesLetra || p.ceeCodigo)) return '';
-    return '<div class="cee-overlay" id="ceeOverlay-'+esc(p.id)+'" data-ceeoverlay="'+esc(p.id)+'">'+
-      '<div class="cee-card">'+
-        '<button type="button" class="cee-close" data-ceeclose aria-label="'+esc(tr('Cerrar'))+'">✕</button>'+
-        '<h4>'+esc(tr('Certificado energético'))+'</h4>'+
-        (p.ceeConsumoLetra ? ('<div class="cee-big-row"><span class="cee-big-label">'+esc(tr('Consumo de energía'))+'</span>'+ceeEscalaHTML(p.ceeConsumoLetra)+(p.ceeConsumoValor?('<span class="cee-big-val">'+esc(p.ceeConsumoValor)+'</span>'):'')+'</div>') : '')+
-        (p.ceeEmisionesLetra ? ('<div class="cee-big-row"><span class="cee-big-label">'+esc(tr('Emisiones de CO₂'))+'</span>'+ceeEscalaHTML(p.ceeEmisionesLetra)+(p.ceeEmisionesValor?('<span class="cee-big-val">'+esc(p.ceeEmisionesValor)+'</span>'):'')+'</div>') : '')+
-        (p.ceeCodigo ? ('<div class="cee-codigo">'+esc(tr('Código de registro:'))+' <b>'+esc(p.ceeCodigo)+'</b></div>') : '')+
-      '</div></div>';
+  var CEE_LETRAS = ['A','B','C','D','E','F','G'];
+  // Rellena y abre el ÚNICO overlay compartido (#ceeOverlay, colgado de
+  // <body>) con los datos de la propiedad pulsada. Al vivir fuera de la
+  // ficha .detail, "position:fixed" siempre se centra en la ventana real,
+  // tanto en escritorio como en móvil.
+  function abrirCeeOverlay(p){
+    var scaleHtml = CEE_LETRAS.map(function(l){
+      return '<div class="cee-scale-row" style="width:'+CEE_ESCALA_ANCHOS[l]+';background:'+CEE_COLORS[l]+';color:'+(CEE_TEXT_DARK[l]?'#1a1a1a':'#fff')+'">'+esc(l)+'</div>';
+    }).join('');
+    var tagsByLetra = {};
+    if(p.ceeConsumoLetra && CEE_COLORS[p.ceeConsumoLetra]){ (tagsByLetra[p.ceeConsumoLetra]=tagsByLetra[p.ceeConsumoLetra]||[]).push(p.ceeConsumoValor||''); }
+    if(p.ceeEmisionesLetra && CEE_COLORS[p.ceeEmisionesLetra]){ (tagsByLetra[p.ceeEmisionesLetra]=tagsByLetra[p.ceeEmisionesLetra]||[]).push(p.ceeEmisionesValor||''); }
+    var tagsHtml = Object.keys(tagsByLetra).map(function(letra){
+      var top = CEE_LETRAS.indexOf(letra)*32;
+      var vals = tagsByLetra[letra].filter(Boolean).join(' / ');
+      return '<div class="cee-tag" style="top:'+top+'px;left:calc('+CEE_ESCALA_ANCHOS[letra]+' - 6px);">'+esc(vals)+'</div>';
+    }).join('');
+    var metricsHtml =
+      (p.ceeConsumoLetra ? ('<div class="cee-metric">'+esc(tr('Consumo energético'))+(p.ceeConsumoValor?(' <b>'+esc(p.ceeConsumoValor)+'</b>'):'')+'</div>') : '')+
+      (p.ceeEmisionesLetra ? ('<div class="cee-metric">'+esc(tr('Emisiones CO₂'))+(p.ceeEmisionesValor?(' <b>'+esc(p.ceeEmisionesValor)+'</b>'):'')+'</div>') : '');
+    $('ceeScale').innerHTML = scaleHtml;
+    $('ceeTags').innerHTML = tagsHtml;
+    $('ceeMetrics').innerHTML = metricsHtml;
+    $('ceeCodigoLine').innerHTML = p.ceeCodigo ? (esc(tr('Código de registro:'))+' <b>'+esc(p.ceeCodigo)+'</b>') : '';
+    $('ceeOverlay').classList.add('open');
   }
   function alquilerViviendaHTML(p){
     // Datos del alquiler de vivienda (Incasòl): solo aplican cuando la propiedad
@@ -1205,7 +1233,7 @@
     if(API_NUM) items.push('<span class="lg"><b>'+esc(tr('Nº API'))+'</b> '+esc(API_NUM)+'</span>');
     items.push(ceeBadgeHTML(p));
     return '<div class="legal">'+items.join('')+'<img class="legal-logo" src="agn-logo-color.png" alt="Fincas A.G. Núñez" width="241" height="93">'+
-      '<span class="legal-caption">'+esc(tr('Un producto de Fincas A.G. Núñez'))+'</span></div>'+ceeOverlayHTML(p);
+      '<span class="legal-caption">'+esc(tr('Un producto de Fincas A.G. Núñez'))+'</span></div>';
   }
   function pinEl(id){ var m = markers[id], e = m && m.getElement(); return e && e.querySelector('.pin'); }
   function descripcionLocalizada(p){
@@ -1437,7 +1465,7 @@
     var dt = e.target.closest && e.target.closest('[data-desc-toggle]');
     if(dt){ var wrap = dt.closest('.descwrap'); if(wrap){ var isOpen = wrap.classList.toggle('open'); dt.textContent = isOpen ? tr('Ver menos') : tr('Ver más'); } return; }
     var ceeBtn = e.target.closest && e.target.closest('[data-ceebadge]');
-    if(ceeBtn){ var ov = document.getElementById('ceeOverlay-'+ceeBtn.getAttribute('data-ceebadge')); if(ov) ov.classList.add('open'); return; }
+    if(ceeBtn){ var pid = ceeBtn.getAttribute('data-ceebadge'); var pobj = all.filter(function(x){return x.id===pid;})[0]; if(pobj) abrirCeeOverlay(pobj); return; }
     if(e.target.closest && e.target.closest('[data-ceeclose]')){ var ovc = e.target.closest('.cee-overlay'); if(ovc) ovc.classList.remove('open'); return; }
     if(e.target.classList && e.target.classList.contains('cee-overlay')){ e.target.classList.remove('open'); return; }
     var b = e.target.closest && e.target.closest('[data-share]'); if(!b) return;
