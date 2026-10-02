@@ -573,10 +573,16 @@
     border-color:rgba(91,141,255,.65);
     box-shadow:0 22px 50px -20px rgba(0,0,0,.65),0 0 0 1px rgba(91,141,255,.14);
   }
-  .reel-op-tag{position:absolute;top:14px;left:14px;z-index:3;display:inline-flex;align-items:center;gap:5px;background:rgba(10,14,24,.78);backdrop-filter:blur(3px);color:#fff;border:1px solid rgba(255,255,255,.25);font:800 10.5px/1 'Inter',sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:6px 10px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.4);pointer-events:none;}
+  /* Botón de sonido: DENTRO de cada vídeo, arriba a la izquierda, justo
+     antes de la etiqueta Venta/Alquiler (que se desplaza para dejarle
+     sitio). El de pantalla completa va arriba a la derecha. Ambos se ven
+     en móvil y en escritorio. */
+  .reel-mute-btn{position:absolute;top:14px;left:14px;z-index:3;width:34px;height:34px;border-radius:50%;background:rgba(10,14,24,.72);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:15px;display:grid;place-items:center;cursor:pointer;line-height:1;}
+  .reel-fs-btn{position:absolute;top:14px;right:14px;z-index:4;width:30px;height:30px;border-radius:50%;background:rgba(10,14,24,.72);border:1px solid rgba(255,255,255,.3);color:#fff;display:grid;place-items:center;cursor:pointer;padding:0;}
+  .reel-fs-btn svg{width:14px;height:14px;}
+  .reel-op-tag{position:absolute;top:14px;left:56px;z-index:3;display:inline-flex;align-items:center;gap:5px;background:rgba(10,14,24,.78);backdrop-filter:blur(3px);color:#fff;border:1px solid rgba(255,255,255,.25);font:800 10.5px/1 'Inter',sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:6px 10px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.4);pointer-events:none;}
   .reel-op-tag.alquiler{color:#8fb4ff;border-color:rgba(91,141,255,.45);}
   .reel-op-tag.venta{color:#ffcf7a;border-color:rgba(245,148,31,.5);}
-  .reel-mute-btn{position:absolute;top:14px;right:14px;z-index:3;width:34px;height:34px;border-radius:50%;background:rgba(10,14,24,.72);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:15px;display:grid;place-items:center;cursor:pointer;line-height:1;}
   /* Capa inferior, pegada al vídeo (no debajo de él): datos de la propiedad
      y botón "Ver ficha" sobre una franja oscura degradada, igual que las
      leyendas de un reel real. */
@@ -590,18 +596,16 @@
   .vlink.alquiler{background:linear-gradient(135deg,#2f6fed,#5b8dff);}
   .vlink svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2}
   .reel-nav{display:none;}
-  .reel-fs-btn{position:absolute;top:10px;right:10px;z-index:1200;width:40px;height:40px;display:none;}
-  .reel-fs-btn svg{width:18px;height:18px;}
   @media(min-width:641px){
     .reel-nav:not([hidden]){display:grid;}
-    .reel-fs-btn:not([hidden]){display:grid;}
     .reels.emb .embed.vid video{cursor:pointer;}
   }
-  /* Modo pantalla completa del carrusel (botón de arriba, solo escritorio):
-     a diferencia del carrusel normal (varios vídeos en fila), aquí cada
-     celda ocupa el ancho completo de la pantalla — se ve UN vídeo a la vez,
-     a pantalla completa y proporcionado, y se pasa al siguiente deslizando
-     como en una galería de imágenes (rueda, flechas o los botones). */
+  /* Modo pantalla completa del carrusel (botón arriba a la derecha de cada
+     vídeo, en móvil y escritorio): a diferencia del carrusel normal (varios
+     vídeos en fila), aquí cada celda ocupa el ancho completo de la
+     pantalla — se ve UN vídeo a la vez, a pantalla completa y proporcionado,
+     con sonido. En escritorio se pasa al siguiente deslizando (rueda,
+     flechas o botones); en móvil sigue siendo el gesto normal de deslizar. */
   #reelsWrap:fullscreen,
   #reelsWrap:-webkit-full-screen{
     background:#000;display:flex;align-items:center;justify-content:center;
@@ -611,6 +615,14 @@
   #reelsWrap:-webkit-full-screen .reels{
     height:100vh;gap:0;padding:0;
   }
+  /* En móvil el carrusel normal es vertical (ver el media query de abajo);
+     en pantalla completa, en cambio, vuelve a ser una fila horizontal de
+     un vídeo por pantalla, igual que en escritorio. */
+  #reelsWrap:fullscreen .reels.emb,
+  #reelsWrap:-webkit-full-screen .reels.emb{
+    flex-direction:row;overflow-x:auto;overflow-y:hidden;
+    scroll-snap-type:x mandatory;align-items:center;
+  }
   #reelsWrap:fullscreen .reel-slide,
   #reelsWrap:-webkit-full-screen .reel-slide{
     flex:0 0 100vw;height:100%;
@@ -619,8 +631,6 @@
   #reelsWrap:-webkit-full-screen .reels.emb .embed.vid{
     width:auto;height:94vh;aspect-ratio:9/16;
   }
-  #reelsWrap:fullscreen .reel-fs-btn,
-  #reelsWrap:-webkit-full-screen .reel-fs-btn{top:24px;right:24px;}
   .ig-note{font-size:12.5px;color:var(--muted);margin-top:4px;}
   /* Móvil: el carrusel de vídeos pasa a ser vertical y con scroll propio,
      para que deslizar hacia arriba/abajo dentro de esa franja se sienta como
@@ -1088,7 +1098,6 @@
       <button class="navarrow prev reel-nav" id="reelsPrevBtn" type="button" aria-label="Vídeo anterior" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4l-8 8 8 8"/></svg></button>
       <div class="reels" id="reels" tabindex="0" aria-label="Vídeos de propiedades"></div>
       <button class="navarrow next reel-nav" id="reelsNextBtn" type="button" aria-label="Vídeo siguiente" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4l8 8-8 8"/></svg></button>
-      <button class="navarrow reel-fs-btn" id="reelsFsBtn" type="button" aria-label="Pantalla completa" hidden></button>
     </div>
     <p class="ig-note">Vídeos incrustados desde Instagram: al mostrarse, Instagram carga su propio contenido.</p>
   </section>
@@ -1717,14 +1726,36 @@
         // arriba a la derecha deja activar el sonido con un toque.
         v.playsInline = true; v.setAttribute('playsinline',''); v.loop = true; v.muted = true; v.preload = 'metadata';
         // En escritorio no se reproduce solo: hace falta clic. En pantalla
-        // completa (F11 / modo inmersivo) sí se comporta como en el móvil.
+        // completa sí se comporta como en el móvil. En móvil, un doble toque
+        // sobre el vídeo también silencia/activa el sonido (como el botón
+        // del altavoz, a la izquierda).
+        var lastTapAt = 0;
         v.addEventListener('click', function(e){
-          if(reelsEsVertical()) return;
+          if(reelsEsVertical()){
+            var now = Date.now();
+            if(now - lastTapAt < 350){
+              e.preventDefault(); e.stopPropagation();
+              v.muted = !v.muted;
+              if(muteBtn) muteBtn.textContent = v.muted ? '🔇' : '🔊';
+            }
+            lastTapAt = now;
+            return;
+          }
           e.preventDefault(); e.stopPropagation();
           if(v.paused){ v.dataset.manualPlay = '1'; v.play().catch(function(){}); }
           else { v.dataset.manualPlay = ''; v.pause(); }
         });
         d.appendChild(v);
+
+        var fsBtn = document.createElement('button');
+        fsBtn.type = 'button'; fsBtn.className = 'reel-fs-btn';
+        fsBtn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>';
+        fsBtn.setAttribute('aria-label', tr('Pantalla completa'));
+        fsBtn.addEventListener('click', function(e){
+          e.preventDefault(); e.stopPropagation();
+          toggleReelsFullscreen();
+        });
+        d.appendChild(fsBtn);
 
         var tag = document.createElement('span');
         tag.className = esAlquiler ? 'reel-op-tag alquiler' : 'reel-op-tag venta';
@@ -1797,10 +1828,9 @@
     }
   }
   function setupReelsNav(n){
-    var prevBtn = $('reelsPrevBtn'), nextBtn = $('reelsNextBtn'), fsBtn = $('reelsFsBtn');
+    var prevBtn = $('reelsPrevBtn'), nextBtn = $('reelsNextBtn');
     if(!prevBtn || !nextBtn) return;
     prevBtn.hidden = nextBtn.hidden = n < 2;
-    if(fsBtn) fsBtn.hidden = n < 1;
   }
   var ICON_FS_ENTER = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>';
   var ICON_FS_EXIT = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3v4a2 2 0 0 1-2 2H3M21 9h-4a2 2 0 0 1-2-2V3M3 15h4a2 2 0 0 1 2 2v4M15 21v-4a2 2 0 0 1 2-2h4"/></svg>';
@@ -1811,17 +1841,18 @@
     var el = $('reelsWrap'); if(!el) return;
     if(!reelsFsActive()){
       var req = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen;
-      if(req) req.call(el);
+      if(req){ var p = req.call(el); if(p && p.catch) p.catch(function(){}); }
     } else {
       var exit = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen;
-      if(exit) exit.call(document);
+      if(exit){ var p2 = exit.call(document); if(p2 && p2.catch) p2.catch(function(){}); }
     }
   }
   function updateReelsFsBtn(){
-    var fsBtn = $('reelsFsBtn'); if(!fsBtn) return;
     var active = !!reelsFsActive();
-    fsBtn.innerHTML = active ? ICON_FS_EXIT : ICON_FS_ENTER;
-    fsBtn.setAttribute('aria-label', active ? 'Salir de pantalla completa' : 'Pantalla completa');
+    document.querySelectorAll('.reel-fs-btn').forEach(function(btn){
+      btn.innerHTML = active ? ICON_FS_EXIT : ICON_FS_ENTER;
+      btn.setAttribute('aria-label', active ? tr('Salir de pantalla completa') : tr('Pantalla completa'));
+    });
   }
   // En móvil el autoplay va solo con la visibilidad (como un reel). En
   // escritorio NO se reproduce solo al hacer scroll — solo con un clic —
@@ -1872,8 +1903,6 @@
     if(!reelsWrapEl || !reelsEl) return;
     $('reelsPrevBtn').addEventListener('click', function(){ reelsScrollBy(-1); });
     $('reelsNextBtn').addEventListener('click', function(){ reelsScrollBy(1); });
-    updateReelsFsBtn();
-    $('reelsFsBtn').addEventListener('click', function(){ toggleReelsFullscreen(); });
     // Teclado: flechas ←/→ en escritorio (fila horizontal), ↑/↓ si el carrusel
     // está en modo vertical (móvil, aunque ahí lo normal es deslizar con el dedo).
     reelsEl.addEventListener('keydown', function(e){
