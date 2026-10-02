@@ -255,8 +255,13 @@
   .video-badge svg{width:14px;height:14px;fill:var(--red);flex:none;}
   .video-overlay{display:none;position:fixed;inset:0;z-index:5000;background:rgba(6,10,20,.88);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px;}
   .video-overlay.open{display:flex;}
-  .video-overlay-card{position:relative;max-width:380px;width:100%;}
-  .video-overlay-card video{width:100%;max-height:82vh;border-radius:16px;background:#000;display:block;}
+  .video-overlay-card{position:relative;max-width:min(300px,82vw);width:100%;}
+  .video-overlay-card video{
+    width:100%;aspect-ratio:9/16;max-height:82vh;display:block;background:#000;
+    border-radius:24px;border:1.5px solid rgba(226,35,26,.55);
+    box-shadow:0 22px 50px -20px rgba(0,0,0,.65),0 0 0 1px rgba(226,35,26,.1);
+    object-fit:cover;
+  }
   .video-overlay-close{position:absolute;top:-14px;right:-14px;width:34px;height:34px;border-radius:50%;background:#fff;color:#111;border:none;font-size:15px;cursor:pointer;box-shadow:0 10px 26px rgba(0,0,0,.45);}
   /* Datos del alquiler de vivienda: última renta, rango, índice de referencia */
   .detail .alq-vivienda{margin:12px 0 0;padding:12px 14px;background:var(--black-3);border:1px solid var(--line);border-radius:10px;display:flex;flex-direction:column;gap:8px;}
@@ -536,8 +541,18 @@
   .reel .tag{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--red);}
   .reel .tt{font-family:'Montserrat',sans-serif;font-weight:700;font-size:20px;line-height:1.15;}
   .reel iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff;}
-  .reels.emb .embed.vid{flex-direction:column;align-items:stretch;gap:12px;max-width:380px;margin:0 auto;width:100%}
-  .reels.emb .embed.vid video{width:100%;height:auto;max-height:78vh;display:block;background:#000;border-radius:18px;border:1px solid var(--line);object-fit:contain}
+  .reels.emb .embed.vid{flex-direction:column;align-items:stretch;gap:14px;max-width:min(300px,82vw);margin:0 auto;width:100%}
+  /* Marco "reel": aspect-ratio fija 9:16 (en vez de max-height) para que el
+     vídeo llene siempre el recuadro sin franjas negras a los lados — object-fit
+     cover recorta el sobrante, igual que hace Instagram. Borde fino rojo y
+     sombra suave para que se vea como una tarjeta elegante, no como un overlay
+     oscuro suelto. */
+  .reels.emb .embed.vid video{
+    width:100%;aspect-ratio:9/16;display:block;background:#000;
+    border-radius:24px;border:1.5px solid rgba(226,35,26,.55);
+    box-shadow:0 22px 50px -20px rgba(0,0,0,.65),0 0 0 1px rgba(226,35,26,.1);
+    object-fit:cover;
+  }
   .vlink{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:11px 16px;border-radius:999px;font-weight:700;font-size:13.5px;color:#fff;background:linear-gradient(135deg,#e2231a,#ef4444);transition:transform .25s var(--ease)}
   .vlink:hover{transform:translateY(-1px)}
   .vlink svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2}
