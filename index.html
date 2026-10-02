@@ -547,14 +547,33 @@
      cover recorta el sobrante, igual que hace Instagram. Borde fino rojo y
      sombra suave para que se vea como una tarjeta elegante, no como un overlay
      oscuro suelto. */
+  .reels.emb .embed.vid{position:relative;}
   .reels.emb .embed.vid video{
     width:100%;aspect-ratio:9/16;display:block;background:#000;
     border-radius:24px;border:1.5px solid rgba(226,35,26,.55);
     box-shadow:0 22px 50px -20px rgba(0,0,0,.65),0 0 0 1px rgba(226,35,26,.1);
     object-fit:cover;
   }
+  /* Vídeos de propiedades en ALQUILER: mismo marco, pero en azul (el color
+     que ya usa el resto de la web para distinguir alquiler de venta). */
+  .reels.emb .embed.vid.alquiler video,
+  .video-overlay-card.alquiler video{
+    border-color:rgba(91,141,255,.65);
+    box-shadow:0 22px 50px -20px rgba(0,0,0,.65),0 0 0 1px rgba(91,141,255,.14);
+  }
+  .reel-op-tag{position:absolute;top:14px;left:14px;z-index:2;display:inline-flex;align-items:center;gap:5px;background:rgba(10,14,24,.78);backdrop-filter:blur(3px);color:#fff;border:1px solid rgba(255,255,255,.25);font:800 10.5px/1 'Inter',sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:6px 10px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.4);}
+  .reel-op-tag.alquiler{color:#8fb4ff;border-color:rgba(91,141,255,.45);}
+  .reel-op-tag.venta{color:#ffcf7a;border-color:rgba(245,148,31,.5);}
+  /* Ficha resumida bajo el vídeo: habitaciones, m², año y barrio, con icono —
+     el icono se tiñe del mismo color que la etiqueta (dorado venta / azul
+     alquiler) para que todo el bloque se lea como un conjunto. */
+  .reel-facts{display:flex;flex-wrap:wrap;gap:7px 16px;padding:0 2px;}
+  .reel-fact{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:#d7dce6;}
+  .reel-fact svg{width:15px;height:15px;stroke:#f5941f;fill:none;stroke-width:2;flex:none;}
+  .embed.vid.alquiler .reel-fact svg{stroke:#5b8dff;}
   .vlink{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:11px 16px;border-radius:999px;font-weight:700;font-size:13.5px;color:#fff;background:linear-gradient(135deg,#e2231a,#ef4444);transition:transform .25s var(--ease)}
   .vlink:hover{transform:translateY(-1px)}
+  .vlink.alquiler{background:linear-gradient(135deg,#2f6fed,#5b8dff);}
   .vlink svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2}
   .ig-note{font-size:12.5px;color:var(--muted);margin-top:4px;}
   @media(max-width:640px){.cta .who img{width:84px;height:84px}.ig-head{justify-content:flex-start}}
@@ -1056,8 +1075,9 @@
 <!-- Vídeo de la propiedad: UN solo overlay compartido, igual que el del
      certificado energético — se rellena con el vídeo de la propiedad pulsada. -->
 <div class="video-overlay" id="videoOverlay">
-  <div class="video-overlay-card">
+  <div class="video-overlay-card" id="videoOverlayCard">
     <button type="button" class="video-overlay-close" data-videoclose aria-label="Cerrar">✕</button>
+    <span class="reel-op-tag" id="videoOverlayTag" style="display:none;">🔑 Alquiler</span>
     <video id="videoOverlayPlayer" controls playsinline></video>
   </div>
 </div>
@@ -1093,7 +1113,16 @@
   var esc = function(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); };
   var tr = window.fbT || function(s,p){ return p ? s.replace(/\{(\w+)\}/g,function(m,k){return p[k]!=null?p[k]:m;}) : s; };
   var loc = function(){ return window.fbI18n ? fbI18n.locale() : 'es-ES'; };
-  var eur = function(n){ return n==null ? '' : n.toLocaleString(loc()) + ' €'; };
+  // Separador de miles puesto a mano: algunos navegadores integrados (p.ej. el
+  // visor de vídeos de Instagram/apps, visto en una captura de Fer) no aplican
+  // bien el separador de toLocaleString() y dejan el precio sin puntuar
+  // ("2990 €" en vez de "2.990 €"). Así siempre sale bien, en cualquier sitio.
+  var MILES_SEP = { es:'.', de:'.', en:',', fr:' ' };
+  var eur = function(n){
+    if(n==null) return '';
+    var sep = MILES_SEP[(loc()||'es').slice(0,2)] || '.';
+    return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, sep) + ' €';
+  };
   var base = location.href.split('#')[0].split('?')[0];
   var piso = function(id){ return base + '?piso=' + encodeURIComponent(id); };
   var safeUrl = function(u){ return /^https?:\/\//i.test(u) ? u : '#'; };
@@ -1263,9 +1292,12 @@
   }
   function abrirVideoOverlay(p){
     if(!p.video) return;
+    var esAlquiler = p.operacion === 'Alquiler';
     var v = $('videoOverlayPlayer');
     v.src = p.video;
     v.currentTime = 0;
+    $('videoOverlayCard').classList.toggle('alquiler', esAlquiler);
+    $('videoOverlayTag').style.display = esAlquiler ? '' : 'none';
     $('videoOverlay').classList.add('open');
     v.play().catch(function(){});
   }
@@ -1607,13 +1639,28 @@
     if(conVideo.length){
       wrap.classList.add('emb');
       conVideo.forEach(function(p){
-        var d = document.createElement('div'); d.className='embed vid';
+        var esAlquiler = p.operacion === 'Alquiler';
+        var d = document.createElement('div'); d.className = esAlquiler ? 'embed vid alquiler' : 'embed vid';
         var v = document.createElement('video');
         v.src = p.video; v.poster = videoPoster(p.video);
         v.controls = true; v.playsInline = true; v.preload = 'metadata'; v.setAttribute('playsinline','');
         d.appendChild(v);
-        var a = document.createElement('a'); a.className='vlink'; a.href = piso(p.id);
-        var labelTxt = (p.zona||p.calle||'') + (p.precio!=null?(' · '+eur(p.precio)):'') + ' — ' + tr('Ver ficha');
+        var tag = document.createElement('span');
+        tag.className = esAlquiler ? 'reel-op-tag alquiler' : 'reel-op-tag venta';
+        tag.innerHTML = esAlquiler ? ('🔑 '+esc(tr('Alquiler'))) : ('🏠 '+esc(tr('Venta')));
+        d.appendChild(tag);
+        var datos = [];
+        if(p.habitaciones!=null) datos.push(fact('i-bed', p.habitaciones+' '+tr('hab.')));
+        if(p.m2!=null) datos.push(fact('i-ruler', p.m2+' m²'));
+        if(p.anyoConstruccion) datos.push(fact('i-cal', tr('Año {a}',{a:p.anyoConstruccion})));
+        if(p.zona) datos.push(fact('i-pin', p.zona));
+        if(datos.length){
+          var factsRow = document.createElement('div'); factsRow.className = 'reel-facts';
+          factsRow.innerHTML = datos.map(function(h){ return h.replace('class="f"','class="reel-fact"'); }).join('');
+          d.appendChild(factsRow);
+        }
+        var a = document.createElement('a'); a.className = esAlquiler ? 'vlink alquiler' : 'vlink'; a.href = piso(p.id);
+        var labelTxt = (p.zona||p.calle||'') + (p.precio!=null?(' · '+eur(p.precio)+(esAlquiler?('/'+tr('mes')):'')):'') + ' — ' + tr('Ver ficha');
         a.innerHTML = '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pin"/></svg><span data-vl>'+esc(labelTxt)+'</span>';
         a.addEventListener('click',function(e){
           e.preventDefault();
