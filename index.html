@@ -605,12 +605,12 @@
      navegador (en Safari de iPhone no funciona sobre un simple <div>, solo
      sobre <video>, y por eso el botón no respondía en el móvil): en su
      lugar simula pantalla completa con un overlay fijo que cubre toda la
-     ventana — funciona igual en cualquier navegador. A diferencia del
-     carrusel normal (varios vídeos en fila), aquí cada celda ocupa el ancho
-     completo de la pantalla — se ve UN vídeo a la vez, a pantalla completa
-     y proporcionado, con sonido. En escritorio se pasa al siguiente
-     deslizando (rueda, flechas o botones); en móvil sigue siendo el gesto
-     normal de deslizar. */
+     ventana — funciona igual en cualquier navegador. Se ve UN vídeo a la
+     vez, a pantalla completa y proporcionado, con sonido. En ESCRITORIO se
+     pasa al siguiente deslizando de izquierda a derecha (rueda, flechas o
+     botones). En MÓVIL el gesto es de arriba a abajo, como el scroll
+     infinito de Instagram/TikTok — igual que el carrusel normal fuera de
+     pantalla completa, solo que aquí cada vídeo ocupa toda la pantalla. */
   #reelsWrap.reel-fake-fs{
     position:fixed;inset:0;z-index:4000;
     background:#000;display:flex;align-items:center;justify-content:center;
@@ -619,18 +619,29 @@
   #reelsWrap.reel-fake-fs .reels{
     height:100vh;gap:0;padding:0;
   }
-  /* En móvil el carrusel normal es vertical (ver el media query de abajo);
-     en pantalla completa, en cambio, vuelve a ser una fila horizontal de
-     un vídeo por pantalla, igual que en escritorio. */
-  #reelsWrap.reel-fake-fs .reels.emb{
-    flex-direction:row;overflow-x:auto;overflow-y:hidden;
-    scroll-snap-type:x mandatory;align-items:center;
+  @media(min-width:641px){
+    #reelsWrap.reel-fake-fs .reels.emb{
+      flex-direction:row;overflow-x:auto;overflow-y:hidden;
+      scroll-snap-type:x mandatory;align-items:center;
+    }
+    #reelsWrap.reel-fake-fs .reel-slide{
+      flex:0 0 100vw;height:100%;
+    }
+    #reelsWrap.reel-fake-fs .reels.emb .embed.vid{
+      width:auto;height:94vh;aspect-ratio:9/16;
+    }
   }
-  #reelsWrap.reel-fake-fs .reel-slide{
-    flex:0 0 100vw;height:100%;
-  }
-  #reelsWrap.reel-fake-fs .reels.emb .embed.vid{
-    width:auto;height:94vh;aspect-ratio:9/16;
+  @media(max-width:640px){
+    #reelsWrap.reel-fake-fs .reels.emb{
+      flex-direction:column;overflow-x:hidden;overflow-y:auto;
+      scroll-snap-type:y mandatory;align-items:center;
+    }
+    #reelsWrap.reel-fake-fs .reel-slide{
+      flex:0 0 100vh;width:100%;height:100vh;
+    }
+    #reelsWrap.reel-fake-fs .reels.emb .embed.vid{
+      height:92vh;width:auto;aspect-ratio:9/16;
+    }
   }
   .ig-note{font-size:12.5px;color:var(--muted);margin-top:4px;}
   /* Móvil: el carrusel de vídeos pasa a ser vertical y con scroll propio,
