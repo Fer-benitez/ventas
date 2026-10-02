@@ -217,25 +217,47 @@
      negros señalando el valor de consumo/emisiones en su franja. */
   .cee-card{position:relative;background:#fff;border-radius:14px;padding:26px 22px 20px;max-width:360px;width:100%;box-shadow:0 30px 70px rgba(0,0,0,.5);font-family:'Inter',sans-serif;}
   .cee-close{position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:50%;border:1px solid rgba(0,0,0,.12);background:#f3f3f3;color:#333;font-size:14px;cursor:pointer;line-height:1;}
-  .cee-card-title{font-family:'Comfortaa','Montserrat',sans-serif;font-weight:700;font-size:20px;color:#f5941f;margin:0 0 16px;padding-right:26px;}
-  .cee-label-wrap{position:relative;}
-  .cee-scale{display:flex;flex-direction:column;gap:4px;}
-  .cee-scale-row{
-    display:flex;align-items:center;height:28px;padding-left:12px;box-sizing:border-box;
-    font-size:15px;font-weight:800;color:#fff;font-family:'Inter',sans-serif;
-    clip-path:polygon(0 0,88% 0,100% 50%,88% 100%,0 100%);
+  .cee-card-title{font-family:'Comfortaa','Montserrat',sans-serif;font-weight:700;font-size:16px;color:#1a1a1a;margin:0 0 14px;padding-right:26px;text-transform:uppercase;letter-spacing:.01em;}
+  /* Tabla "ESCALA DE LA CALIFICACIÓN ENERGÉTICA": reproduce la plantilla
+     oficial — título + 2 cabeceras de columna (Consumo / Emisiones), y 7
+     filas A→G con su flecha de color y, en cada fila, una celda blanca por
+     columna donde solo aparece el "banderín" negro con el valor cuando esa
+     fila es la letra real de consumo o de emisiones de la propiedad (pueden
+     caer en filas distintas, ya que son independientes). */
+  .cee-table-wrap{position:relative;}
+  .cee-table-head{display:grid;grid-template-columns:1fr 62px 62px;gap:4px;align-items:end;margin-bottom:6px;}
+  .cee-table-head .cee-col-label{font-size:9px;font-weight:800;color:#555;text-align:center;line-height:1.25;text-transform:uppercase;letter-spacing:.01em;}
+  .cee-table{display:flex;flex-direction:column;gap:3px;}
+  .cee-row2{display:grid;grid-template-columns:1fr 62px 62px;gap:4px;align-items:stretch;height:27px;}
+  .cee-row-lane{position:relative;}
+  .cee-row-arrow{
+    position:absolute;left:0;top:0;height:100%;width:100%;box-sizing:border-box;
+    display:flex;align-items:center;gap:6px;padding-left:10px;
+    font-size:14px;font-weight:800;font-family:'Inter',sans-serif;
+    clip-path:polygon(0 0,90% 0,100% 50%,90% 100%,0 100%);
   }
-  .cee-tags{position:absolute;left:0;top:0;right:0;pointer-events:none;}
-  .cee-tag{
-    position:absolute;height:28px;display:flex;align-items:center;justify-content:center;
-    min-width:64px;padding:0 14px 0 10px;background:#1a1a1a;color:#fff;font-weight:800;font-size:15px;
-    clip-path:polygon(14px 0,100% 0,100% 100%,14px 100%,0 50%);
+  .cee-row-suffix{font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.01em;opacity:.9;white-space:nowrap;}
+  .cee-cell{position:relative;height:100%;background:#f2f2f2;border-radius:3px;}
+  .cee-pointer{
+    position:absolute;top:50%;left:-4px;transform:translateY(-50%);z-index:2;
+    height:23px;min-width:50px;display:flex;align-items:center;justify-content:center;
+    padding:0 9px 0 13px;background:#1a1a1a;color:#fff;font-weight:800;font-size:12.5px;white-space:nowrap;
+    clip-path:polygon(9px 0,100% 0,100% 100%,9px 100%,0 50%);
   }
-  .cee-metrics{display:flex;justify-content:flex-end;gap:22px;margin-top:10px;}
-  .cee-metric{text-align:center;font-size:11.5px;font-weight:700;color:#555;max-width:64px;line-height:1.25;}
   .cee-codigo{margin-top:16px;padding-top:12px;border-top:1px solid #eee;font-size:11.5px;color:#777;}
   .cee-codigo b{color:#222;}
   .cee-codigo:empty{display:none;}
+  /* Botón "Vídeo" en la ficha de cada propiedad: solo aparece si esa propiedad
+     tiene un vídeo subido desde el panel de gestión. Al pulsarlo se abre el
+     mismo vídeo en grande, en el overlay compartido #videoOverlay. */
+  .video-badge{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;background:var(--black-3);border:1px solid var(--line);color:var(--white);font-size:11.5px;font-weight:700;letter-spacing:.02em;cursor:pointer;font-family:inherit;}
+  .video-badge:hover{border-color:rgba(255,255,255,.3);}
+  .video-badge svg{width:14px;height:14px;fill:var(--red);flex:none;}
+  .video-overlay{display:none;position:fixed;inset:0;z-index:5000;background:rgba(6,10,20,.88);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px;}
+  .video-overlay.open{display:flex;}
+  .video-overlay-card{position:relative;max-width:380px;width:100%;}
+  .video-overlay-card video{width:100%;max-height:82vh;border-radius:16px;background:#000;display:block;}
+  .video-overlay-close{position:absolute;top:-14px;right:-14px;width:34px;height:34px;border-radius:50%;background:#fff;color:#111;border:none;font-size:15px;cursor:pointer;box-shadow:0 10px 26px rgba(0,0,0,.45);}
   /* Datos del alquiler de vivienda: última renta, rango, índice de referencia */
   .detail .alq-vivienda{margin:12px 0 0;padding:12px 14px;background:var(--black-3);border:1px solid var(--line);border-radius:10px;display:flex;flex-direction:column;gap:8px;}
   .detail .alq-vivienda .alq-line{font-size:13px;color:var(--white);}
@@ -1004,13 +1026,24 @@
 <div class="cee-overlay" id="ceeOverlay">
   <div class="cee-card">
     <button type="button" class="cee-close" data-ceeclose aria-label="Cerrar">✕</button>
-    <div class="cee-card-title" id="ceeCardTitle">Certificado Energético</div>
-    <div class="cee-label-wrap">
-      <div class="cee-scale" id="ceeScale"></div>
-      <div class="cee-tags" id="ceeTags"></div>
+    <div class="cee-card-title" id="ceeCardTitle">Escala de la calificación energética</div>
+    <div class="cee-table-wrap">
+      <div class="cee-table-head">
+        <div></div>
+        <div class="cee-col-label" id="ceeColConsumo">Consumo de energía<br>kWh/m² año</div>
+        <div class="cee-col-label" id="ceeColEmisiones">Emisiones<br>kg CO2/m² año</div>
+      </div>
+      <div class="cee-table" id="ceeTable"></div>
     </div>
-    <div class="cee-metrics" id="ceeMetrics"></div>
     <div class="cee-codigo" id="ceeCodigoLine"></div>
+  </div>
+</div>
+<!-- Vídeo de la propiedad: UN solo overlay compartido, igual que el del
+     certificado energético — se rellena con el vídeo de la propiedad pulsada. -->
+<div class="video-overlay" id="videoOverlay">
+  <div class="video-overlay-card">
+    <button type="button" class="video-overlay-close" data-videoclose aria-label="Cerrar">✕</button>
+    <video id="videoOverlayPlayer" controls playsinline></video>
   </div>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -1187,25 +1220,46 @@
   // ficha .detail, "position:fixed" siempre se centra en la ventana real,
   // tanto en escritorio como en móvil.
   function abrirCeeOverlay(p){
-    var scaleHtml = CEE_LETRAS.map(function(l){
-      return '<div class="cee-scale-row" style="width:'+CEE_ESCALA_ANCHOS[l]+';background:'+CEE_COLORS[l]+';color:'+(CEE_TEXT_DARK[l]?'#1a1a1a':'#fff')+'">'+esc(l)+'</div>';
+    var consumoLetra = p.ceeConsumoLetra && CEE_COLORS[p.ceeConsumoLetra] ? p.ceeConsumoLetra : null;
+    var emisionesLetra = p.ceeEmisionesLetra && CEE_COLORS[p.ceeEmisionesLetra] ? p.ceeEmisionesLetra : null;
+    var rowsHtml = CEE_LETRAS.map(function(l, idx){
+      var suffix = '';
+      if(idx===0) suffix = '<span class="cee-row-suffix">'+esc(tr('más eficiente'))+'</span>';
+      else if(idx===CEE_LETRAS.length-1) suffix = '<span class="cee-row-suffix">'+esc(tr('menos eficiente'))+'</span>';
+      var arrow = '<div class="cee-row-arrow" style="width:'+CEE_ESCALA_ANCHOS[l]+';background:'+CEE_COLORS[l]+';color:'+(CEE_TEXT_DARK[l]?'#1a1a1a':'#fff')+'">'+
+        '<span>'+esc(l)+'</span>'+suffix+'</div>';
+      var consumoCell = '<div class="cee-cell">'+(consumoLetra===l ? ('<div class="cee-pointer">'+esc(p.ceeConsumoValor||'')+'</div>') : '')+'</div>';
+      var emisionesCell = '<div class="cee-cell">'+(emisionesLetra===l ? ('<div class="cee-pointer">'+esc(p.ceeEmisionesValor||'')+'</div>') : '')+'</div>';
+      return '<div class="cee-row2"><div class="cee-row-lane">'+arrow+'</div>'+consumoCell+emisionesCell+'</div>';
     }).join('');
-    var tagsByLetra = {};
-    if(p.ceeConsumoLetra && CEE_COLORS[p.ceeConsumoLetra]){ (tagsByLetra[p.ceeConsumoLetra]=tagsByLetra[p.ceeConsumoLetra]||[]).push(p.ceeConsumoValor||''); }
-    if(p.ceeEmisionesLetra && CEE_COLORS[p.ceeEmisionesLetra]){ (tagsByLetra[p.ceeEmisionesLetra]=tagsByLetra[p.ceeEmisionesLetra]||[]).push(p.ceeEmisionesValor||''); }
-    var tagsHtml = Object.keys(tagsByLetra).map(function(letra){
-      var top = CEE_LETRAS.indexOf(letra)*32;
-      var vals = tagsByLetra[letra].filter(Boolean).join(' / ');
-      return '<div class="cee-tag" style="top:'+top+'px;left:calc('+CEE_ESCALA_ANCHOS[letra]+' - 6px);">'+esc(vals)+'</div>';
-    }).join('');
-    var metricsHtml =
-      (p.ceeConsumoLetra ? ('<div class="cee-metric">'+esc(tr('Consumo energético'))+(p.ceeConsumoValor?(' <b>'+esc(p.ceeConsumoValor)+'</b>'):'')+'</div>') : '')+
-      (p.ceeEmisionesLetra ? ('<div class="cee-metric">'+esc(tr('Emisiones CO₂'))+(p.ceeEmisionesValor?(' <b>'+esc(p.ceeEmisionesValor)+'</b>'):'')+'</div>') : '');
-    $('ceeScale').innerHTML = scaleHtml;
-    $('ceeTags').innerHTML = tagsHtml;
-    $('ceeMetrics').innerHTML = metricsHtml;
+    $('ceeTable').innerHTML = rowsHtml;
+    $('ceeColConsumo').innerHTML = esc(tr('Consumo de energía'))+'<br>'+esc(tr('kWh/m² año'));
+    $('ceeColEmisiones').innerHTML = esc(tr('Emisiones'))+'<br>'+esc(tr('kg CO2/m² año'));
     $('ceeCodigoLine').innerHTML = p.ceeCodigo ? (esc(tr('Código de registro:'))+' <b>'+esc(p.ceeCodigo)+'</b>') : '';
     $('ceeOverlay').classList.add('open');
+  }
+  // Botón "Vídeo" de la ficha: solo se pinta si la propiedad tiene un vídeo
+  // subido desde el panel (campo VideoReel). Al pulsarlo abre el vídeo en
+  // el overlay compartido #videoOverlay, en formato reel (vertical).
+  function videoBadgeHTML(p){
+    if(!p.video) return '';
+    return '<button type="button" class="video-badge" data-videobadge="'+esc(p.id)+'" aria-label="'+esc(tr('Ver vídeo de la propiedad'))+'">'+
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>'+esc(tr('Vídeo'))+'</button>';
+  }
+  function abrirVideoOverlay(p){
+    if(!p.video) return;
+    var v = $('videoOverlayPlayer');
+    v.src = p.video;
+    v.currentTime = 0;
+    $('videoOverlay').classList.add('open');
+    v.play().catch(function(){});
+  }
+  function cerrarVideoOverlay(){
+    var v = $('videoOverlayPlayer');
+    v.pause();
+    v.removeAttribute('src');
+    v.load();
+    $('videoOverlay').classList.remove('open');
   }
   function alquilerViviendaHTML(p){
     // Datos del alquiler de vivienda (Incasòl): solo aplican cuando la propiedad
@@ -1232,6 +1286,7 @@
     if(AICAT_NUM) items.push('<span class="lg"><b>'+esc(tr('Nº AICAT'))+'</b> '+esc(AICAT_NUM)+'</span>');
     if(API_NUM) items.push('<span class="lg"><b>'+esc(tr('Nº API'))+'</b> '+esc(API_NUM)+'</span>');
     items.push(ceeBadgeHTML(p));
+    items.push(videoBadgeHTML(p));
     return '<div class="legal">'+items.join('')+'<img class="legal-logo" src="agn-logo-color.png" alt="Fincas A.G. Núñez" width="241" height="93">'+
       '<span class="legal-caption">'+esc(tr('Un producto de Fincas A.G. Núñez'))+'</span></div>';
   }
@@ -1344,7 +1399,7 @@
   function done(data,isDemo){
     all = (data||[]).filter(function(p){return typeof p.lat==='number' && typeof p.lng==='number';});
     $('demoBar').hidden = !isDemo;
-    fillFilters(); render(all);
+    fillFilters(); render(all); renderReels();
     setStatus(function(){ return all.length ? all.length+' '+(all.length===1?tr('propiedad ubicada'):tr('propiedades ubicadas'))+' · '+tr('Ubicaciones aproximadas') : tr('Ahora mismo no tengo propiedades publicadas. Escríbeme y te aviso en cuanto salga una.'); }, false);
     var want = new URLSearchParams(location.search).get('piso');
     if(want && markers[want]) setTimeout(function(){ open(want); },600);
@@ -1426,7 +1481,11 @@
         rentaRangoMax: String(r['RentaRangoMax']||'').trim(),
         indexAreaInferior: String(r['IndexAreaInferior']||'').trim(),
         indexValor: String(r['IndexValor']||'').trim(),
-        indexAreaSuperior: String(r['IndexAreaSuperior']||'').trim()
+        indexAreaSuperior: String(r['IndexAreaSuperior']||'').trim(),
+        // NUEVO (2 oct 2026): vídeo (reel) de la propiedad, subido desde el
+        // panel de gestión y alojado en Cloudinary — enlaza la ficha del mapa
+        // con la sección "Dentro de cada propiedad" y viceversa.
+        video: String(r['VideoReel']||'').trim()
       };
     }).filter(Boolean);
   }
@@ -1468,6 +1527,10 @@
     if(ceeBtn){ var pid = ceeBtn.getAttribute('data-ceebadge'); var pobj = all.filter(function(x){return x.id===pid;})[0]; if(pobj) abrirCeeOverlay(pobj); return; }
     if(e.target.closest && e.target.closest('[data-ceeclose]')){ var ovc = e.target.closest('.cee-overlay'); if(ovc) ovc.classList.remove('open'); return; }
     if(e.target.classList && e.target.classList.contains('cee-overlay')){ e.target.classList.remove('open'); return; }
+    var videoBtn = e.target.closest && e.target.closest('[data-videobadge]');
+    if(videoBtn){ var vpid = videoBtn.getAttribute('data-videobadge'); var vpobj = all.filter(function(x){return x.id===vpid;})[0]; if(vpobj) abrirVideoOverlay(vpobj); return; }
+    if(e.target.closest && e.target.closest('[data-videoclose]')){ cerrarVideoOverlay(); return; }
+    if(e.target.classList && e.target.classList.contains('video-overlay')){ cerrarVideoOverlay(); return; }
     var b = e.target.closest && e.target.closest('[data-share]'); if(!b) return;
     var p = all.filter(function(x){return x.id===b.dataset.share;})[0]; if(!p) return;
     share(tr('Propiedad en venta en ')+p.zona+(p.precio!=null?' · '+eur(p.precio):''), piso(p.id));
@@ -1480,7 +1543,7 @@
       else if(e.key==='ArrowRight') lbNav(1);
       return;
     }
-    if(e.key==='Escape'){ var openOv = document.querySelector('.cee-overlay.open'); if(openOv) openOv.classList.remove('open'); }
+    if(e.key==='Escape'){ var openOv = document.querySelector('.cee-overlay.open'); if(openOv) openOv.classList.remove('open'); var openVOv = document.querySelector('.video-overlay.open'); if(openVOv) cerrarVideoOverlay(); }
     if((e.key==='Enter'||e.key===' ') && e.target.closest && e.target.closest('[data-lightbox]')){
       e.preventDefault();
       try{ openLightbox(JSON.parse(e.target.closest('[data-lightbox]').getAttribute('data-lightbox')),0); }catch(err){}
@@ -1507,85 +1570,54 @@
 
 
   /* ====== VÍDEOS DE PROPIEDADES ======
-     Cada vídeo puede llevar un campo "match" (zona + precio) para que el botón de
-     abajo encuentre solo esa propiedad ya cargada en el mapa y abra su ficha,
-     en vez de llevar a Instagram. */
+     La sección "Dentro de cada propiedad" ya no depende de incrustar reels de
+     Instagram (no se veían): ahora cada propiedad puede llevar su propio
+     vídeo, subido desde el panel de gestión (campo VideoReel → Cloudinary).
+     Se pinta un vídeo por cada propiedad que tenga uno, con un botón abajo
+     que lleva a su ficha en el mapa — y, al revés, la ficha de esa propiedad
+     tiene su propio botón "Vídeo" que abre este mismo vídeo (ver
+     videoBadgeHTML / abrirVideoOverlay). Si ninguna propiedad tiene vídeo
+     todavía, se muestran unas tarjetas genéricas que llevan al perfil. */
   var IG_USER = 'fer_real_estate';
-  var REELS = [
-    { video: 'reel-clot-370000-v2.mp4', poster: 'reel-clot-370000-v3.jpg', label: 'El Clot · 370.000 €', match: { zonaContains: 'clot', precio: 370000 } }
-  ];
-  (function(){
+  function videoPoster(url){
+    // Cloudinary genera automáticamente una miniatura .jpg de cualquier vídeo
+    // subido con solo cambiar la extensión del mismo public id.
+    return String(url||'').replace(/\.(mp4|mov|m4v)(\?.*)?$/i, '.jpg');
+  }
+  function renderReels(){
     var wrap = $('reels'); if(!wrap) return;
+    wrap.innerHTML = '';
     var PLAY = '<span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>';
-    function code(u){ var m = String(u||'').match(/instagram\.com\/(?:reel|reels|p)\/([A-Za-z0-9_-]+)/); return m ? m[1] : null; }
-    function igEmbed(c){
-      var url = 'https://www.instagram.com/reel/'+c+'/';
-      return '<blockquote class="instagram-media" data-instgrm-permalink="'+url+'" data-instgrm-version="14" data-instgrm-captioned style="background:#fff;border:0;border-radius:16px;margin:0;max-width:540px;min-width:280px;width:100%;padding:0"><a href="'+url+'" target="_blank" rel="noopener" style="color:#fff;display:block;padding:40px 16px;text-align:center;font-size:14px">'+tr('Ver reel en Instagram')+'</a></blockquote>';
-    }
-    function normAccents(s){ return String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
-    function encontrarActivo(match, cb, intentos){
-      intentos = intentos || 0;
-      var ids = Object.keys(byId);
-      var found = null;
-      for(var i=0;i<ids.length;i++){
-        var p = byId[ids[i]];
-        var zonaOk = !match.zonaContains || normAccents(p.zona).indexOf(normAccents(match.zonaContains)) > -1;
-        var precioOk = (match.precio==null) || Number(p.precio)===Number(match.precio);
-        if(zonaOk && precioOk){ found = p; break; }
-      }
-      if(found || intentos>15){ cb(found); return; }
-      setTimeout(function(){ encontrarActivo(match, cb, intentos+1); }, 300);
-    }
-    var list = REELS.map(function(r){ return typeof r==='string' ? {url:r} : r; }).filter(function(r){ return r && (r.video || code(r.url)); });
-    if(list.length){
+    var conVideo = (all||[]).filter(function(p){ return p.video; });
+    if(conVideo.length){
       wrap.classList.add('emb');
-      var needEmbed = false;
-      list.forEach(function(it){
-        var d = document.createElement('div'); d.className='embed';
-        var c = code(it.url);
-        if(it.video){
-          d.className = 'embed vid';
-          var v = document.createElement('video');
-          v.src = it.video; if(it.poster) v.poster = it.poster;
-          v.controls = true; v.playsInline = true; v.preload = 'metadata'; v.setAttribute('playsinline','');
-          v.addEventListener('error',function(){
-            if(c){ d.className='embed'; d.innerHTML = igEmbed(c); if(window.instgrm && window.instgrm.Embeds) window.instgrm.Embeds.process(); else needEmbedLoad(); }
-            else d.remove();
-          });
-          d.appendChild(v);
-          var a = document.createElement('a'); a.className='vlink'; a.href = it.match ? '#' : (it.url || '#'); if(!it.match){ a.target='_blank'; a.rel='noopener'; }
-          if(it.match && it.label) a.dataset.propLabel = it.label;
-          var labelTxt = it.match ? (esc(it.label||'') + (it.label?' — ':'') + tr('Más detalles')) : tr('Ver en Instagram');
-          a.innerHTML = '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pin"/></svg><span data-vl>'+labelTxt+'</span>';
-          if(it.match){
-            a.addEventListener('click',function(e){
-              e.preventDefault();
-              encontrarActivo(it.match, function(p){
-                if(p){
-                  var mapEl = document.getElementById('map');
-                  if(mapEl) mapEl.scrollIntoView({behavior:'smooth', block:'start'});
-                  setTimeout(function(){ open(p.id, true); }, 400);
-                } else {
-                  var mapEl2 = document.getElementById('map');
-                  if(mapEl2) mapEl2.scrollIntoView({behavior:'smooth', block:'start'});
-                }
-              });
-            });
-          }
-          d.appendChild(a);
-        } else { d.innerHTML = igEmbed(c); needEmbed = true; }
+      conVideo.forEach(function(p){
+        var d = document.createElement('div'); d.className='embed vid';
+        var v = document.createElement('video');
+        v.src = p.video; v.poster = videoPoster(p.video);
+        v.controls = true; v.playsInline = true; v.preload = 'metadata'; v.setAttribute('playsinline','');
+        d.appendChild(v);
+        var a = document.createElement('a'); a.className='vlink'; a.href = piso(p.id);
+        var labelTxt = (p.zona||p.calle||'') + (p.precio!=null?(' · '+eur(p.precio)):'') + ' — ' + tr('Ver ficha');
+        a.innerHTML = '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pin"/></svg><span data-vl>'+esc(labelTxt)+'</span>';
+        a.addEventListener('click',function(e){
+          e.preventDefault();
+          var mapEl = document.getElementById('map');
+          if(mapEl) mapEl.scrollIntoView({behavior:'smooth', block:'start'});
+          setTimeout(function(){ open(p.id, true); }, 400);
+        });
+        d.appendChild(a);
         wrap.appendChild(d);
       });
-      function needEmbedLoad(){ if(document.getElementById('igjs')) return; var sc = document.createElement('script'); sc.id='igjs'; sc.async = true; sc.src = 'https://www.instagram.com/embed.js'; document.body.appendChild(sc); }
-      if(needEmbed) needEmbedLoad();
     } else {
+      wrap.classList.remove('emb');
       [['Zonas','Dónde comprar en Barcelona'],['Propiedades','Recorridos por dentro'],['Consejos','Antes de comprar, mira esto']].forEach(function(t){
         var a = document.createElement('a'); a.className='reel'; a.href='https://www.instagram.com/'+IG_USER+'/reels/'; a.target='_blank'; a.rel='noopener';
         a.innerHTML = '<div class="bg gen"></div><div class="shade"></div>'+PLAY+'<div class="meta"><span class="tag">'+t[0]+'</span><span class="tt">'+t[1]+'</span></div>';
         wrap.appendChild(a);
       });
     }
-  })();
+  }
 
   function setList(on){ $('cards').hidden = !on; $('listBtn').setAttribute('aria-expanded', on?'true':'false'); }
   $('listBtn').addEventListener('click',function(){ setList($('cards').hidden); });
