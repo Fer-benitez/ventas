@@ -1353,6 +1353,28 @@
     }
     return '<span class="xline lbadge">'+esc(txt)+'</span>';
   }
+  // Colores oficiales reales de las líneas de bus (de las leyendas que pasó
+  // Fer: red de líneas nocturnas EMT Madrid — "N##" amarillo/negro y las
+  // circulares "NC1"/"NC2" negro/amarillo — y las líneas diagonales/
+  // horizontales/verticales de TMB Barcelona — "V##" verde, "H##" azul,
+  // "D##" magenta). Son colores por categoría de línea, no por número
+  // individual como en metro/Rodalies/Cercanías.
+  var BUS_CATEGORY_COLORS = {
+    'N':  { bg:'#FFEC2A', color:'#1a1a1a' },
+    'NC': { bg:'#0B0B0B', color:'#F5E844' },
+    'V':  { bg:'#00A61E', color:'#fff' },
+    'H':  { bg:'#0092D4', color:'#fff' },
+    'D':  { bg:'#A5047A', color:'#fff' }
+  };
+  function busLineBadge(raw){
+    var txt = String(raw||'').trim();
+    var m = txt.toUpperCase().replace(/\s+/g,'').match(/^(NC|[NVHD])(\d{1,2})$/);
+    if(m && BUS_CATEGORY_COLORS[m[1]]){
+      var bc = BUS_CATEGORY_COLORS[m[1]];
+      return '<span class="xline lbadge" style="background:'+bc.bg+';color:'+bc.color+'">'+esc(m[1]+m[2])+'</span>';
+    }
+    return '<span class="xline"><svg class="ic"><use href="#i-bus"/></svg>'+esc(txt)+'</span>';
+  }
   function extraInfoHTML(p){
     /* NOTA PARA FER: cada dato de aquí es opcional — si no lo rellenas en el
        panel, simplemente no aparece en la ficha. Las líneas de transporte se
@@ -1363,7 +1385,7 @@
     (p.cercaniasEst||[]).forEach(function(e){ transp.push('<span class="xline"><img class="ic logo" src="'+RODALIES_LOGO_SRC+'" alt="Rodalies">'+esc(e)+'</span>'); });
     (p.metro||[]).forEach(function(l){ transp.push(metroLineBadge(l)); });
     (p.tren||[]).forEach(function(l){ transp.push('<span class="xline"><svg class="ic"><use href="#i-train"/></svg>'+esc(l)+'</span>'); });
-    (p.bus||[]).forEach(function(l){ transp.push('<span class="xline"><svg class="ic"><use href="#i-bus"/></svg>'+esc(l)+'</span>'); });
+    (p.bus||[]).forEach(function(l){ transp.push(busLineBadge(l)); });
     if(transp.length) rows.push('<div class="xrow">'+transp.join('')+'</div>');
     var otros = [];
     if(p.hospitales) otros.push(fact('i-hospital', p.hospitales));
