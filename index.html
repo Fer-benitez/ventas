@@ -1384,7 +1384,7 @@
     (p.metroEst||[]).forEach(function(e){ transp.push('<span class="xline"><img class="ic logo" src="'+METRO_LOGO_SRC+'" alt="Metro">'+esc(e)+'</span>'); });
     (p.cercaniasEst||[]).forEach(function(e){ transp.push('<span class="xline"><img class="ic logo" src="'+RODALIES_LOGO_SRC+'" alt="Rodalies">'+esc(e)+'</span>'); });
     (p.metro||[]).forEach(function(l){ transp.push(metroLineBadge(l)); });
-    (p.tren||[]).forEach(function(l){ transp.push('<span class="xline"><svg class="ic"><use href="#i-train"/></svg>'+esc(l)+'</span>'); });
+    (p.tren||[]).forEach(function(l){ transp.push(metroLineBadge(l)); });
     (p.bus||[]).forEach(function(l){ transp.push(busLineBadge(l)); });
     if(transp.length) rows.push('<div class="xrow">'+transp.join('')+'</div>');
     var otros = [];
