@@ -1306,11 +1306,47 @@
     '1':'#0098D6', '2':'#D31525', '3':'#FFDE2C', '4':'#8C353B', '5':'#8AB822',
     '6':'#949B9D', '7':'#FF9E47', '8':'#FF52AB', '9':'#9E1B7E', '10':'#003A88'
   };
+  // Colores oficiales reales de Rodalies de Catalunya (leyenda oficial que
+  // pasó Fer: Serveis Regionals R11-R17, rodalia de Barcelona R1/R2/R2 Nord/
+  // R2 Sud/R3/R4/R7/R8, rodalia de Girona RG1, rodalia del Camp de Tarragona
+  // RT1/RT2). Claves normalizadas en mayúsculas sin espacios ni guiones.
+  var RODALIES_LINE_COLORS = {
+    'R1':'#60B4E2', 'R2':'#009B47', 'R2NORD':'#8AC33E', 'R2SUD':'#005A2A',
+    'R3':'#F63631', 'R4':'#FF973D', 'R7':'#AF6FA8', 'R8':'#7D0052',
+    'R11':'#005C9C', 'R12':'#FFD927', 'R13':'#F7318A', 'R14':'#594D9A',
+    'R15':'#8B7460', 'R16':'#B30A30', 'R17':'#F76818',
+    'RG1':'#0069C5', 'RT1':'#00BDAD', 'RT2':'#ED5FB9'
+  };
+  // Colores oficiales reales de Cercanías Madrid (leyenda oficial que pasó
+  // Fer: C-1 a C-10, incluida C-3a). Claves normalizadas igual que arriba.
+  var CERCANIAS_LINE_COLORS = {
+    'C1':'#55ABDD', 'C2':'#008836', 'C3':'#AF36A6', 'C3A':'#E17DBC',
+    'C4':'#002F80', 'C5':'#FDC238', 'C7':'#FF2C45', 'C8':'#6D6F70',
+    'C9':'#FF751B', 'C10':'#AFCD25'
+  };
+  // Elige texto blanco o gris oscuro según el brillo del color de fondo,
+  // para que los tonos claros (amarillo, lima, celeste...) sigan siendo
+  // legibles en vez de forzar siempre blanco.
+  function badgeTextColor(hex){
+    var h = hex.replace('#','');
+    var r = parseInt(h.substr(0,2),16), g = parseInt(h.substr(2,2),16), b = parseInt(h.substr(4,2),16);
+    var lum = (0.299*r + 0.587*g + 0.114*b) / 255;
+    return lum > 0.62 ? '#1a1a1a' : '#fff';
+  }
   function metroLineBadge(raw){
     var txt = String(raw||'').trim();
+    var norm = txt.toUpperCase().replace(/[\s\-]+/g,'');
     var m = txt.match(/^L?\s*(\d{1,2})$/i);
     if(m && METRO_LINE_COLORS[m[1]]){
       return '<span class="xline lbadge" style="background:'+METRO_LINE_COLORS[m[1]]+'">L'+m[1]+'</span>';
+    }
+    if(RODALIES_LINE_COLORS[norm]){
+      var rc = RODALIES_LINE_COLORS[norm];
+      return '<span class="xline lbadge" style="background:'+rc+';color:'+badgeTextColor(rc)+'">'+esc(txt)+'</span>';
+    }
+    if(CERCANIAS_LINE_COLORS[norm]){
+      var cc = CERCANIAS_LINE_COLORS[norm];
+      return '<span class="xline lbadge" style="background:'+cc+';color:'+badgeTextColor(cc)+'">'+esc(txt)+'</span>';
     }
     if(/^R$/i.test(txt)){
       return '<span class="xline lbadge lbadge-r">R</span>';
