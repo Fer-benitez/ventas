@@ -89,15 +89,20 @@
   .hero h1{font-size:clamp(28px,4.2vw,46px);max-width:760px;}
   .hero p{color:var(--muted);margin-top:12px;max-width:620px;line-height:1.6;}
   .count{display:inline-block;margin-left:10px;font-size:13px;font-weight:700;color:var(--red);background:rgba(226,35,26,.12);border:1px solid var(--red-dim);border-radius:999px;padding:3px 12px;vertical-align:middle;}
-  .filters{display:flex;flex-wrap:wrap;gap:16px;margin:22px 0 18px;padding:16px 18px;background:var(--black-2);border:1px solid var(--line);border-radius:18px;align-items:flex-end;}
-  .filters label{display:flex;flex-direction:column;gap:7px;font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
-  .filters label .flab{display:flex;align-items:center;gap:6px;}
-  .filters label .flab svg{width:13px;height:13px;color:var(--red);flex:none;}
-  .filters select{background:var(--black-3);color:var(--white);border:1px solid var(--line);border-radius:11px;padding:10px 14px;font:600 14px Inter,sans-serif;min-width:150px;cursor:pointer;transition:border-color .2s,box-shadow .2s;}
-  .filters select:hover{border-color:rgba(255,255,255,.35);}
-  .filters select:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 3px rgba(226,35,26,.2);}
-  .filters .clear{align-self:flex-end;border-radius:999px;}
-  @media(max-width:640px){.filters{padding:14px;gap:12px}}
+  /* Píldoras de filtro (Zona/Precio/Habitaciones): mismo lenguaje visual que
+     los botones Compra/Alquiler/Piso/Local de arriba (forma de píldora,
+     mismo gris de reposo, icono en rojo, texto en mayúsculas) para que
+     ambas filas no desencajen entre sí. */
+  .filters{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 18px;padding:0;background:transparent;border:0;align-items:center;}
+  .filters label{display:flex;align-items:center;gap:8px;height:44px;padding:0 16px 0 14px;border-radius:999px;background:#3a3d42;border:1.5px solid transparent;transition:background .2s,border-color .2s,box-shadow .2s;}
+  .filters label:hover{background:#45484e;}
+  .filters label:focus-within{border-color:var(--red);box-shadow:0 0 0 3px rgba(226,35,26,.2);}
+  .filters label .flab{display:flex;align-items:center;gap:7px;font:800 10.5px/1 'Inter',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#cfccc7;white-space:nowrap;flex:none;}
+  .filters label .flab svg{width:14px;height:14px;color:var(--red);flex:none;}
+  .filters select{background:transparent;color:var(--white);border:0;padding:0;font:700 13.5px/1 'Inter',sans-serif;max-width:170px;cursor:pointer;transition:none;}
+  .filters select:focus{outline:none;}
+  .filters .clear{height:44px;border-radius:999px;align-self:center;}
+  @media(max-width:640px){.filters{gap:8px}.filters label{height:40px;padding:0 13px 0 12px;}.filters select{max-width:120px;font-size:13px;}}
   .op-filters{display:flex;gap:12px;margin:22px 0 0;}
   .op-btn{flex:0 0 auto;display:inline-flex;align-items:center;gap:9px;padding:12px 25px;border-radius:999px;font-weight:700;font-size:14px;letter-spacing:.01em;font-family:'Montserrat',sans-serif;border:1.5px solid transparent;background:#3a3d42;color:var(--white);cursor:pointer;transition:transform .15s var(--ease),background .2s,color .2s;}
   .op-btn .op-ic{width:18px;height:18px;flex:none;}
@@ -188,27 +193,65 @@
   @media(max-width:640px){.navarrow{top:calc(max(46vh,340px)/2);width:44px;height:44px}.navarrow svg{width:19px;height:19px}.navarrow.prev{left:10px}.navarrow.next{right:10px}.mapwrap.has-detail .navarrow.prev{left:10px}}
   .mapwrap{position:relative;margin-top:6px;}
   .mapwrap #map{margin-top:0;}
-  /* Ficha de la propiedad = pantalla completa (ordenador y móvil), al estilo
-     Idealista: cubre toda la ventana, con scroll propio. El mapa real (el
-     mismo objeto Leaflet, no uno nuevo) se traslada dentro de .detail-minimap
-     mientras está abierta, mostrando solo el pin de este activo. */
-  .detail{display:none;position:fixed;inset:0;z-index:2500;background:var(--black);overflow-y:auto;-webkit-overflow-scrolling:touch;}
+  /* Ficha de la propiedad: por defecto es una TARJETA flotante (modal), como
+     siempre — el mapa se queda quieto, a la vista, con todos los pines. Solo
+     al pulsar el botón de pantalla completa (.d-fs / data-fs-toggle) la
+     ficha pasa al modo "Idealista" (.detail.fs) que cubre toda la ventana:
+     el mapa real (el mismo objeto Leaflet, no uno nuevo) se traslada
+     entonces dentro de .detail-minimap mostrando solo el pin de este activo,
+     y la foto de cabecera (recortada) se sustituye por un carrusel con
+     efecto de profundidad para que las fotos se vean enteras. Ver JS:
+     setDetailFs(). */
+  .detail{display:none;position:fixed;inset:0;z-index:2500;background:rgba(6,10,20,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);overflow-y:auto;-webkit-overflow-scrolling:touch;padding:26px 16px 40px;}
   .detail.open{display:block;animation:dIn .25s var(--ease);}
   @keyframes dIn{from{opacity:0}to{opacity:1}}
+  .detail-card{position:relative;max-width:760px;margin:0 auto;background:var(--black);border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 30px 80px -12px rgba(0,0,0,.65);}
+  .detail-media{position:relative;}
   .detail-inner{max-width:1180px;margin:0 auto;padding:18px 18px 60px;}
   .detail-grid{display:flex;flex-direction:column;gap:18px;}
-  .detail-side{display:flex;flex-direction:column;gap:14px;}
+  .detail-side{display:none;flex-direction:column;gap:14px;}
   .detail-minimap{height:240px;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:var(--black-3);}
   .detail-minimap #map{height:100%;min-height:0;margin-top:0;border-radius:14px;border:none;}
   .detail-video-slot .video-badge{width:100%;justify-content:center;padding:13px;font-size:12.5px;}
+  .card-video-slot{margin:2px 0 0;}
+  /* --- Modo pantalla completa --- */
+  .detail.fs{padding:0;background:var(--black);backdrop-filter:none;-webkit-backdrop-filter:none;}
+  .detail.fs .detail-card{max-width:none;margin:0;border:0;border-radius:0;box-shadow:none;}
+  .detail.fs .detail-side{display:flex;}
+  .detail.fs .card-video-slot{display:none;}
+  .detail.fs .dph{display:none;}
+  .detail.fs .d-carousel{display:block;}
   @media(min-width:900px){
-    .detail-grid{flex-direction:row;align-items:flex-start;}
-    .detail-side{flex:0 0 340px;position:sticky;top:18px;}
-    .detail-main{flex:1 1 auto;min-width:0;}
+    .detail.fs .detail-grid{flex-direction:row;align-items:flex-start;}
+    .detail.fs .detail-side{flex:0 0 340px;position:sticky;top:18px;}
+    .detail.fs .detail-main{flex:1 1 auto;min-width:0;}
   }
+  /* Carrusel de fotos a pantalla completa, con efecto de profundidad
+     (coverflow): la foto activa centrada a tamaño completo, las vecinas
+     reducidas y giradas hacia los lados — así nunca se ve una foto cortada
+     (object-fit:contain), con un fondo del mismo fondo difuminado detrás
+     para rellenar sin bandas negras. */
+  .d-carousel{display:none;position:relative;height:min(62vh,640px);min-height:320px;background:#000;overflow:hidden;}
+  @media(max-width:640px){.d-carousel{height:48vh;min-height:280px;}}
+  .d-car-track{position:absolute;inset:0;perspective:1400px;}
+  .d-car-slide{position:absolute;top:50%;left:50%;width:min(70%,740px);height:86%;border-radius:14px;overflow:hidden;cursor:pointer;will-change:transform,opacity;transition:transform .5s cubic-bezier(.22,.9,.3,1),opacity .4s;}
+  .d-car-bg{position:absolute;inset:-10%;background-size:cover;background-position:center;filter:blur(22px) brightness(.45);transform:scale(1.15);}
+  .d-car-img{position:relative;width:100%;height:100%;object-fit:contain;display:block;}
+  .d-car-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:30;width:46px;height:46px;border-radius:50%;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.3);color:#fff;display:grid;place-items:center;cursor:pointer;}
+  .d-car-nav svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;}
+  .d-car-nav.prev{left:14px}.d-car-nav.next{right:14px}
+  .d-car-nav[hidden]{display:none}
+  .d-car-dots{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:7px;z-index:30;}
+  .d-car-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.4);border:0;padding:0;cursor:pointer;}
+  .d-car-dot.on{background:#fff;}
   .detail .dph{height:38vh;min-height:230px;max-height:440px;background:var(--black-3) center/cover no-repeat;position:relative;}
   .detail .dph::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(20,20,20,.85),transparent 55%);}
-  .d-close{position:fixed;right:16px;top:16px;z-index:2600;width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(0,0,0,.6);color:#fff;font-size:15px;cursor:pointer;box-shadow:0 6px 16px rgba(0,0,0,.45);}
+  .d-close{position:absolute;right:12px;top:12px;z-index:60;width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(0,0,0,.6);color:#fff;font-size:15px;cursor:pointer;box-shadow:0 6px 16px rgba(0,0,0,.45);}
+  .d-fs{position:absolute;right:58px;top:12px;z-index:60;width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(0,0,0,.6);color:#fff;cursor:pointer;box-shadow:0 6px 16px rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;}
+  .d-fs svg{width:17px;height:17px;stroke:#fff;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;}
+  .detail.fs .d-close,.detail.fs .d-fs{position:fixed;z-index:2600;}
+  .detail.fs .d-close{right:16px;top:16px;}
+  .detail.fs .d-fs{right:62px;top:16px;}
   .detail .bd{padding:16px 18px 20px;display:flex;flex-direction:column;gap:10px;}
   .detail .zona{font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--red);}
   .detail h3{font-size:21px;line-height:1.15;}
@@ -356,7 +399,7 @@
   footer a:hover{color:var(--white);}
   .toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);background:var(--white);color:var(--black);padding:11px 20px;border-radius:999px;font-weight:700;font-size:13.5px;opacity:0;pointer-events:none;transition:.3s var(--ease);z-index:2000;}
   .toast.show{opacity:1;transform:translate(-50%,0);}
-  @media(max-width:640px){.top-actions .btn span{display:none}.filters select{min-width:0;width:100%}.filters label{flex:1 1 44%}#map{height:46vh;min-height:340px}}
+  @media(max-width:640px){.top-actions .btn span{display:none}#map{height:46vh;min-height:340px}}
 
   /* ---- foto + instagram ---- */
   .avatar{width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid var(--red);background:var(--black-2);}
@@ -1629,22 +1672,50 @@
     var texto = (p[campo] || '').toString().trim();
     return texto || p.descripcion || '';
   }
+  function carouselSlidesHTML(fotos){
+    if(!fotos.length) return '';
+    return '<div class="d-carousel" data-car>'+
+        '<div class="d-car-track" data-car-track>'+
+          fotos.map(function(f,i){
+            var url = photo(f);
+            return '<div class="d-car-slide" data-i="'+i+'">'+
+              '<div class="d-car-bg" style="background-image:url(\''+esc(url)+'\')"></div>'+
+              '<img class="d-car-img" src="'+esc(url)+'" alt="" loading="'+(i===0?'eager':'lazy')+'">'+
+            '</div>';
+          }).join('')+
+        '</div>'+
+        '<button type="button" class="d-car-nav prev" data-car-prev aria-label="'+esc(tr('Foto anterior'))+'"'+(fotos.length<2?' hidden':'')+'><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>'+
+        '<button type="button" class="d-car-nav next" data-car-next aria-label="'+esc(tr('Foto siguiente'))+'"'+(fotos.length<2?' hidden':'')+'><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>'+
+        (fotos.length>1?('<div class="d-car-dots" data-car-dots>'+fotos.map(function(_,i){return '<button type="button" class="d-car-dot'+(i===0?' on':'')+'" data-car-go="'+i+'" aria-label="'+esc(tr('Foto '))+(i+1)+'"></button>';}).join('')+'</div>'):'')+
+      '</div>';
+  }
   function detailHTML(p){
     var fotos = (p.fotos&&p.fotos.length) ? p.fotos : (p.imagen?[p.imagen]:[]);
     var vbadge = videoBadgeHTML(p);
-    return '<div class="dph"'+(p.imagen?' style="background-image:url(\''+esc(photo(p.imagen))+'\')"':'')+
-      (fotos.length?' data-lightbox=\''+esc(JSON.stringify(fotos))+'\' role="button" tabindex="0"':' role="img"')+
-      ' aria-label="'+esc(fotos.length?tr('Ver fotos de la propiedad en ')+p.zona:tr('Foto de la propiedad en ')+p.zona)+'">'+
-      '<img class="agn-badge" src="agn-logo-color.png" alt="Fincas A.G. Núñez" width="241" height="93">'+
-      colaboradorLogoHTML(p)+
-      (p.fincaRegia?'<span class="finca-badge" style="position:absolute;top:12px;right:12px;">👑 '+tr('Finca Regia')+'</span>':'')+
-      (hayBajada(p)?'<span class="bajada-badge" style="position:absolute;bottom:12px;right:12px;">↓ '+tr('Bajada de precio')+'</span>':'')+
-      (p.reservado?'<span class="ribbon">'+tr('RESERVADO')+'</span>':'')+
+    var ICON_EXPAND = '<svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 00-2 2v3M16 3h3a2 2 0 012 2v3M8 21H5a2 2 0 01-2-2v-3M16 21h3a2 2 0 002-2v-3"/></svg>';
+    // Tarjeta (modo por defecto, "como antes"): el mapa no se mueve de su
+    // sitio y se ve siempre con todos los pines — solo la foto de cabecera
+    // recortada y la info de la propiedad, en una ficha flotante que no
+    // tapa toda la pantalla. El botón .d-fs (data-fs-toggle) es el único
+    // que activa el modo pantalla completa (ver setDetailFs en el JS).
+    return '<div class="detail-card">'+
+      '<div class="detail-media">'+
+        '<div class="dph"'+(p.imagen?' style="background-image:url(\''+esc(photo(p.imagen))+'\')"':'')+
+        (fotos.length?' data-lightbox=\''+esc(JSON.stringify(fotos))+'\' role="button" tabindex="0"':' role="img"')+
+        ' aria-label="'+esc(fotos.length?tr('Ver fotos de la propiedad en ')+p.zona:tr('Foto de la propiedad en ')+p.zona)+'"></div>'+
+        carouselSlidesHTML(fotos)+
+        '<img class="agn-badge" src="agn-logo-color.png" alt="Fincas A.G. Núñez" width="241" height="93">'+
+        colaboradorLogoHTML(p)+
+        (p.fincaRegia?'<span class="finca-badge" style="position:absolute;top:12px;right:12px;">👑 '+tr('Finca Regia')+'</span>':'')+
+        (hayBajada(p)?'<span class="bajada-badge" style="position:absolute;bottom:12px;right:12px;">↓ '+tr('Bajada de precio')+'</span>':'')+
+        (p.reservado?'<span class="ribbon">'+tr('RESERVADO')+'</span>':'')+
       '</div>'+
       '<button class="d-close" type="button" aria-label="'+tr('Cerrar')+'" data-close>✕</button>'+
-      // Pantalla completa, estilo Idealista: columna lateral con el mapa
-      // (siempre visible, mostrando solo este activo) y el vídeo si lo tiene,
-      // y columna principal con toda la info de la propiedad.
+      '<button class="d-fs" type="button" aria-label="'+tr('Pantalla completa')+'" data-fs-toggle>'+ICON_EXPAND+'</button>'+
+      // Pantalla completa, estilo Idealista (solo si se pulsa el botón de
+      // arriba): columna lateral con el mapa (siempre visible, mostrando
+      // solo este activo) y el vídeo si lo tiene, y columna principal con
+      // toda la info de la propiedad.
       '<div class="detail-inner"><div class="detail-grid">'+
         '<div class="detail-side">'+
           '<div class="detail-minimap" id="detailMapHost" aria-label="'+esc(tr('Ubicación en el mapa'))+'"></div>'+
@@ -1653,11 +1724,13 @@
         '<div class="bd detail-main"><span class="zona">'+esc(p.zona)+'</span><h3>'+esc(p.calle||p.titulo)+'</h3>'+
         (p.precio!=null?'<div class="pr">'+(hayBajada(p)?'<span class="pr-old">'+eur(p.precioAnterior)+'</span>':'')+eur(p.precio)+'</div>':'')+
         '<div class="facts">'+fact('i-bed',p.habitaciones!=null?(p.habitaciones+' '+tr('hab.')):'')+fact('i-pin',p.zona)+fact('i-ruler',p.m2!=null?(p.m2+' m²'):'')+'</div>'+
+        (vbadge?'<div class="card-video-slot">'+vbadge+'</div>':'')+
         (descripcionLocalizada(p)?('<div class="descwrap"><p class="desc">'+esc(descripcionLocalizada(p))+'</p><button type="button" class="desc-toggle" data-desc-toggle>'+tr('Ver más')+'</button></div>'):'')+
         extraInfoHTML(p)+
         '<div class="approx">'+tr('📍 Ubicación aproximada (pin blanco en el mapa). La dirección exacta te la doy al concertar la visita.')+'</div>'+acts(p)+alquilerViviendaHTML(p)+legalHTML(p)+
         '</div>'+
-      '</div></div>';
+      '</div></div>'+
+    '</div>';
   }
   function unmark(){
     if(!sel) return;
@@ -1706,8 +1779,8 @@
   function hideDetail(){
     unmark();
     var wasOpen = !!sel;
-    sel = null;
-    $('detail').classList.remove('open'); $('mapwrap').classList.remove('has-detail');
+    sel = null; detailFs = false;
+    $('detail').classList.remove('open','fs'); $('mapwrap').classList.remove('has-detail');
     document.querySelectorAll('.row.active').forEach(function(c){c.classList.remove('active');});
     if(wasOpen){
       exitMapFullscreen();
@@ -1715,18 +1788,73 @@
       history.replaceState(null,'',base);
     }
   }
+  // Tarjeta por defecto / pantalla completa a demanda: select() SIEMPRE abre
+  // la ficha como tarjeta (el mapa se queda donde está, con todos los
+  // pines). Si la propiedad anterior estaba en pantalla completa y se
+  // navega a la siguiente con las flechas, se respeta ese modo (wasFs).
+  var detailFs = false;
   function select(p){
     var m = markers[p.id]; if(!m) return;
     if(sel && sel!==p.id) unmark();
+    var wasFs = detailFs;
     sel = p.id;
     var e = pinEl(p.id); if(e) e.classList.add('sel');
     m.setZIndexOffset(1000);
     setActive(p.id); history.replaceState(null,'',piso(p.id));
-    var d = $('detail'); d.innerHTML = detailHTML(p); d.scrollTop = 0; d.classList.add('open'); $('mapwrap').classList.add('has-detail');
-    enterMapFullscreenFor(p);
+    carIdx = 0;
+    var d = $('detail'); d.innerHTML = detailHTML(p); d.classList.remove('fs'); d.scrollTop = 0; d.classList.add('open');
+    $('mapwrap').classList.remove('has-detail');
+    detailFs = false;
+    layoutCarousel(d);
     document.documentElement.style.overflow = 'hidden'; document.body.style.overflow = 'hidden';
+    if(wasFs) setDetailFs(true);
   }
   var sel = null;
+  function layoutCarousel(root){
+    root = root || $('detail');
+    var slides = root.querySelectorAll('.d-car-slide');
+    slides.forEach(function(s){
+      var i = parseInt(s.dataset.i,10), d = i - carIdx, abs = Math.abs(d);
+      var tx = d*58, scale = d===0?1:.78, rot = d===0?0:(d>0?-24:24), op = abs<=1?(d===0?1:.5):0, z = 10-abs;
+      s.style.transform = 'translate(calc(-50% + '+tx+'%), -50%) scale('+scale+') rotateY('+rot+'deg)';
+      s.style.opacity = op; s.style.zIndex = String(z); s.style.pointerEvents = (abs<=1?'auto':'none');
+    });
+    root.querySelectorAll('.d-car-dot').forEach(function(b,i){ b.classList.toggle('on', i===carIdx); });
+  }
+  function carGo(n, root){
+    root = root || $('detail');
+    var total = root.querySelectorAll('.d-car-slide').length; if(!total) return;
+    carIdx = ((n%total)+total)%total;
+    layoutCarousel(root);
+  }
+  function carNav(d){ carGo(carIdx+d); }
+  var carIdx = 0;
+  // Pasa la ficha abierta de tarjeta a pantalla completa (estilo Idealista)
+  // o al revés. Solo aquí se traslada el mapa real dentro de la ficha — al
+  // abrir la ficha (select) nunca se toca el mapa, para que por defecto se
+  // quede "como antes": visible con todos los pines.
+  function setDetailFs(fs){
+    if(!sel) return;
+    var p = byId[sel]; if(!p) return;
+    detailFs = fs;
+    var d = $('detail');
+    d.classList.toggle('fs', fs);
+    var btn = d.querySelector('[data-fs-toggle]');
+    if(btn){
+      btn.setAttribute('aria-label', fs ? tr('Salir de pantalla completa') : tr('Pantalla completa'));
+      btn.innerHTML = fs
+        ? '<svg viewBox="0 0 24 24"><path d="M9 3v4a2 2 0 01-2 2H3M21 9h-4a2 2 0 01-2-2V3M3 15h4a2 2 0 012 2v4M15 21v-4a2 2 0 012-2h4"/></svg>'
+        : '<svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 00-2 2v3M16 3h3a2 2 0 012 2v3M8 21H5a2 2 0 01-2-2v-3M16 21h3a2 2 0 002-2v-3"/></svg>';
+    }
+    if(fs){
+      $('mapwrap').classList.add('has-detail');
+      enterMapFullscreenFor(p);
+    } else {
+      $('mapwrap').classList.remove('has-detail');
+      exitMapFullscreen();
+    }
+    layoutCarousel(d);
+  }
 
   function emptyHTML(){ return esc(tr('No hay propiedades con esos filtros. Prueba a limpiarlos o '))+'<a style="text-decoration:underline" href="'+esc(wa(tr('Hola AG Núñez, busco una propiedad para comprar en Barcelona')))+'" target="_blank" rel="noopener">'+esc(tr('cuéntame qué buscas'))+'</a>.'; }
   function rowHTML(p){
@@ -1767,15 +1895,35 @@
     select(p);
   }
 
+  // Tramos de precio fijos (como en Idealista), no derivados del precio máximo
+  // real de los datos — antes generaba un escalón cada 200€ desde 800€ hasta
+  // el precio más caro, lo que con un piso en venta de 400.000€ producía
+  // ¡casi 2.000 opciones! Alquiler y venta usan tramos muy distintos, así que
+  // van en dos listas separadas y se combinan solo si hay datos de ambas.
+  var RENT_STEPS = [400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2500,3000,4000,5000];
+  var SALE_STEPS = [50000,100000,150000,200000,300000,400000,500000,600000,700000,800000,900000,1000000,1500000,2000000];
+  function updatePriceOptions(){
+    var v0 = $('fPrecio').value;
+    var hayAlquilerActivo = opActivos.Alquiler && all.some(function(p){return p.operacion==='Alquiler';});
+    var hayVentaActivo = opActivos.Venta && all.some(function(p){return (p.operacion||'Venta')!=='Alquiler';});
+    // Si por lo que sea los dos interruptores están apagados a la vez, no
+    // dejamos el desplegable vacío: mostramos lo que haya en los datos.
+    if(!hayAlquilerActivo && !hayVentaActivo){
+      hayAlquilerActivo = all.some(function(p){return p.operacion==='Alquiler';});
+      hayVentaActivo = all.some(function(p){return (p.operacion||'Venta')!=='Alquiler';});
+    }
+    var steps = [];
+    if(hayAlquilerActivo) steps = steps.concat(RENT_STEPS);
+    if(hayVentaActivo) steps = steps.concat(SALE_STEPS);
+    $('fPrecio').innerHTML = '<option value="">'+tr('Sin límite')+'</option>'+steps.map(function(s){return '<option value="'+s+'">'+tr('Hasta ')+eur(s)+'</option>';}).join('');
+    $('fPrecio').value = steps.indexOf(parseFloat(v0))!==-1 ? v0 : '';
+  }
   function fillFilters(){
-    var v0=[$('fZona').value,$('fPrecio').value];
+    var v0=$('fZona').value;
     var zonas = Array.from(new Set(all.map(function(p){return p.zona;}).filter(Boolean))).sort();
     $('fZona').innerHTML = '<option value="">'+tr('Todas')+'</option>'+zonas.map(function(z){return '<option>'+esc(z)+'</option>';}).join('');
-    var prices = all.map(function(p){return p.precio;}).filter(function(n){return n!=null;});
-    var max = prices.length ? Math.max.apply(null,prices) : 0;
-    var steps = []; for(var s=800; s<=Math.max(2500,max); s+=200) steps.push(s);
-    $('fPrecio').innerHTML = '<option value="">'+tr('Sin límite')+'</option>'+steps.map(function(s){return '<option value="'+s+'">'+tr('Hasta ')+eur(s)+'</option>';}).join('');
-    $('fZona').value=v0[0]; $('fPrecio').value=v0[1];
+    $('fZona').value=v0;
+    updatePriceOptions();
     $('filters').hidden = all.length < 2;
     $('opFilters').hidden = all.length < 1 || !all.some(function(p){return p.operacion==='Alquiler';});
     var hayLocal = all.some(function(p){return p.subtipo==='Local';});
@@ -1797,6 +1945,7 @@
     [$('fincaBtn'),$('rfFinca')].forEach(function(b){ if(b){ b.classList.toggle('active', fincaRegiaFiltro); b.setAttribute('aria-pressed', fincaRegiaFiltro?'true':'false'); } });
   }
   function applyFilters(){
+    updatePriceOptions();
     var z=$('fZona').value, pr=parseFloat($('fPrecio').value), h=parseInt($('fHab').value,10);
     render(all.filter(function(p){
       return opActivos[p.operacion||'Venta'] && subtipoActivos[p.subtipo||'Vivienda'] && (!fincaRegiaFiltro||p.fincaRegia) && (!z||p.zona===z) && (isNaN(pr)||p.precio==null||p.precio<=pr) && (isNaN(h)||(p.habitaciones||0)>=h);
@@ -1971,6 +2120,13 @@
   });
   document.addEventListener('click',function(e){
     if(e.target.closest && e.target.closest('[data-close]')){ hideDetail(); return; }
+    if(e.target.closest && e.target.closest('[data-fs-toggle]')){ setDetailFs(!detailFs); return; }
+    if(e.target.closest && e.target.closest('[data-car-prev]')){ carNav(-1); return; }
+    if(e.target.closest && e.target.closest('[data-car-next]')){ carNav(1); return; }
+    var carDot = e.target.closest && e.target.closest('[data-car-go]');
+    if(carDot){ carGo(parseInt(carDot.getAttribute('data-car-go'),10)); return; }
+    var carSlide = e.target.closest && e.target.closest('.d-car-slide');
+    if(carSlide && detailFs){ carGo(parseInt(carSlide.getAttribute('data-i'),10)); return; }
     var lb = e.target.closest && e.target.closest('[data-lightbox]');
     if(lb){ try{ openLightbox(JSON.parse(lb.getAttribute('data-lightbox')),0); }catch(err){} return; }
     var dt = e.target.closest && e.target.closest('[data-desc-toggle]');
@@ -2279,7 +2435,10 @@
   $('navPrev').addEventListener('click',function(){ go(-1); });
   $('navNext').addEventListener('click',function(){ go(1); });
   document.addEventListener('keydown',function(e){
-    if(e.key==='Escape'){ hideDetail(); setList(false); }
+    if(e.key==='Escape'){
+      if(detailFs){ setDetailFs(false); return; }
+      hideDetail(); setList(false);
+    }
     var t = e.target && e.target.tagName;
     if((e.key==='ArrowLeft'||e.key==='ArrowRight') && t!=='INPUT' && t!=='SELECT' && t!=='TEXTAREA' && sel){ go(e.key==='ArrowRight'?1:-1); }
   });
