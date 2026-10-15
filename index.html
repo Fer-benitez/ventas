@@ -123,7 +123,11 @@
   .finca-btn.active{background:linear-gradient(135deg,#f5cf5c,#c9962b);color:#1a1200;box-shadow:0 8px 18px -8px rgba(212,165,56,.7);}
   .pin-crown{position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-size:15px;line-height:1;filter:drop-shadow(0 2px 3px rgba(0,0,0,.5));animation:crownPulse 1.8s ease-in-out infinite;}
   @keyframes crownPulse{0%,100%{transform:translateX(-50%) scale(1);}50%{transform:translateX(-50%) scale(1.18);}}
+  .pin-bajada{position:absolute;top:3px;right:-5px;width:15px;height:15px;border-radius:50%;background:linear-gradient(135deg,#ff6b4a,#e2231a);color:#fff;font-size:10px;line-height:15px;text-align:center;font-weight:800;box-shadow:0 2px 4px rgba(0,0,0,.45);}
   .finca-badge{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#f5cf5c,#c9962b);color:#1a1200;font:800 11px/1 'Inter',sans-serif;letter-spacing:.03em;text-transform:uppercase;padding:5px 10px;border-radius:999px;box-shadow:0 4px 12px -3px rgba(212,165,56,.7);}
+  .bajada-badge{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#ff6b4a,#e2231a);color:#fff;font:800 11px/1 'Inter',sans-serif;letter-spacing:.03em;text-transform:uppercase;padding:5px 10px;border-radius:999px;box-shadow:0 4px 12px -3px rgba(226,35,26,.6);}
+  .pr-old{font-size:13px;font-weight:600;color:#9a9a9a;text-decoration:line-through;margin-right:7px;}
+  .row .rs.bajada-rs{background:linear-gradient(135deg,#ff6b4a,#e2231a);color:#fff;border-color:#e2231a;}
   .row .rs.finca-rs{background:linear-gradient(135deg,#f5cf5c,#c9962b);color:#1a1200;border-color:#c9962b;}
   @media(max-width:640px){.op-divider{display:none}.sub-filters{width:100%;justify-content:center;margin-top:2px}.finca-btn{width:100%;justify-content:center;margin-top:6px}}
   .listbar{margin:0 0 12px;position:relative;z-index:1300}
@@ -1263,6 +1267,9 @@
     var sep = MILES_SEP[(loc()||'es').slice(0,2)] || '.';
     return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, sep) + ' €';
   };
+  // Bajada de precio (como en Idealista): true solo si hay un precio anterior
+  // guardado y es mayor que el actual.
+  function hayBajada(p){ return p.precioAnterior!=null && p.precio!=null && p.precioAnterior > p.precio; }
   var base = location.href.split('#')[0].split('?')[0];
   var piso = function(id){ return base + '?piso=' + encodeURIComponent(id); };
   var safeUrl = function(u){ return /^https?:\/\//i.test(u) ? u : '#'; };
@@ -1580,10 +1587,11 @@
       ' aria-label="'+esc(fotos.length?tr('Ver fotos de la propiedad en ')+p.zona:tr('Foto de la propiedad en ')+p.zona)+'">'+
       '<img class="agn-badge" src="agn-logo-color.png" alt="Fincas A.G. Núñez" width="241" height="93">'+
       (p.fincaRegia?'<span class="finca-badge" style="position:absolute;top:12px;left:12px;">👑 '+tr('Finca Regia')+'</span>':'')+
+      (hayBajada(p)?'<span class="bajada-badge" style="position:absolute;bottom:12px;right:12px;">↓ '+tr('Bajada de precio')+'</span>':'')+
       (p.reservado?'<span class="ribbon">'+tr('RESERVADO')+'</span>':'')+
       '<button class="d-close" type="button" aria-label="'+tr('Cerrar')+'" data-close>✕</button></div>'+
       '<div class="bd"><span class="zona">'+esc(p.zona)+'</span><h3>'+esc(p.calle||p.titulo)+'</h3>'+
-      (p.precio!=null?'<div class="pr">'+eur(p.precio)+'</div>':'')+
+      (p.precio!=null?'<div class="pr">'+(hayBajada(p)?'<span class="pr-old">'+eur(p.precioAnterior)+'</span>':'')+eur(p.precio)+'</div>':'')+
       '<div class="facts">'+fact('i-bed',p.habitaciones!=null?(p.habitaciones+' '+tr('hab.')):'')+fact('i-pin',p.zona)+fact('i-ruler',p.m2!=null?(p.m2+' m²'):'')+'</div>'+
       (descripcionLocalizada(p)?('<div class="descwrap"><p class="desc">'+esc(descripcionLocalizada(p))+'</p><button type="button" class="desc-toggle" data-desc-toggle>'+tr('Ver más')+'</button></div>'):'')+
       extraInfoHTML(p)+
@@ -1612,8 +1620,8 @@
 
   function emptyHTML(){ return esc(tr('No hay propiedades con esos filtros. Prueba a limpiarlos o '))+'<a style="text-decoration:underline" href="'+esc(wa(tr('Hola AG Núñez, busco una propiedad para comprar en Barcelona')))+'" target="_blank" rel="noopener">'+esc(tr('cuéntame qué buscas'))+'</a>.'; }
   function rowHTML(p){
-    return '<span class="zona">'+esc(p.zona)+'</span><span class="tt">'+esc(p.titulo)+(p.fincaRegia?'<span class="rs finca-rs">👑 '+tr('FINCA REGIA')+'</span>':'')+(p.reservado?'<span class="rs">'+tr('RESERVADO')+'</span>':'')+'</span>'+
-        (p.precio!=null?'<span class="pr">'+eur(p.precio)+'</span>':'');
+    return '<span class="zona">'+esc(p.zona)+'</span><span class="tt">'+esc(p.titulo)+(p.fincaRegia?'<span class="rs finca-rs">👑 '+tr('FINCA REGIA')+'</span>':'')+(hayBajada(p)?'<span class="rs bajada-rs">↓ '+tr('BAJADA')+'</span>':'')+(p.reservado?'<span class="rs">'+tr('RESERVADO')+'</span>':'')+'</span>'+
+        (p.precio!=null?'<span class="pr">'+(hayBajada(p)?'<span class="pr-old">'+eur(p.precioAnterior)+'</span>':'')+eur(p.precio)+'</span>':'');
   }
   function render(list){
     hideDetail(); shown = list; layer.clearLayers(); markers = {}; byId = {};
@@ -1630,6 +1638,7 @@
       var pinBase = p.operacion==='Alquiler' ? PIN_ALQUILER : PIN;
       var pinHtml = p.reservado?pinBase.replace('class="pin"','class="pin res"'):pinBase;
       if(p.fincaRegia) pinHtml = pinHtml.replace('</svg>','</svg><span class="pin-crown">👑</span>');
+      if(hayBajada(p)) pinHtml = pinHtml.replace('</svg>','</svg><span class="pin-bajada">↓</span>');
       var m = L.marker([p.lat,p.lng],{icon:L.divIcon({html:pinHtml,className:'',iconSize:[34,42],iconAnchor:[17,40],popupAnchor:[0,-36]}),title:p.titulo,alt:p.titulo}).addTo(layer);
       m.on('click',function(){ open(p.id); });
       markers[p.id]=m; byId[p.id]=p; bounds.push([p.lat,p.lng]);
@@ -1741,6 +1750,7 @@
         idealista: link,
         lat: lat, lng: lng,
         precio: numFrom(r['Precio']),
+        precioAnterior: numFrom(r['PrecioAnterior']),
         habitaciones: intFrom(r['Habitaciones']),
         m2: numFrom(r['Metros']),
         disponibilidad: '',
