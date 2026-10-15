@@ -1270,6 +1270,16 @@
   // Bajada de precio (como en Idealista): true solo si hay un precio anterior
   // guardado y es mayor que el actual.
   function hayBajada(p){ return p.precioAnterior!=null && p.precio!=null && p.precioAnterior > p.precio; }
+  // Logo del colaborador externo (Ancor Investments, etc.) sobre la foto, con
+  // fondo blanco para que se lea bien encima de cualquier imagen. Apialia no
+  // tiene logo propio en este sistema, así que sencillamente no pinta nada.
+  function colaboradorLogoHTML(p){
+    var c = p.colaboracion && COLABORADORES[p.colaboracion];
+    if(!c || !c.logo) return '';
+    return '<div style="position:absolute;top:58px;left:12px;z-index:2;background:#fff;border-radius:8px;padding:6px 8px;box-shadow:0 4px 10px rgba(0,0,0,.4);">'+
+      '<img src="'+esc(c.logo)+'" alt="'+esc(p.colaboracion)+'" style="height:28px;width:auto;display:block;">'+
+      '</div>';
+  }
   var base = location.href.split('#')[0].split('?')[0];
   var piso = function(id){ return base + '?piso=' + encodeURIComponent(id); };
   var safeUrl = function(u){ return /^https?:\/\//i.test(u) ? u : '#'; };
@@ -1565,6 +1575,11 @@
     var items = [];
     if(AICAT_NUM) items.push('<span class="lg"><b>'+esc(tr('Nº AICAT'))+'</b> '+esc(AICAT_NUM)+'</span>');
     if(API_NUM) items.push('<span class="lg"><b>'+esc(tr('Nº API'))+'</b> '+esc(API_NUM)+'</span>');
+    // Si la propiedad viene de un colaborador externo con sus propios números
+    // de registro, se añaden aquí — y solo si los ha rellenado (si no, no sale nada).
+    var colab = p.colaboracion && COLABORADORES[p.colaboracion];
+    if(colab && colab.aicat) items.push('<span class="lg"><b>'+esc(tr('Nº AICAT'))+'</b> '+esc(colab.aicat)+'</span>');
+    if(colab && colab.api) items.push('<span class="lg"><b>'+esc(tr('Nº API'))+'</b> '+esc(colab.api)+'</span>');
     items.push(ceeBadgeHTML(p));
     items.push(videoBadgeHTML(p));
     return '<div class="legal">'+items.join('')+'<img class="legal-logo" src="agn-logo-color.png" alt="Fincas A.G. Núñez" width="241" height="93">'+
@@ -1586,7 +1601,8 @@
       (fotos.length?' data-lightbox=\''+esc(JSON.stringify(fotos))+'\' role="button" tabindex="0"':' role="img"')+
       ' aria-label="'+esc(fotos.length?tr('Ver fotos de la propiedad en ')+p.zona:tr('Foto de la propiedad en ')+p.zona)+'">'+
       '<img class="agn-badge" src="agn-logo-color.png" alt="Fincas A.G. Núñez" width="241" height="93">'+
-      (p.fincaRegia?'<span class="finca-badge" style="position:absolute;top:12px;left:12px;">👑 '+tr('Finca Regia')+'</span>':'')+
+      colaboradorLogoHTML(p)+
+      (p.fincaRegia?'<span class="finca-badge" style="position:absolute;top:12px;right:12px;">👑 '+tr('Finca Regia')+'</span>':'')+
       (hayBajada(p)?'<span class="bajada-badge" style="position:absolute;bottom:12px;right:12px;">↓ '+tr('Bajada de precio')+'</span>':'')+
       (p.reservado?'<span class="ribbon">'+tr('RESERVADO')+'</span>':'')+
       '<button class="d-close" type="button" aria-label="'+tr('Cerrar')+'" data-close>✕</button></div>'+
@@ -1751,6 +1767,7 @@
         lat: lat, lng: lng,
         precio: numFrom(r['Precio']),
         precioAnterior: numFrom(r['PrecioAnterior']),
+        colaboracion: String(r['Colaboracion']||'').trim(),
         habitaciones: intFrom(r['Habitaciones']),
         m2: numFrom(r['Metros']),
         disponibilidad: '',
@@ -1796,8 +1813,25 @@
       };
     }).filter(Boolean);
   }
+  // Colaboradores externos (Apialia no entra aquí — es solo uso interno del
+  // panel; esto es para Ancor Investments y los que Fer vaya añadiendo), con
+  // su logo y, si los tiene, su propio Nº AICAT/API. Se carga en paralelo a
+  // las propiedades; si falla o tarda no bloquea el mapa (queda vacío y listo).
+  var COLABORADORES = {};
+  function cargarColaboradores(){
+    if(API_URL.indexOf('PEGA_')===0) return;
+    fetch(API_URL+'?tipo=colaboradores').then(function(r){return r.json();}).then(function(j){
+      if(!j.success||!j.data) return;
+      j.data.forEach(function(c){
+        var nombre = String(c['Nombre']||'').trim();
+        if(!nombre) return;
+        COLABORADORES[nombre] = { logo: String(c['Logo']||'').trim(), aicat: String(c['Aicat']||'').trim(), api: String(c['Api']||'').trim() };
+      });
+    }).catch(function(){});
+  }
   function load(){
     setStatus(function(){ return tr('Cargando propiedades…'); },false);
+    cargarColaboradores();
     if(API_URL.indexOf('PEGA_')===0 || new URLSearchParams(location.search).get('demo')==='1'){ done(DEMO,true); return; }
     fetch(API_URL+'?tipo=propiedades_venta').then(function(r){return r.json();}).then(function(j){
       if(!j.success) throw new Error(j.error||'error'); done(normalizeVenta(j.data),false);
