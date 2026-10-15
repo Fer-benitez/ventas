@@ -110,14 +110,22 @@
   .op-btn.op-alquiler.active{background:#3468d8;}
   .op-btn.op-alquiler.active:hover{background:#4a7ce8;}
   .op-divider{width:1px;align-self:stretch;background:var(--line);margin:0 4px;}
-  .sub-filters{display:flex;gap:9px;}
-  .sub-btn{width:46px;height:46px;flex:none;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#3a3d42;border:1.5px solid transparent;color:#cfccc7;cursor:pointer;transition:transform .15s var(--ease),background .2s,color .2s,box-shadow .2s;}
-  .sub-btn svg{width:20px;height:20px;}
+  .sub-filters{display:flex;gap:8px;}
+  .sub-btn{height:40px;flex:none;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:0 13px 0 11px;background:#3a3d42;border:1.5px solid transparent;color:#cfccc7;cursor:pointer;font:800 10.5px/1 'Inter',sans-serif;letter-spacing:.04em;text-transform:uppercase;transition:transform .15s var(--ease),background .2s,color .2s,box-shadow .2s;}
+  .sub-btn svg{width:18px;height:18px;flex:none;}
   .sub-btn:hover{background:#45484e;color:#fff;}
-  .sub-btn:active{transform:scale(.92);}
+  .sub-btn:active{transform:scale(.95);}
   .sub-btn.active{background:#E2231A;color:#fff;box-shadow:0 8px 18px -8px var(--glow);}
   .sub-btn.sub-local.active{background:#7a5b00;box-shadow:0 8px 18px -8px rgba(122,91,0,.55);}
-  @media(max-width:640px){.op-divider{display:none}.sub-filters{width:100%;justify-content:center;margin-top:2px}}
+  .finca-btn{height:40px;flex:none;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:0 14px;background:#3a3d42;border:1.5px solid transparent;color:#cfccc7;cursor:pointer;font:800 10.5px/1 'Inter',sans-serif;letter-spacing:.04em;text-transform:uppercase;transition:transform .15s var(--ease),background .2s,color .2s,box-shadow .2s;}
+  .finca-btn:hover{background:#45484e;color:#fff;}
+  .finca-btn:active{transform:scale(.95);}
+  .finca-btn.active{background:linear-gradient(135deg,#f5cf5c,#c9962b);color:#1a1200;box-shadow:0 8px 18px -8px rgba(212,165,56,.7);}
+  .pin-crown{position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-size:15px;line-height:1;filter:drop-shadow(0 2px 3px rgba(0,0,0,.5));animation:crownPulse 1.8s ease-in-out infinite;}
+  @keyframes crownPulse{0%,100%{transform:translateX(-50%) scale(1);}50%{transform:translateX(-50%) scale(1.18);}}
+  .finca-badge{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#f5cf5c,#c9962b);color:#1a1200;font:800 11px/1 'Inter',sans-serif;letter-spacing:.03em;text-transform:uppercase;padding:5px 10px;border-radius:999px;box-shadow:0 4px 12px -3px rgba(212,165,56,.7);}
+  .row .rs.finca-rs{background:linear-gradient(135deg,#f5cf5c,#c9962b);color:#1a1200;border-color:#c9962b;}
+  @media(max-width:640px){.op-divider{display:none}.sub-filters{width:100%;justify-content:center;margin-top:2px}.finca-btn{width:100%;justify-content:center;margin-top:6px}}
   .listbar{margin:0 0 12px;position:relative;z-index:1300}
   .listbtn{display:inline-flex;align-items:center;gap:10px;background:var(--black-2);color:var(--white);border:1px solid var(--line);border-radius:12px;padding:10px 16px 10px 12px;font:700 14px 'Inter',sans-serif;cursor:pointer;transition:border-color .25s var(--ease)}
   .listbtn:hover,.listbtn[aria-expanded="true"]{border-color:var(--red)}
@@ -552,6 +560,8 @@
   .rf-btn.rf-alquiler.active{background:#3468d8;border-color:#3468d8;box-shadow:0 8px 18px -8px rgba(52,104,216,.55);}
   .rf-btn.rf-local.active{background:#7a5b00;border-color:#7a5b00;box-shadow:0 8px 18px -8px rgba(122,91,0,.55);}
   .rf-div{width:1px;height:24px;background:rgba(255,255,255,.18);margin:0 2px;}
+  .rf-btn.rf-label{width:auto;border-radius:999px;padding:0 12px 0 10px;gap:5px;font:800 9.5px/1 'Inter',sans-serif;letter-spacing:.04em;text-transform:uppercase;}
+  .rf-btn.rf-finca.active{background:linear-gradient(135deg,#f5cf5c,#c9962b);border-color:#c9962b;color:#1a1200;box-shadow:0 8px 18px -8px rgba(212,165,56,.7);}
   /* ====== Carrusel de reels (como Instagram/TikTok) ======
      #reelsWrap es el contenedor relativo que aloja las flechas de navegación
      (solo escritorio). #reels es el propio scroller: en escritorio es una fila
@@ -730,9 +740,10 @@
     <button type="button" class="op-btn op-alquiler active" id="opAlquiler" data-op="Alquiler">🔑 Alquiler</button>
     <span class="op-divider" id="opDivider" aria-hidden="true" hidden></span>
     <div class="sub-filters" id="subFilters" hidden>
-      <button type="button" class="sub-btn active" id="subVivienda" data-subtipo="Vivienda" title="Vivienda" aria-label="Vivienda"><svg class="ic"><use href="#i-piso"/></svg></button>
-      <button type="button" class="sub-btn sub-local active" id="subLocal" data-subtipo="Local" title="Local" aria-label="Local"><svg class="ic"><use href="#i-shop"/></svg></button>
+      <button type="button" class="sub-btn active" id="subVivienda" data-subtipo="Vivienda" title="Piso" aria-label="Piso"><svg class="ic"><use href="#i-piso"/></svg>Piso</button>
+      <button type="button" class="sub-btn sub-local active" id="subLocal" data-subtipo="Local" title="Local" aria-label="Local"><svg class="ic"><use href="#i-shop"/></svg>Local</button>
     </div>
+    <button type="button" class="finca-btn" id="fincaBtn" data-finca="1" title="Finca Regia" aria-label="Filtrar solo Finca Regia" aria-pressed="false">👑 Finca Regia</button>
   </div>
 
   <div class="filters" id="filters" hidden>
@@ -1144,8 +1155,10 @@
       <button type="button" class="rf-btn active" id="rfVenta" data-rf-op="Venta" title="Venta" aria-label="Venta"><svg class="ic"><use href="#i-home"/></svg></button>
       <button type="button" class="rf-btn rf-alquiler active" id="rfAlquiler" data-rf-op="Alquiler" title="Alquiler" aria-label="Alquiler">🔑</button>
       <span class="rf-div" id="rfDivider" aria-hidden="true" hidden></span>
-      <button type="button" class="rf-btn active" id="rfVivienda" data-rf-sub="Vivienda" title="Vivienda" aria-label="Vivienda" hidden><svg class="ic"><use href="#i-piso"/></svg></button>
-      <button type="button" class="rf-btn rf-local active" id="rfLocal" data-rf-sub="Local" title="Local" aria-label="Local" hidden><svg class="ic"><use href="#i-shop"/></svg></button>
+      <button type="button" class="rf-btn rf-label active" id="rfVivienda" data-rf-sub="Vivienda" title="Piso" aria-label="Piso" hidden><svg class="ic"><use href="#i-piso"/></svg>Piso</button>
+      <button type="button" class="rf-btn rf-label rf-local active" id="rfLocal" data-rf-sub="Local" title="Local" aria-label="Local" hidden><svg class="ic"><use href="#i-shop"/></svg>Local</button>
+      <span class="rf-div" id="rfDivider2" aria-hidden="true"></span>
+      <button type="button" class="rf-btn rf-label rf-finca" id="rfFinca" data-rf-finca="1" title="Finca Regia" aria-label="Filtrar solo Finca Regia" aria-pressed="false">👑 Finca Regia</button>
     </div>
     <div class="reels-wrap" id="reelsWrap">
       <button class="navarrow prev reel-nav" id="reelsPrevBtn" type="button" aria-label="Vídeo anterior" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4l-8 8 8 8"/></svg></button>
@@ -1293,6 +1306,8 @@
   var opActivos = { Venta: true, Alquiler: true };
   // Vivienda/Local: segundo filtro, independiente del de Venta/Alquiler.
   var subtipoActivos = { Vivienda: true, Local: true };
+  // Finca Regia: filtro único (no pareado), apagado = se ven todas.
+  var fincaRegiaFiltro = false;
 
   function initMap(){
     map = L.map('map',{scrollWheelZoom:false,zoomControl:false}).setView(CENTER,12);
@@ -1564,6 +1579,7 @@
       (fotos.length?' data-lightbox=\''+esc(JSON.stringify(fotos))+'\' role="button" tabindex="0"':' role="img"')+
       ' aria-label="'+esc(fotos.length?tr('Ver fotos de la propiedad en ')+p.zona:tr('Foto de la propiedad en ')+p.zona)+'">'+
       '<img class="agn-badge" src="agn-logo-color.png" alt="Fincas A.G. Núñez" width="241" height="93">'+
+      (p.fincaRegia?'<span class="finca-badge" style="position:absolute;top:12px;left:12px;">👑 '+tr('Finca Regia')+'</span>':'')+
       (p.reservado?'<span class="ribbon">'+tr('RESERVADO')+'</span>':'')+
       '<button class="d-close" type="button" aria-label="'+tr('Cerrar')+'" data-close>✕</button></div>'+
       '<div class="bd"><span class="zona">'+esc(p.zona)+'</span><h3>'+esc(p.calle||p.titulo)+'</h3>'+
@@ -1596,7 +1612,7 @@
 
   function emptyHTML(){ return esc(tr('No hay propiedades con esos filtros. Prueba a limpiarlos o '))+'<a style="text-decoration:underline" href="'+esc(wa(tr('Hola AG Núñez, busco una propiedad para comprar en Barcelona')))+'" target="_blank" rel="noopener">'+esc(tr('cuéntame qué buscas'))+'</a>.'; }
   function rowHTML(p){
-    return '<span class="zona">'+esc(p.zona)+'</span><span class="tt">'+esc(p.titulo)+(p.reservado?'<span class="rs">'+tr('RESERVADO')+'</span>':'')+'</span>'+
+    return '<span class="zona">'+esc(p.zona)+'</span><span class="tt">'+esc(p.titulo)+(p.fincaRegia?'<span class="rs finca-rs">👑 '+tr('FINCA REGIA')+'</span>':'')+(p.reservado?'<span class="rs">'+tr('RESERVADO')+'</span>':'')+'</span>'+
         (p.precio!=null?'<span class="pr">'+eur(p.precio)+'</span>':'');
   }
   function render(list){
@@ -1612,7 +1628,9 @@
     var bounds = [];
     list.forEach(function(p){
       var pinBase = p.operacion==='Alquiler' ? PIN_ALQUILER : PIN;
-      var m = L.marker([p.lat,p.lng],{icon:L.divIcon({html:(p.reservado?pinBase.replace('class="pin"','class="pin res"'):pinBase),className:'',iconSize:[34,42],iconAnchor:[17,40],popupAnchor:[0,-36]}),title:p.titulo,alt:p.titulo}).addTo(layer);
+      var pinHtml = p.reservado?pinBase.replace('class="pin"','class="pin res"'):pinBase;
+      if(p.fincaRegia) pinHtml = pinHtml.replace('</svg>','</svg><span class="pin-crown">👑</span>');
+      var m = L.marker([p.lat,p.lng],{icon:L.divIcon({html:pinHtml,className:'',iconSize:[34,42],iconAnchor:[17,40],popupAnchor:[0,-36]}),title:p.titulo,alt:p.titulo}).addTo(layer);
       m.on('click',function(){ open(p.id); });
       markers[p.id]=m; byId[p.id]=p; bounds.push([p.lat,p.lng]);
 
@@ -1650,17 +1668,22 @@
     $('rfVivienda').hidden = !hayLocal;
     $('rfLocal').hidden = !hayLocal;
     $('rfDivider').hidden = !hayLocal;
+    var hayFinca = all.some(function(p){return p.fincaRegia;});
+    $('fincaBtn').hidden = !hayFinca;
+    $('rfFinca').hidden = !hayFinca;
+    $('rfDivider2').hidden = !hayFinca;
   }
   function syncFilterButtons(){
     ['opVenta','opAlquiler'].forEach(function(id){ var b=$(id); if(b) b.classList.toggle('active', opActivos[b.dataset.op]); });
     ['subVivienda','subLocal'].forEach(function(id){ var b=$(id); if(b) b.classList.toggle('active', subtipoActivos[b.dataset.subtipo]); });
     ['rfVenta','rfAlquiler'].forEach(function(id){ var b=$(id); if(b) b.classList.toggle('active', opActivos[b.dataset.rfOp]); });
     ['rfVivienda','rfLocal'].forEach(function(id){ var b=$(id); if(b) b.classList.toggle('active', subtipoActivos[b.dataset.rfSub]); });
+    [$('fincaBtn'),$('rfFinca')].forEach(function(b){ if(b){ b.classList.toggle('active', fincaRegiaFiltro); b.setAttribute('aria-pressed', fincaRegiaFiltro?'true':'false'); } });
   }
   function applyFilters(){
     var z=$('fZona').value, pr=parseFloat($('fPrecio').value), h=parseInt($('fHab').value,10);
     render(all.filter(function(p){
-      return opActivos[p.operacion||'Venta'] && subtipoActivos[p.subtipo||'Vivienda'] && (!z||p.zona===z) && (isNaN(pr)||p.precio==null||p.precio<=pr) && (isNaN(h)||(p.habitaciones||0)>=h);
+      return opActivos[p.operacion||'Venta'] && subtipoActivos[p.subtipo||'Vivienda'] && (!fincaRegiaFiltro||p.fincaRegia) && (!z||p.zona===z) && (isNaN(pr)||p.precio==null||p.precio<=pr) && (isNaN(h)||(p.habitaciones||0)>=h);
     }));
     syncFilterButtons();
     renderReels();
@@ -1743,6 +1766,7 @@
         // estructurado (consumo/emisiones con letra A-G) y datos del alquiler
         // de vivienda (Incasòl): última renta, rango y índice de referencia.
         subtipo: String(r['Subtipo']||'Vivienda').trim() || 'Vivienda',
+        fincaRegia: /^(s[ií]|true|1|x|yes)$/i.test(String(r['FincaRegia']||'').trim()),
         ceeCodigo: String(r['CEE Código Registro']||'').trim(),
         ceeConsumoLetra: String(r['CEE Consumo Letra']||'').trim().toUpperCase(),
         ceeConsumoValor: String(r['CEE Consumo Valor']||'').trim(),
@@ -1801,6 +1825,15 @@
   wireTogglePair(['subVivienda','subLocal'], subtipoActivos, 'subtipo', {Vivienda:560,Local:390});
   wireTogglePair(['rfVenta','rfAlquiler'], opActivos, 'rfOp', {Venta:620,Alquiler:440});
   wireTogglePair(['rfVivienda','rfLocal'], subtipoActivos, 'rfSub', {Vivienda:560,Local:390});
+  // Finca Regia: toggle único y compartido entre la fila principal y la de reels.
+  ['fincaBtn','rfFinca'].forEach(function(id){
+    var btn = $(id); if(!btn) return;
+    btn.addEventListener('click',function(){
+      playClickSound(700);
+      fincaRegiaFiltro = !fincaRegiaFiltro;
+      applyFilters();
+    });
+  });
   document.addEventListener('click',function(e){
     if(e.target.closest && e.target.closest('[data-close]')){ hideDetail(); return; }
     var lb = e.target.closest && e.target.closest('[data-lightbox]');
@@ -1873,7 +1906,7 @@
     var wrap = $('reels'); if(!wrap) return;
     wrap.innerHTML = '';
     var PLAY = '<span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>';
-    var conVideo = (all||[]).filter(function(p){ return p.video && opActivos[p.operacion||'Venta'] && subtipoActivos[p.subtipo||'Vivienda']; });
+    var conVideo = (all||[]).filter(function(p){ return p.video && opActivos[p.operacion||'Venta'] && subtipoActivos[p.subtipo||'Vivienda'] && (!fincaRegiaFiltro||p.fincaRegia); });
     if(conVideo.length){
       wrap.classList.add('emb');
       conVideo.forEach(function(p){
