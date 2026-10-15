@@ -181,16 +181,34 @@
   .navarrow:hover{transform:translateY(-50%) scale(1.1);background:#ef4444;}
   .navarrow:active{transform:translateY(-50%) scale(.95);}
   .navarrow.prev{left:14px}.navarrow.next{right:14px}
-  .mapwrap.has-detail .navarrow.prev{left:372px}
+  /* En pantalla completa (ficha abierta) las flechas de prev/siguiente propiedad
+     flotan por encima de todo, con position:fixed (ya no dependen del tamaño
+     de .mapwrap, que queda colapsado al sacarse el mapa de ahí). */
+  .mapwrap.has-detail .navarrow{position:fixed;z-index:2600;}
   @media(max-width:640px){.navarrow{top:calc(max(46vh,340px)/2);width:44px;height:44px}.navarrow svg{width:19px;height:19px}.navarrow.prev{left:10px}.navarrow.next{right:10px}.mapwrap.has-detail .navarrow.prev{left:10px}}
   .mapwrap{position:relative;margin-top:6px;}
   .mapwrap #map{margin-top:0;}
-  .detail{display:none;position:absolute;z-index:1100;left:12px;top:12px;bottom:12px;width:344px;background:var(--black-2);border:1px solid var(--line);border-radius:16px;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,.65);}
-  .detail.open{display:block;animation:dIn .3s var(--ease);}
-  @keyframes dIn{from{opacity:0;transform:translateX(-22px)}to{opacity:1;transform:none}}
-  .detail .dph{height:190px;background:var(--black-3) center/cover no-repeat;position:relative;}
+  /* Ficha de la propiedad = pantalla completa (ordenador y móvil), al estilo
+     Idealista: cubre toda la ventana, con scroll propio. El mapa real (el
+     mismo objeto Leaflet, no uno nuevo) se traslada dentro de .detail-minimap
+     mientras está abierta, mostrando solo el pin de este activo. */
+  .detail{display:none;position:fixed;inset:0;z-index:2500;background:var(--black);overflow-y:auto;-webkit-overflow-scrolling:touch;}
+  .detail.open{display:block;animation:dIn .25s var(--ease);}
+  @keyframes dIn{from{opacity:0}to{opacity:1}}
+  .detail-inner{max-width:1180px;margin:0 auto;padding:18px 18px 60px;}
+  .detail-grid{display:flex;flex-direction:column;gap:18px;}
+  .detail-side{display:flex;flex-direction:column;gap:14px;}
+  .detail-minimap{height:240px;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:var(--black-3);}
+  .detail-minimap #map{height:100%;min-height:0;margin-top:0;border-radius:14px;border:none;}
+  .detail-video-slot .video-badge{width:100%;justify-content:center;padding:13px;font-size:12.5px;}
+  @media(min-width:900px){
+    .detail-grid{flex-direction:row;align-items:flex-start;}
+    .detail-side{flex:0 0 340px;position:sticky;top:18px;}
+    .detail-main{flex:1 1 auto;min-width:0;}
+  }
+  .detail .dph{height:38vh;min-height:230px;max-height:440px;background:var(--black-3) center/cover no-repeat;position:relative;}
   .detail .dph::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(20,20,20,.85),transparent 55%);}
-  .d-close{position:absolute;right:12px;top:12px;z-index:2;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(0,0,0,.55);color:#fff;font-size:15px;cursor:pointer;}
+  .d-close{position:fixed;right:16px;top:16px;z-index:2600;width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(0,0,0,.6);color:#fff;font-size:15px;cursor:pointer;box-shadow:0 6px 16px rgba(0,0,0,.45);}
   .detail .bd{padding:16px 18px 20px;display:flex;flex-direction:column;gap:10px;}
   .detail .zona{font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--red);}
   .detail h3{font-size:21px;line-height:1.15;}
@@ -321,11 +339,12 @@
   .pin.sel path{fill:#fff;stroke:#fff;}
   .pin.sel circle{fill:var(--red);}
   @media(max-width:640px){
-    .detail{position:static;width:auto;margin-top:12px;overflow:visible;}
     .detail.open{animation:dUp .3s var(--ease);}
-    .detail .dph{height:120px;border-radius:16px 16px 0 0;}
+    .detail .dph{height:30vh;min-height:190px;max-height:320px;border-radius:0;}
     .detail .bd{padding:14px 16px 18px;}
     .detail .pr{font-size:22px;}
+    .detail-inner{padding:14px 14px 50px;}
+    .detail-minimap{height:200px;}
   }
   @keyframes dUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
   .empty{padding:60px 20px;text-align:center;color:var(--muted);line-height:1.7;}
@@ -713,16 +732,17 @@
   <div class="wrap top">
     <div class="brandrow" aria-label="HabiClic" style="margin-left:22px"><span class="habiclic-logo"><span class="big">H</span><span class="small">ABI</span><span class="big c">C</span><span class="small">LIC</span></span></div>
     <div class="lang" id="lang">
-      <button type="button" class="lang-toggle" id="langToggle" aria-haspopup="true" aria-expanded="false" aria-label="Idioma / Language / Sprache / Langue">
+      <button type="button" class="lang-toggle" id="langToggle" aria-haspopup="true" aria-expanded="false" aria-label="Idioma / Language / Sprache / Langue / Язык">
         <span class="lang-flag" id="langFlag" aria-hidden="true"><svg viewBox="0 0 32 32" preserveAspectRatio="xMidYMid slice"><rect width="32" height="32" fill="#c60b1e"/><rect y="8" width="32" height="16" fill="#ffc400"/></svg></span>
         <span class="lang-code" id="langCode">ES</span>
         <svg class="ic chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
       </button>
-      <nav class="lang-menu" id="langMenu" role="menu" aria-label="Idioma / Language / Sprache / Langue">
+      <nav class="lang-menu" id="langMenu" role="menu" aria-label="Idioma / Language / Sprache / Langue / Язык">
         <button type="button" data-lang="es" role="menuitem" aria-pressed="true"><span class="lang-flag" aria-hidden="true"><svg viewBox="0 0 32 32" preserveAspectRatio="xMidYMid slice"><rect width="32" height="32" fill="#c60b1e"/><rect y="8" width="32" height="16" fill="#ffc400"/></svg></span>Español</button>
         <button type="button" data-lang="en" role="menuitem" aria-pressed="false"><span class="lang-flag" aria-hidden="true"><svg viewBox="0 0 32 32" preserveAspectRatio="xMidYMid slice"><rect width="32" height="32" fill="#012169"/><path d="M0 0L32 32M32 0L0 32" stroke="#fff" stroke-width="6"/><path d="M0 0L32 32M32 0L0 32" stroke="#c8102e" stroke-width="2"/><path d="M16 0V32M0 16H32" stroke="#fff" stroke-width="10"/><path d="M16 0V32M0 16H32" stroke="#c8102e" stroke-width="6"/></svg></span>English</button>
         <button type="button" data-lang="de" role="menuitem" aria-pressed="false"><span class="lang-flag" aria-hidden="true"><svg viewBox="0 0 32 32" preserveAspectRatio="xMidYMid slice"><rect width="32" height="11" fill="#000"/><rect y="10.6" width="32" height="10.9" fill="#dd0000"/><rect y="21.3" width="32" height="10.7" fill="#ffce00"/></svg></span>Deutsch</button>
         <button type="button" data-lang="fr" role="menuitem" aria-pressed="false"><span class="lang-flag" aria-hidden="true"><svg viewBox="0 0 32 32" preserveAspectRatio="xMidYMid slice"><rect width="11" height="32" fill="#0055a4"/><rect x="10.6" width="10.9" height="32" fill="#fff"/><rect x="21.3" width="10.7" height="32" fill="#ef4135"/></svg></span>Français</button>
+        <button type="button" data-lang="ru" role="menuitem" aria-pressed="false"><span class="lang-flag" aria-hidden="true"><svg viewBox="0 0 32 32" preserveAspectRatio="xMidYMid slice"><rect width="32" height="32" fill="#fff"/><rect y="10.7" width="32" height="10.6" fill="#0039a6"/><rect y="21.3" width="32" height="10.7" fill="#d52b1e"/></svg></span>Русский</button>
       </nav>
     </div>
     <div class="top-actions">
@@ -734,9 +754,10 @@
 
 <main class="wrap">
   <section class="hero">
-    <span class="eyebrow">Venta · Barcelona</span>
-    <div class="hero-row"><h1>Propiedades en venta disponibles ahora<span class="count" id="count">…</span></h1><button class="bellbtn bell-hero" type="button" data-alert aria-label="Avísame de propiedades nuevas" title="Avísame de propiedades nuevas"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 17V11a6 6 0 0112 0v6l2 2H4z"/><path d="M10 21a2 2 0 004 0"/></svg><i class="bdot" aria-hidden="true"></i></button></div>
+    <span class="eyebrow">Venta · Alquiler · Barcelona</span>
+    <div class="hero-row"><h1>Propiedades en venta y alquiler disponibles ahora<span class="count" id="count">…</span></h1><button class="bellbtn bell-hero" type="button" data-alert aria-label="Avísame de propiedades nuevas" title="Avísame de propiedades nuevas"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 17V11a6 6 0 0112 0v6l2 2H4z"/><path d="M10 21a2 2 0 004 0"/></svg><i class="bdot" aria-hidden="true"></i></button></div>
     <p>Mira dónde está cada propiedad, su precio y sus fotos. Cuando una te encaje, pide la visita desde su ficha: te contesto yo directamente.</p>
+    <p class="hero-sub">Este mapa es HabiClic, la herramienta con la que centralizo y comparto contigo, en un único sitio, todas las propiedades que tengo disponibles.</p>
   </section>
 
   <div class="op-filters" id="opFilters" hidden>
@@ -1270,6 +1291,16 @@
   // Bajada de precio (como en Idealista): true solo si hay un precio anterior
   // guardado y es mayor que el actual.
   function hayBajada(p){ return p.precioAnterior!=null && p.precio!=null && p.precioAnterior > p.precio; }
+  // Construye el HTML del pin (icono + badges de corona/bajada) para una
+  // propiedad — se usa tanto en el mapa normal (render) como en la mini-vista
+  // de un solo activo dentro de la ficha a pantalla completa.
+  function pinHtmlFor(p){
+    var pinBase = p.operacion==='Alquiler' ? PIN_ALQUILER : PIN;
+    var pinHtml = p.reservado?pinBase.replace('class="pin"','class="pin res"'):pinBase;
+    if(p.fincaRegia) pinHtml = pinHtml.replace('</svg>','</svg><span class="pin-crown">👑</span>');
+    if(hayBajada(p)) pinHtml = pinHtml.replace('</svg>','</svg><span class="pin-bajada">↓</span>');
+    return pinHtml;
+  }
   // Logo del colaborador externo (Ancor Investments, etc.) sobre la foto, con
   // fondo blanco para que se lea bien encima de cualquier imagen. Apialia no
   // tiene logo propio en este sistema, así que sencillamente no pinta nada.
@@ -1581,7 +1612,10 @@
     if(colab && colab.aicat) items.push('<span class="lg"><b>'+esc(tr('Nº AICAT'))+'</b> '+esc(colab.aicat)+'</span>');
     if(colab && colab.api) items.push('<span class="lg"><b>'+esc(tr('Nº API'))+'</b> '+esc(colab.api)+'</span>');
     items.push(ceeBadgeHTML(p));
-    items.push(videoBadgeHTML(p));
+    // NOTA: el botón de vídeo ya no va aquí — en la ficha a pantalla completa
+    // se coloca arriba, junto al mapa (ver detailHTML / .detail-video-slot),
+    // para que se vea bien también en ordenador en vez de quedar perdido
+    // entre las pastillas pequeñas del pie legal.
     return '<div class="legal">'+items.join('')+'<img class="legal-logo" src="agn-logo-color.png" alt="Fincas A.G. Núñez" width="241" height="93">'+
       '<span class="legal-caption">'+esc(tr('Un producto de Fincas A.G. Núñez'))+'</span></div>';
   }
@@ -1597,6 +1631,7 @@
   }
   function detailHTML(p){
     var fotos = (p.fotos&&p.fotos.length) ? p.fotos : (p.imagen?[p.imagen]:[]);
+    var vbadge = videoBadgeHTML(p);
     return '<div class="dph"'+(p.imagen?' style="background-image:url(\''+esc(photo(p.imagen))+'\')"':'')+
       (fotos.length?' data-lightbox=\''+esc(JSON.stringify(fotos))+'\' role="button" tabindex="0"':' role="img"')+
       ' aria-label="'+esc(fotos.length?tr('Ver fotos de la propiedad en ')+p.zona:tr('Foto de la propiedad en ')+p.zona)+'">'+
@@ -1605,23 +1640,80 @@
       (p.fincaRegia?'<span class="finca-badge" style="position:absolute;top:12px;right:12px;">👑 '+tr('Finca Regia')+'</span>':'')+
       (hayBajada(p)?'<span class="bajada-badge" style="position:absolute;bottom:12px;right:12px;">↓ '+tr('Bajada de precio')+'</span>':'')+
       (p.reservado?'<span class="ribbon">'+tr('RESERVADO')+'</span>':'')+
-      '<button class="d-close" type="button" aria-label="'+tr('Cerrar')+'" data-close>✕</button></div>'+
-      '<div class="bd"><span class="zona">'+esc(p.zona)+'</span><h3>'+esc(p.calle||p.titulo)+'</h3>'+
-      (p.precio!=null?'<div class="pr">'+(hayBajada(p)?'<span class="pr-old">'+eur(p.precioAnterior)+'</span>':'')+eur(p.precio)+'</div>':'')+
-      '<div class="facts">'+fact('i-bed',p.habitaciones!=null?(p.habitaciones+' '+tr('hab.')):'')+fact('i-pin',p.zona)+fact('i-ruler',p.m2!=null?(p.m2+' m²'):'')+'</div>'+
-      (descripcionLocalizada(p)?('<div class="descwrap"><p class="desc">'+esc(descripcionLocalizada(p))+'</p><button type="button" class="desc-toggle" data-desc-toggle>'+tr('Ver más')+'</button></div>'):'')+
-      extraInfoHTML(p)+
-      '<div class="approx">'+tr('📍 Ubicación aproximada (pin blanco en el mapa). La dirección exacta te la doy al concertar la visita.')+'</div>'+acts(p)+alquilerViviendaHTML(p)+legalHTML(p)+'</div>';
+      '</div>'+
+      '<button class="d-close" type="button" aria-label="'+tr('Cerrar')+'" data-close>✕</button>'+
+      // Pantalla completa, estilo Idealista: columna lateral con el mapa
+      // (siempre visible, mostrando solo este activo) y el vídeo si lo tiene,
+      // y columna principal con toda la info de la propiedad.
+      '<div class="detail-inner"><div class="detail-grid">'+
+        '<div class="detail-side">'+
+          '<div class="detail-minimap" id="detailMapHost" aria-label="'+esc(tr('Ubicación en el mapa'))+'"></div>'+
+          (vbadge?'<div class="detail-video-slot">'+vbadge+'</div>':'')+
+        '</div>'+
+        '<div class="bd detail-main"><span class="zona">'+esc(p.zona)+'</span><h3>'+esc(p.calle||p.titulo)+'</h3>'+
+        (p.precio!=null?'<div class="pr">'+(hayBajada(p)?'<span class="pr-old">'+eur(p.precioAnterior)+'</span>':'')+eur(p.precio)+'</div>':'')+
+        '<div class="facts">'+fact('i-bed',p.habitaciones!=null?(p.habitaciones+' '+tr('hab.')):'')+fact('i-pin',p.zona)+fact('i-ruler',p.m2!=null?(p.m2+' m²'):'')+'</div>'+
+        (descripcionLocalizada(p)?('<div class="descwrap"><p class="desc">'+esc(descripcionLocalizada(p))+'</p><button type="button" class="desc-toggle" data-desc-toggle>'+tr('Ver más')+'</button></div>'):'')+
+        extraInfoHTML(p)+
+        '<div class="approx">'+tr('📍 Ubicación aproximada (pin blanco en el mapa). La dirección exacta te la doy al concertar la visita.')+'</div>'+acts(p)+alquilerViviendaHTML(p)+legalHTML(p)+
+        '</div>'+
+      '</div></div>';
   }
   function unmark(){
     if(!sel) return;
     var e = pinEl(sel); if(e) e.classList.remove('sel');
     if(markers[sel]) markers[sel].setZIndexOffset(0);
   }
+  // Pantalla completa por propiedad: el mapa real (el mismo objeto Leaflet,
+  // nunca uno nuevo) se traslada dentro de .detail-minimap mientras la ficha
+  // está abierta, y se filtra para pintar solo el pin de ese activo — "EL
+  // MAPA ES crucial que esté a la vista y que solo se vea nuestro activo".
+  // Al cerrar, vuelve a su sitio en .mapwrap con todos los pines filtrados.
+  var mapMoved = false, mapOriginalParent = null, mapNextSibling = null;
+  function enterMapFullscreenFor(p){
+    var mapEl = $('map');
+    if(!mapMoved){ mapOriginalParent = mapEl.parentNode; mapNextSibling = mapEl.nextSibling; }
+    var host = document.getElementById('detailMapHost');
+    if(host) host.appendChild(mapEl);
+    mapMoved = true;
+    layer.clearLayers();
+    var pinHtml = pinHtmlFor(p).replace(/class="pin( res)?"/,'class="pin$1 sel"');
+    var mk = L.marker([p.lat,p.lng],{icon:L.divIcon({html:pinHtml,className:'',iconSize:[34,42],iconAnchor:[17,40],popupAnchor:[0,-36]}),title:p.titulo,alt:p.titulo}).addTo(layer);
+    markers = {}; markers[p.id] = mk; byId[p.id] = p;
+    setTimeout(function(){
+      try{ map.invalidateSize(); map.setView([p.lat,p.lng], Math.max(map.getZoom(),16)); }catch(err){}
+    },80);
+  }
+  function restoreAllMarkers(){
+    layer.clearLayers(); markers = {}; byId = {};
+    (shown||[]).forEach(function(p){
+      var mk = L.marker([p.lat,p.lng],{icon:L.divIcon({html:pinHtmlFor(p),className:'',iconSize:[34,42],iconAnchor:[17,40],popupAnchor:[0,-36]}),title:p.titulo,alt:p.titulo}).addTo(layer);
+      mk.on('click',function(){ open(p.id); });
+      markers[p.id] = mk; byId[p.id] = p;
+    });
+  }
+  function exitMapFullscreen(){
+    if(!mapMoved) return;
+    mapMoved = false;
+    var mapEl = $('map');
+    if(mapOriginalParent){
+      if(mapNextSibling && mapNextSibling.parentNode===mapOriginalParent) mapOriginalParent.insertBefore(mapEl, mapNextSibling);
+      else mapOriginalParent.appendChild(mapEl);
+    }
+    restoreAllMarkers();
+    setTimeout(function(){ try{ map.invalidateSize(); }catch(err){} },60);
+  }
   function hideDetail(){
-    unmark(); sel = null;
+    unmark();
+    var wasOpen = !!sel;
+    sel = null;
     $('detail').classList.remove('open'); $('mapwrap').classList.remove('has-detail');
     document.querySelectorAll('.row.active').forEach(function(c){c.classList.remove('active');});
+    if(wasOpen){
+      exitMapFullscreen();
+      document.documentElement.style.overflow = ''; document.body.style.overflow = '';
+      history.replaceState(null,'',base);
+    }
   }
   function select(p){
     var m = markers[p.id]; if(!m) return;
@@ -1631,6 +1723,8 @@
     m.setZIndexOffset(1000);
     setActive(p.id); history.replaceState(null,'',piso(p.id));
     var d = $('detail'); d.innerHTML = detailHTML(p); d.scrollTop = 0; d.classList.add('open'); $('mapwrap').classList.add('has-detail');
+    enterMapFullscreenFor(p);
+    document.documentElement.style.overflow = 'hidden'; document.body.style.overflow = 'hidden';
   }
   var sel = null;
 
@@ -1651,10 +1745,7 @@
     }
     var bounds = [];
     list.forEach(function(p){
-      var pinBase = p.operacion==='Alquiler' ? PIN_ALQUILER : PIN;
-      var pinHtml = p.reservado?pinBase.replace('class="pin"','class="pin res"'):pinBase;
-      if(p.fincaRegia) pinHtml = pinHtml.replace('</svg>','</svg><span class="pin-crown">👑</span>');
-      if(hayBajada(p)) pinHtml = pinHtml.replace('</svg>','</svg><span class="pin-bajada">↓</span>');
+      var pinHtml = pinHtmlFor(p);
       var m = L.marker([p.lat,p.lng],{icon:L.divIcon({html:pinHtml,className:'',iconSize:[34,42],iconAnchor:[17,40],popupAnchor:[0,-36]}),title:p.titulo,alt:p.titulo}).addTo(layer);
       m.on('click',function(){ open(p.id); });
       markers[p.id]=m; byId[p.id]=p; bounds.push([p.lat,p.lng]);
@@ -2249,7 +2340,8 @@
       es: '<svg viewBox="0 0 32 32" preserveAspectRatio="xMidYMid slice"><rect width="32" height="32" fill="#c60b1e"/><rect y="8" width="32" height="16" fill="#ffc400"/></svg>',
       en: '<svg viewBox="0 0 32 32" preserveAspectRatio="xMidYMid slice"><rect width="32" height="32" fill="#012169"/><path d="M0 0L32 32M32 0L0 32" stroke="#fff" stroke-width="6"/><path d="M0 0L32 32M32 0L0 32" stroke="#c8102e" stroke-width="2"/><path d="M16 0V32M0 16H32" stroke="#fff" stroke-width="10"/><path d="M16 0V32M0 16H32" stroke="#c8102e" stroke-width="6"/></svg>',
       de: '<svg viewBox="0 0 32 32" preserveAspectRatio="xMidYMid slice"><rect width="32" height="11" fill="#000"/><rect y="10.6" width="32" height="10.9" fill="#dd0000"/><rect y="21.3" width="32" height="10.7" fill="#ffce00"/></svg>',
-      fr: '<svg viewBox="0 0 32 32" preserveAspectRatio="xMidYMid slice"><rect width="11" height="32" fill="#0055a4"/><rect x="10.6" width="10.9" height="32" fill="#fff"/><rect x="21.3" width="10.7" height="32" fill="#ef4135"/></svg>'
+      fr: '<svg viewBox="0 0 32 32" preserveAspectRatio="xMidYMid slice"><rect width="11" height="32" fill="#0055a4"/><rect x="10.6" width="10.9" height="32" fill="#fff"/><rect x="21.3" width="10.7" height="32" fill="#ef4135"/></svg>',
+      ru: '<svg viewBox="0 0 32 32" preserveAspectRatio="xMidYMid slice"><rect width="32" height="32" fill="#fff"/><rect y="10.7" width="32" height="10.6" fill="#0039a6"/><rect y="21.3" width="32" height="10.7" fill="#d52b1e"/></svg>'
     };
     function setLangFlag(l){ langFlag.innerHTML = LANG_FLAGS[l] || LANG_FLAGS.es; }
     function closeLangMenu(){ langMenu.classList.remove('open'); langToggle.setAttribute('aria-expanded','false'); }
