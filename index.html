@@ -193,21 +193,22 @@
   @media(max-width:640px){.navarrow{top:calc(max(46vh,340px)/2);width:44px;height:44px}.navarrow svg{width:19px;height:19px}.navarrow.prev{left:10px}.navarrow.next{right:10px}.mapwrap.has-detail .navarrow.prev{left:10px}}
   .mapwrap{position:relative;margin-top:6px;}
   .mapwrap #map{margin-top:0;}
-  /* Ficha de la propiedad: por defecto es una TARJETA flotante (modal), como
-     siempre — el mapa se queda quieto, a la vista, con todos los pines. Solo
-     al pulsar el botón de pantalla completa (.d-fs / data-fs-toggle) la
-     ficha pasa al modo "Idealista" (.detail.fs) que cubre toda la ventana:
-     el mapa real (el mismo objeto Leaflet, no uno nuevo) se traslada
-     entonces dentro de .detail-minimap mostrando solo el pin de este activo,
-     y la foto de cabecera (recortada) se sustituye por un carrusel con
-     efecto de profundidad para que las fotos se vean enteras. Ver JS:
-     setDetailFs(). */
-  .detail{display:none;position:fixed;inset:0;z-index:2500;background:rgba(6,10,20,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);overflow-y:auto;-webkit-overflow-scrolling:touch;padding:26px 16px 40px;}
-  .detail.open{display:block;animation:dIn .25s var(--ease);}
-  @keyframes dIn{from{opacity:0}to{opacity:1}}
-  .detail-card{position:relative;max-width:760px;margin:0 auto;background:var(--black);border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 30px 80px -12px rgba(0,0,0,.65);}
+  /* Ficha de la propiedad: por defecto es un panel "al costado", como
+     siempre — en ordenador se abre pegado a la IZQUIERDA (por eso open()
+     desplaza el centrado del mapa 176px, más abajo, para dejarle hueco) y
+     el mapa se queda quieto, a la vista, con todos los pines, en el resto
+     de la pantalla; en móvil sube como una hoja desde abajo. Solo al pulsar
+     el botón de pantalla completa (.d-fs / data-fs-toggle) la ficha pasa al
+     modo "Idealista" (.detail.fs) que cubre toda la ventana: el mapa real
+     (el mismo objeto Leaflet, no uno nuevo) se traslada entonces dentro de
+     .detail-minimap mostrando solo el pin de este activo, y la foto de
+     cabecera (recortada) se sustituye por un carrusel con efecto de
+     profundidad para que las fotos se vean enteras. Ver JS: setDetailFs(). */
+  .detail{display:block;position:fixed;top:0;left:0;bottom:0;z-index:2500;width:min(380px,92vw);background:var(--black);border-right:1px solid var(--line);box-shadow:20px 0 60px -14px rgba(0,0,0,.6);overflow-y:auto;-webkit-overflow-scrolling:touch;transform:translateX(-100%);transition:transform .32s var(--ease);visibility:hidden;}
+  .detail.open{transform:translateX(0);visibility:visible;}
+  .detail-card{position:relative;min-height:100%;}
   .detail-media{position:relative;}
-  .detail-inner{max-width:1180px;margin:0 auto;padding:18px 18px 60px;}
+  .detail-inner{padding:0 0 40px;}
   .detail-grid{display:flex;flex-direction:column;gap:18px;}
   .detail-side{display:none;flex-direction:column;gap:14px;}
   .detail-minimap{height:240px;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:var(--black-3);}
@@ -215,16 +216,23 @@
   .detail-video-slot .video-badge{width:100%;justify-content:center;padding:13px;font-size:12.5px;}
   .card-video-slot{margin:2px 0 0;}
   /* --- Modo pantalla completa --- */
-  .detail.fs{padding:0;background:var(--black);backdrop-filter:none;-webkit-backdrop-filter:none;}
-  .detail.fs .detail-card{max-width:none;margin:0;border:0;border-radius:0;box-shadow:none;}
+  .detail.fs{top:0;left:0;right:0;bottom:0;width:auto;max-width:none;height:auto;border:0;box-shadow:none;border-radius:0;background:var(--black);transform:none;}
   .detail.fs .detail-side{display:flex;}
   .detail.fs .card-video-slot{display:none;}
   .detail.fs .dph{display:none;}
   .detail.fs .d-carousel{display:block;}
+  .detail.fs .detail-inner{max-width:1180px;margin:0 auto;padding:18px 18px 60px;}
   @media(min-width:900px){
     .detail.fs .detail-grid{flex-direction:row;align-items:flex-start;}
     .detail.fs .detail-side{flex:0 0 340px;position:sticky;top:18px;}
     .detail.fs .detail-main{flex:1 1 auto;min-width:0;}
+  }
+  /* En móvil/tablet no cabe un panel lateral junto al mapa: sube como una
+     hoja desde abajo (bottom sheet), ocupando casi toda la pantalla. */
+  @media(max-width:640px){
+    .detail{left:0;right:0;top:auto;bottom:0;width:auto;max-width:none;height:88vh;border-right:0;border-top:1px solid var(--line);border-radius:18px 18px 0 0;box-shadow:0 -20px 50px -14px rgba(0,0,0,.6);transform:translateY(100%);}
+    .detail.open{transform:translateY(0);}
+    .detail.fs{left:0;right:0;top:0;bottom:0;height:auto;border-radius:0;transform:none;}
   }
   /* Carrusel de fotos a pantalla completa, con efecto de profundidad
      (coverflow): la foto activa centrada a tamaño completo, las vecinas
@@ -381,15 +389,14 @@
   .pin.sel{transform:scale(1.25);filter:drop-shadow(0 0 10px rgba(255,255,255,.55));z-index:5;}
   .pin.sel path{fill:#fff;stroke:#fff;}
   .pin.sel circle{fill:var(--red);}
+  @keyframes dIn{from{opacity:0}to{opacity:1}}
   @media(max-width:640px){
-    .detail.open{animation:dUp .3s var(--ease);}
     .detail .dph{height:30vh;min-height:190px;max-height:320px;border-radius:0;}
     .detail .bd{padding:14px 16px 18px;}
     .detail .pr{font-size:22px;}
     .detail-inner{padding:14px 14px 50px;}
     .detail-minimap{height:200px;}
   }
-  @keyframes dUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
   .empty{padding:60px 20px;text-align:center;color:var(--muted);line-height:1.7;}
   .demo{background:#3a2a00;border:1px solid #7a5b00;color:#ffd77a;padding:10px 16px;font-size:13px;text-align:center;}
   .cta{margin:44px 0 0;padding:34px 28px;background:var(--black-2);border:1px solid var(--line);border-radius:16px;display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;}
