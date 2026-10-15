@@ -89,10 +89,15 @@
   .hero h1{font-size:clamp(28px,4.2vw,46px);max-width:760px;}
   .hero p{color:var(--muted);margin-top:12px;max-width:620px;line-height:1.6;}
   .count{display:inline-block;margin-left:10px;font-size:13px;font-weight:700;color:var(--red);background:rgba(226,35,26,.12);border:1px solid var(--red-dim);border-radius:999px;padding:3px 12px;vertical-align:middle;}
-  .filters{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 18px;}
-  .filters label{display:flex;flex-direction:column;gap:5px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
-  .filters select{background:var(--black-2);color:var(--white);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:600 14px Inter,sans-serif;min-width:150px;}
-  .filters .clear{align-self:flex-end;}
+  .filters{display:flex;flex-wrap:wrap;gap:16px;margin:22px 0 18px;padding:16px 18px;background:var(--black-2);border:1px solid var(--line);border-radius:18px;align-items:flex-end;}
+  .filters label{display:flex;flex-direction:column;gap:7px;font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+  .filters label .flab{display:flex;align-items:center;gap:6px;}
+  .filters label .flab svg{width:13px;height:13px;color:var(--red);flex:none;}
+  .filters select{background:var(--black-3);color:var(--white);border:1px solid var(--line);border-radius:11px;padding:10px 14px;font:600 14px Inter,sans-serif;min-width:150px;cursor:pointer;transition:border-color .2s,box-shadow .2s;}
+  .filters select:hover{border-color:rgba(255,255,255,.35);}
+  .filters select:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 3px rgba(226,35,26,.2);}
+  .filters .clear{align-self:flex-end;border-radius:999px;}
+  @media(max-width:640px){.filters{padding:14px;gap:12px}}
   .op-filters{display:flex;gap:12px;margin:22px 0 0;}
   .op-btn{flex:0 0 auto;display:inline-flex;align-items:center;gap:9px;padding:12px 25px;border-radius:999px;font-weight:700;font-size:14px;letter-spacing:.01em;font-family:'Montserrat',sans-serif;border:1.5px solid transparent;background:#3a3d42;color:var(--white);cursor:pointer;transition:transform .15s var(--ease),background .2s,color .2s;}
   .op-btn .op-ic{width:18px;height:18px;flex:none;}
@@ -104,6 +109,15 @@
      (los de venta son rojos, los de alquiler azules). */
   .op-btn.op-alquiler.active{background:#3468d8;}
   .op-btn.op-alquiler.active:hover{background:#4a7ce8;}
+  .op-divider{width:1px;align-self:stretch;background:var(--line);margin:0 4px;}
+  .sub-filters{display:flex;gap:9px;}
+  .sub-btn{width:46px;height:46px;flex:none;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#3a3d42;border:1.5px solid transparent;color:#cfccc7;cursor:pointer;transition:transform .15s var(--ease),background .2s,color .2s,box-shadow .2s;}
+  .sub-btn svg{width:20px;height:20px;}
+  .sub-btn:hover{background:#45484e;color:#fff;}
+  .sub-btn:active{transform:scale(.92);}
+  .sub-btn.active{background:#E2231A;color:#fff;box-shadow:0 8px 18px -8px var(--glow);}
+  .sub-btn.sub-local.active{background:#7a5b00;box-shadow:0 8px 18px -8px rgba(122,91,0,.55);}
+  @media(max-width:640px){.op-divider{display:none}.sub-filters{width:100%;justify-content:center;margin-top:2px}}
   .listbar{margin:0 0 12px;position:relative;z-index:1300}
   .listbtn{display:inline-flex;align-items:center;gap:10px;background:var(--black-2);color:var(--white);border:1px solid var(--line);border-radius:12px;padding:10px 16px 10px 12px;font:700 14px 'Inter',sans-serif;cursor:pointer;transition:border-color .25s var(--ease)}
   .listbtn:hover,.listbtn[aria-expanded="true"]{border-color:var(--red)}
@@ -529,6 +543,15 @@
   .ig-id .handle{color:var(--red);font-weight:700;font-size:15px;margin-top:6px;display:block;}
   .ig-id p{color:var(--muted);font-size:14.5px;margin-top:6px;}
   .ig-btn{background:linear-gradient(135deg,#e2231a,#ef4444);border:0;color:#fff!important;}
+  .reel-filters{display:flex;align-items:center;gap:8px;margin:18px 0 -6px;flex-wrap:wrap;}
+  .rf-btn{width:40px;height:40px;flex:none;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,.06);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1.5px solid rgba(255,255,255,.14);color:#cfccc7;cursor:pointer;font-size:16px;line-height:1;transition:transform .15s var(--ease),background .2s,color .2s,border-color .2s,box-shadow .2s;}
+  .rf-btn svg{width:18px;height:18px;}
+  .rf-btn:hover{border-color:rgba(255,255,255,.4);color:#fff;}
+  .rf-btn:active{transform:scale(.9);}
+  .rf-btn.active{background:var(--red);border-color:var(--red);color:#fff;box-shadow:0 8px 18px -8px var(--glow);}
+  .rf-btn.rf-alquiler.active{background:#3468d8;border-color:#3468d8;box-shadow:0 8px 18px -8px rgba(52,104,216,.55);}
+  .rf-btn.rf-local.active{background:#7a5b00;border-color:#7a5b00;box-shadow:0 8px 18px -8px rgba(122,91,0,.55);}
+  .rf-div{width:1px;height:24px;background:rgba(255,255,255,.18);margin:0 2px;}
   /* ====== Carrusel de reels (como Instagram/TikTok) ======
      #reelsWrap es el contenedor relativo que aloja las flechas de navegación
      (solo escritorio). #reels es el propio scroller: en escritorio es una fila
@@ -705,12 +728,17 @@
   <div class="op-filters" id="opFilters" hidden>
     <button type="button" class="op-btn op-venta active" id="opVenta" data-op="Venta"><svg class="ic op-ic"><use href="#i-home"/></svg>Compra</button>
     <button type="button" class="op-btn op-alquiler active" id="opAlquiler" data-op="Alquiler">🔑 Alquiler</button>
+    <span class="op-divider" id="opDivider" aria-hidden="true" hidden></span>
+    <div class="sub-filters" id="subFilters" hidden>
+      <button type="button" class="sub-btn active" id="subVivienda" data-subtipo="Vivienda" title="Vivienda" aria-label="Vivienda"><svg class="ic"><use href="#i-piso"/></svg></button>
+      <button type="button" class="sub-btn sub-local active" id="subLocal" data-subtipo="Local" title="Local" aria-label="Local"><svg class="ic"><use href="#i-shop"/></svg></button>
+    </div>
   </div>
 
   <div class="filters" id="filters" hidden>
-    <label>Zona<select id="fZona"><option value="">Todas</option></select></label>
-    <label>Precio máx.<select id="fPrecio"><option value="">Sin límite</option></select></label>
-    <label>Habitaciones<select id="fHab"><option value="">Cualquiera</option><option value="1">1 o más</option><option value="2">2 o más</option><option value="3">3 o más</option></select></label>
+    <label><span class="flab"><svg><use href="#i-pin"/></svg>Zona</span><select id="fZona"><option value="">Todas</option></select></label>
+    <label><span class="flab"><svg><use href="#i-euro"/></svg>Precio máx.</span><select id="fPrecio"><option value="">Sin límite</option></select></label>
+    <label><span class="flab"><svg><use href="#i-bed"/></svg>Habitaciones</span><select id="fHab"><option value="">Cualquiera</option><option value="1">1 o más</option><option value="2">2 o más</option><option value="3">3 o más</option></select></label>
     <button class="btn clear" id="fClear" type="button">Limpiar</button>
   </div>
 
@@ -1112,6 +1140,13 @@
       </div>
       <a class="btn ig-btn" href="https://www.instagram.com/fer_real_estate/" target="_blank" rel="noopener">Seguir en Instagram</a>
     </div>
+    <div class="reel-filters" id="reelFilters" role="group" aria-label="Filtrar vídeos">
+      <button type="button" class="rf-btn active" id="rfVenta" data-rf-op="Venta" title="Venta" aria-label="Venta"><svg class="ic"><use href="#i-home"/></svg></button>
+      <button type="button" class="rf-btn rf-alquiler active" id="rfAlquiler" data-rf-op="Alquiler" title="Alquiler" aria-label="Alquiler">🔑</button>
+      <span class="rf-div" id="rfDivider" aria-hidden="true" hidden></span>
+      <button type="button" class="rf-btn active" id="rfVivienda" data-rf-sub="Vivienda" title="Vivienda" aria-label="Vivienda" hidden><svg class="ic"><use href="#i-piso"/></svg></button>
+      <button type="button" class="rf-btn rf-local active" id="rfLocal" data-rf-sub="Local" title="Local" aria-label="Local" hidden><svg class="ic"><use href="#i-shop"/></svg></button>
+    </div>
     <div class="reels-wrap" id="reelsWrap">
       <button class="navarrow prev reel-nav" id="reelsPrevBtn" type="button" aria-label="Vídeo anterior" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4l-8 8 8 8"/></svg></button>
       <div class="reels" id="reels" tabindex="0" aria-label="Vídeos de propiedades"></div>
@@ -1256,6 +1291,8 @@
   var PIN_ALQUILER = '<div class="pin"><svg viewBox="0 0 34 42"><path d="M17 1C8.7 1 2 7.6 2 15.8 2 26.6 17 41 17 41s15-14.4 15-25.2C32 7.6 25.3 1 17 1z" fill="#17181a" stroke="#5b8dff" stroke-width="2"/><circle cx="17" cy="16" r="6" fill="#5b8dff"/></svg></div>';
   // Qué sectores se muestran (Venta y/o Alquiler); ambos activos por defecto.
   var opActivos = { Venta: true, Alquiler: true };
+  // Vivienda/Local: segundo filtro, independiente del de Venta/Alquiler.
+  var subtipoActivos = { Vivienda: true, Local: true };
 
   function initMap(){
     map = L.map('map',{scrollWheelZoom:false,zoomControl:false}).setView(CENTER,12);
@@ -1607,12 +1644,26 @@
     $('fZona').value=v0[0]; $('fPrecio').value=v0[1];
     $('filters').hidden = all.length < 2;
     $('opFilters').hidden = all.length < 1 || !all.some(function(p){return p.operacion==='Alquiler';});
+    var hayLocal = all.some(function(p){return p.subtipo==='Local';});
+    $('subFilters').hidden = !hayLocal;
+    $('opDivider').hidden = !hayLocal;
+    $('rfVivienda').hidden = !hayLocal;
+    $('rfLocal').hidden = !hayLocal;
+    $('rfDivider').hidden = !hayLocal;
+  }
+  function syncFilterButtons(){
+    ['opVenta','opAlquiler'].forEach(function(id){ var b=$(id); if(b) b.classList.toggle('active', opActivos[b.dataset.op]); });
+    ['subVivienda','subLocal'].forEach(function(id){ var b=$(id); if(b) b.classList.toggle('active', subtipoActivos[b.dataset.subtipo]); });
+    ['rfVenta','rfAlquiler'].forEach(function(id){ var b=$(id); if(b) b.classList.toggle('active', opActivos[b.dataset.rfOp]); });
+    ['rfVivienda','rfLocal'].forEach(function(id){ var b=$(id); if(b) b.classList.toggle('active', subtipoActivos[b.dataset.rfSub]); });
   }
   function applyFilters(){
     var z=$('fZona').value, pr=parseFloat($('fPrecio').value), h=parseInt($('fHab').value,10);
     render(all.filter(function(p){
-      return opActivos[p.operacion||'Venta'] && (!z||p.zona===z) && (isNaN(pr)||p.precio==null||p.precio<=pr) && (isNaN(h)||(p.habitaciones||0)>=h);
+      return opActivos[p.operacion||'Venta'] && subtipoActivos[p.subtipo||'Vivienda'] && (!z||p.zona===z) && (isNaN(pr)||p.precio==null||p.precio<=pr) && (isNaN(h)||(p.habitaciones||0)>=h);
     }));
+    syncFilterButtons();
+    renderReels();
   }
 
   var stFn=function(){return '';};
@@ -1728,17 +1779,28 @@
   $('retry').addEventListener('click',load);
   ['fZona','fPrecio','fHab'].forEach(function(id){ $(id).addEventListener('change',applyFilters); });
   $('fClear').addEventListener('click',function(){ $('fZona').value='';$('fPrecio').value='';$('fHab').value=''; applyFilters(); });
-  ['opVenta','opAlquiler'].forEach(function(id){
-    $(id).addEventListener('click',function(){
-      playClickSound(this.dataset.op === 'Venta' ? 620 : 440);
-      var op = this.dataset.op;
-      var otro = op==='Venta' ? 'Alquiler' : 'Venta';
-      if(opActivos[op] && !opActivos[otro]){ return; } // no dejar los dos filtros apagados a la vez
-      opActivos[op] = !opActivos[op];
-      this.classList.toggle('active', opActivos[op]);
-      applyFilters();
+  // Helper genérico: liga un par de botones (uno de cada estado, p.ej.
+  // Venta/Alquiler o Vivienda/Local) a un objeto de estado compartido, en
+  // cualquiera de las dos filas (la de arriba del mapa o la de los reels),
+  // sin dejar nunca los dos valores apagados a la vez.
+  function wireTogglePair(ids, stateObj, dataAttr, soundFreqs){
+    ids.forEach(function(id){
+      var btn = $(id); if(!btn) return;
+      btn.addEventListener('click',function(){
+        var key = this.dataset[dataAttr];
+        var keys = Object.keys(stateObj);
+        var otro = keys.filter(function(k){ return k!==key; })[0];
+        if(stateObj[key] && !stateObj[otro]){ return; }
+        playClickSound(soundFreqs[key] || 500);
+        stateObj[key] = !stateObj[key];
+        applyFilters();
+      });
     });
-  });
+  }
+  wireTogglePair(['opVenta','opAlquiler'], opActivos, 'op', {Venta:620,Alquiler:440});
+  wireTogglePair(['subVivienda','subLocal'], subtipoActivos, 'subtipo', {Vivienda:560,Local:390});
+  wireTogglePair(['rfVenta','rfAlquiler'], opActivos, 'rfOp', {Venta:620,Alquiler:440});
+  wireTogglePair(['rfVivienda','rfLocal'], subtipoActivos, 'rfSub', {Vivienda:560,Local:390});
   document.addEventListener('click',function(e){
     if(e.target.closest && e.target.closest('[data-close]')){ hideDetail(); return; }
     var lb = e.target.closest && e.target.closest('[data-lightbox]');
@@ -1811,7 +1873,7 @@
     var wrap = $('reels'); if(!wrap) return;
     wrap.innerHTML = '';
     var PLAY = '<span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>';
-    var conVideo = (all||[]).filter(function(p){ return p.video; });
+    var conVideo = (all||[]).filter(function(p){ return p.video && opActivos[p.operacion||'Venta'] && subtipoActivos[p.subtipo||'Vivienda']; });
     if(conVideo.length){
       wrap.classList.add('emb');
       conVideo.forEach(function(p){
