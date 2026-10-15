@@ -139,7 +139,11 @@
   .row .rs.bajada-rs{background:linear-gradient(135deg,#ff6b4a,#e2231a);color:#fff;border-color:#e2231a;}
   .row .rs.finca-rs{background:linear-gradient(135deg,#f5cf5c,#c9962b);color:#1a1200;border-color:#c9962b;}
   .row .rs.offmarket-rs{background:linear-gradient(135deg,#c084fc,#7e22ce);color:#fff;border-color:#7e22ce;}
-  @media(max-width:640px){.op-divider{display:none}.sub-filters{width:100%;justify-content:center;margin-top:2px}.finca-btn{width:100%;justify-content:center;margin-top:6px}}
+  /* En móvil: Compra/Alquiler arriba y Piso/Local debajo, en vez de las 4
+     píldoras en una sola fila (quedaba todo igual de ancho = demasiado
+     simétrico). Para eso .op-filters necesita flex-wrap: sub-filters, al
+     medir width:100%, salta así a su propia línea. */
+  @media(max-width:640px){.op-filters{flex-wrap:wrap}.op-divider{display:none}.sub-filters{width:100%;justify-content:center;margin-top:2px}.finca-btn{width:100%;justify-content:center;margin-top:6px}}
   .listbar{margin:0 0 12px;position:relative;z-index:1300}
   .listbtn{display:inline-flex;align-items:center;gap:10px;background:var(--black-2);color:var(--white);border:1px solid var(--line);border-radius:12px;padding:10px 16px 10px 12px;font:700 14px 'Inter',sans-serif;cursor:pointer;transition:border-color .25s var(--ease)}
   .listbtn:hover,.listbtn[aria-expanded="true"]{border-color:var(--red)}
@@ -235,7 +239,9 @@
   /* En móvil/tablet no cabe un panel lateral junto al mapa: sube como una
      hoja desde abajo (bottom sheet), ocupando casi toda la pantalla. */
   @media(max-width:640px){
-    .detail{left:0;right:0;top:auto;bottom:0;width:auto;max-width:none;height:88vh;border-right:0;border-top:1px solid var(--line);border-radius:18px 18px 0 0;box-shadow:0 -20px 50px -14px rgba(0,0,0,.6);transform:translateY(100%);}
+    /* Altura reducida (antes 88vh) para que, al abrir la ficha, siga
+       asomando el mapa por arriba en vez de taparlo casi entero. */
+    .detail{left:0;right:0;top:auto;bottom:0;width:auto;max-width:none;height:65vh;border-right:0;border-top:1px solid var(--line);border-radius:18px 18px 0 0;box-shadow:0 -20px 50px -14px rgba(0,0,0,.6);transform:translateY(100%);}
     .detail.open{transform:translateY(0);}
     .detail.fs{left:0;right:0;top:0;bottom:0;height:auto;border-radius:0;transform:none;}
   }
