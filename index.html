@@ -102,7 +102,21 @@
   .filters select{background:transparent;color:var(--white);border:0;padding:0;font:700 13.5px/1 'Inter',sans-serif;max-width:170px;cursor:pointer;transition:none;}
   .filters select:focus{outline:none;}
   .filters .clear{height:44px;border-radius:999px;align-self:center;}
-  @media(max-width:640px){.filters{gap:8px}.filters label{height:40px;padding:0 13px 0 12px;}.filters select{max-width:120px;font-size:13px;}}
+  /* En móvil, Zona/Precio máx./Habitaciones/Limpiar en rejilla 2×2 en vez de
+     apiladas una debajo de otra con distinto ancho cada una (quedaba
+     descompensado: una pastilla ocupaba casi toda la fila y la siguiente
+     compartía fila con "Limpiar" de forma desigual). */
+  @media(max-width:640px){
+    .filters{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+    .filters label{height:44px;padding:0 12px;width:100%;min-width:0;}
+    /* El icono se queda (tiene tamaño en px, no en em) pero se oculta el
+       texto de la etiqueta ("ZONA", "PRECIO MÁX."…): en dos columnas no
+       cabían ambos y el valor elegido ("Todas", "Sin límite"…) ya se
+       entiende solo con el icono al lado. */
+    .filters label .flab{font-size:0;gap:0;}
+    .filters select{max-width:none;width:100%;min-width:0;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .filters .clear{width:100%;justify-content:center;}
+  }
   .op-filters{display:flex;gap:12px;margin:22px 0 0;}
   .op-btn{flex:0 0 auto;display:inline-flex;align-items:center;gap:9px;padding:12px 25px;border-radius:999px;font-weight:700;font-size:14px;letter-spacing:.01em;font-family:'Montserrat',sans-serif;border:1.5px solid transparent;background:#3a3d42;color:var(--white);cursor:pointer;transition:transform .15s var(--ease),background .2s,color .2s;}
   .op-btn .op-ic{width:18px;height:18px;flex:none;}
@@ -139,11 +153,18 @@
   .row .rs.bajada-rs{background:linear-gradient(135deg,#ff6b4a,#e2231a);color:#fff;border-color:#e2231a;}
   .row .rs.finca-rs{background:linear-gradient(135deg,#f5cf5c,#c9962b);color:#1a1200;border-color:#c9962b;}
   .row .rs.offmarket-rs{background:linear-gradient(135deg,#c084fc,#7e22ce);color:#fff;border-color:#7e22ce;}
-  /* En móvil: Compra/Alquiler arriba y Piso/Local debajo, en vez de las 4
-     píldoras en una sola fila (quedaba todo igual de ancho = demasiado
-     simétrico). Para eso .op-filters necesita flex-wrap: sub-filters, al
-     medir width:100%, salta así a su propia línea. */
-  @media(max-width:640px){.op-filters{flex-wrap:wrap}.op-divider{display:none}.sub-filters{width:100%;justify-content:center;margin-top:2px}.finca-btn{width:100%;justify-content:center;margin-top:6px}}
+  /* En móvil: Compra/Alquiler arriba y Piso/Local debajo, cada pareja
+     repartiéndose el ancho al 50/50 (antes cada botón media lo que ocupaba
+     su texto, así que no quedaban ni alineados entre filas ni iguales
+     entre sí dentro de la misma fila). */
+  @media(max-width:640px){
+    .op-filters{flex-wrap:wrap;gap:10px}
+    .op-filters .op-btn{flex:1 1 0;min-width:0;padding:13px 10px;justify-content:center;}
+    .op-divider{display:none}
+    .sub-filters{width:100%;gap:10px;margin-top:0}
+    .sub-filters .sub-btn{flex:1 1 0;min-width:0;}
+    .finca-btn{width:100%;justify-content:center;margin-top:6px}
+  }
   .listbar{margin:0 0 12px;position:relative;z-index:1300}
   .listbtn{display:inline-flex;align-items:center;gap:10px;background:var(--black-2);color:var(--white);border:1px solid var(--line);border-radius:12px;padding:10px 16px 10px 12px;font:700 14px 'Inter',sans-serif;cursor:pointer;transition:border-color .25s var(--ease)}
   .listbtn:hover,.listbtn[aria-expanded="true"]{border-color:var(--red)}
