@@ -130,10 +130,15 @@
   @keyframes crownPulse{0%,100%{transform:translateX(-50%) scale(1);}50%{transform:translateX(-50%) scale(1.18);}}
   .pin-bajada{position:absolute;top:3px;right:-5px;width:15px;height:15px;border-radius:50%;background:#faff00;color:#c40000;font-size:10px;line-height:15px;text-align:center;font-weight:900;border:1px solid rgba(0,0,0,.25);box-shadow:0 2px 4px rgba(0,0,0,.45);}
   .finca-badge{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#f5cf5c,#c9962b);color:#1a1200;font:800 11px/1 'Inter',sans-serif;letter-spacing:.03em;text-transform:uppercase;padding:5px 10px;border-radius:999px;box-shadow:0 4px 12px -3px rgba(212,165,56,.7);}
+  /* OFF MARKET: propiedad que no se anuncia públicamente (solo se enseña por
+     contacto directo) — píldora morada en la tarjeta, pin de otro color en el
+     mapa (ver pinHtmlFor) y etiqueta también en el reel de vídeo. */
+  .offmarket-badge{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#c084fc,#7e22ce);color:#fff;font:800 11px/1 'Inter',sans-serif;letter-spacing:.03em;text-transform:uppercase;padding:5px 10px;border-radius:999px;box-shadow:0 4px 12px -3px rgba(126,34,206,.7);}
   .bajada-badge{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#ff6b4a,#e2231a);color:#fff;font:800 11px/1 'Inter',sans-serif;letter-spacing:.03em;text-transform:uppercase;padding:5px 10px;border-radius:999px;box-shadow:0 4px 12px -3px rgba(226,35,26,.6);}
   .pr-old{font-size:13px;font-weight:600;color:#9a9a9a;text-decoration:line-through;margin-right:7px;}
   .row .rs.bajada-rs{background:linear-gradient(135deg,#ff6b4a,#e2231a);color:#fff;border-color:#e2231a;}
   .row .rs.finca-rs{background:linear-gradient(135deg,#f5cf5c,#c9962b);color:#1a1200;border-color:#c9962b;}
+  .row .rs.offmarket-rs{background:linear-gradient(135deg,#c084fc,#7e22ce);color:#fff;border-color:#7e22ce;}
   @media(max-width:640px){.op-divider{display:none}.sub-filters{width:100%;justify-content:center;margin-top:2px}.finca-btn{width:100%;justify-content:center;margin-top:6px}}
   .listbar{margin:0 0 12px;position:relative;z-index:1300}
   .listbtn{display:inline-flex;align-items:center;gap:10px;background:var(--black-2);color:var(--white);border:1px solid var(--line);border-radius:12px;padding:10px 16px 10px 12px;font:700 14px 'Inter',sans-serif;cursor:pointer;transition:border-color .25s var(--ease)}
@@ -695,6 +700,7 @@
   .reel-op-tag{position:absolute;top:14px;left:56px;z-index:3;display:inline-flex;align-items:center;gap:5px;background:rgba(10,14,24,.78);backdrop-filter:blur(3px);color:#fff;border:1px solid rgba(255,255,255,.25);font:800 10.5px/1 'Inter',sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:6px 10px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.4);pointer-events:none;}
   .reel-op-tag.alquiler{color:#8fb4ff;border-color:rgba(91,141,255,.45);}
   .reel-op-tag.venta{color:#ffcf7a;border-color:rgba(245,148,31,.5);}
+  .reel-offmarket-tag{position:absolute;top:52px;left:56px;z-index:3;display:inline-flex;align-items:center;gap:5px;background:rgba(10,14,24,.78);backdrop-filter:blur(3px);color:#d8b4fe;border:1px solid rgba(192,132,252,.5);font:800 10.5px/1 'Inter',sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:6px 10px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.4);pointer-events:none;}
   /* Capa inferior, pegada al vídeo (no debajo de él): datos de la propiedad
      y botón "Ver ficha" sobre una franja oscura degradada, igual que las
      leyendas de un reel real. */
@@ -1347,6 +1353,10 @@
   function pinHtmlFor(p){
     var pinBase = p.operacion==='Alquiler' ? PIN_ALQUILER : PIN;
     var pinHtml = p.reservado?pinBase.replace('class="pin"','class="pin res"'):pinBase;
+    // OFF MARKET: un color distinto al rojo/azul habitual (venta/alquiler),
+    // para que se note de un vistazo en el mapa que esta propiedad no se
+    // anuncia públicamente.
+    if(p.offMarket) pinHtml = pinHtml.replace(/#e2231a/g,'#a855f7').replace(/#5b8dff/g,'#a855f7');
     if(p.fincaRegia) pinHtml = pinHtml.replace('</svg>','</svg><span class="pin-crown">👑</span>');
     if(hayBajada(p)) pinHtml = pinHtml.replace('</svg>','</svg><span class="pin-bajada">↓</span>');
     return pinHtml;
@@ -1715,6 +1725,7 @@
         colaboradorLogoHTML(p)+
         (p.fincaRegia?'<span class="finca-badge" style="position:absolute;top:12px;right:12px;">👑 '+tr('Finca Regia')+'</span>':'')+
         (hayBajada(p)?'<span class="bajada-badge" style="position:absolute;bottom:12px;right:12px;">↓ '+tr('Bajada de precio')+'</span>':'')+
+        (p.offMarket?'<span class="offmarket-badge" style="position:absolute;bottom:12px;left:12px;">🔒 OFF MARKET</span>':'')+
         (p.reservado?'<span class="ribbon">'+tr('RESERVADO')+'</span>':'')+
       '</div>'+
       '<button class="d-close" type="button" aria-label="'+tr('Cerrar')+'" data-close>✕</button>'+
@@ -1865,7 +1876,7 @@
 
   function emptyHTML(){ return esc(tr('No hay propiedades con esos filtros. Prueba a limpiarlos o '))+'<a style="text-decoration:underline" href="'+esc(wa(tr('Hola AG Núñez, busco una propiedad para comprar en Barcelona')))+'" target="_blank" rel="noopener">'+esc(tr('cuéntame qué buscas'))+'</a>.'; }
   function rowHTML(p){
-    return '<span class="zona">'+esc(p.zona)+'</span><span class="tt">'+esc(p.titulo)+(p.fincaRegia?'<span class="rs finca-rs">👑 '+tr('FINCA REGIA')+'</span>':'')+(hayBajada(p)?'<span class="rs bajada-rs">↓ '+tr('BAJADA')+'</span>':'')+(p.reservado?'<span class="rs">'+tr('RESERVADO')+'</span>':'')+'</span>'+
+    return '<span class="zona">'+esc(p.zona)+'</span><span class="tt">'+esc(p.titulo)+(p.fincaRegia?'<span class="rs finca-rs">👑 '+tr('FINCA REGIA')+'</span>':'')+(p.offMarket?'<span class="rs offmarket-rs">🔒 OFF MARKET</span>':'')+(hayBajada(p)?'<span class="rs bajada-rs">↓ '+tr('BAJADA')+'</span>':'')+(p.reservado?'<span class="rs">'+tr('RESERVADO')+'</span>':'')+'</span>'+
         (p.precio!=null?'<span class="pr">'+(hayBajada(p)?'<span class="pr-old">'+eur(p.precioAnterior)+'</span>':'')+eur(p.precio)+'</span>':'');
   }
   function render(list){
@@ -2042,6 +2053,7 @@
         // de vivienda (Incasòl): última renta, rango y índice de referencia.
         subtipo: String(r['Subtipo']||'Vivienda').trim() || 'Vivienda',
         fincaRegia: /^(s[ií]|true|1|x|yes)$/i.test(String(r['FincaRegia']||'').trim()),
+        offMarket: /^(s[ií]|true|1|x|yes)$/i.test(String(r['OffMarket']||'').trim()),
         ceeCodigo: String(r['CEE Código Registro']||'').trim(),
         ceeConsumoLetra: String(r['CEE Consumo Letra']||'').trim().toUpperCase(),
         ceeConsumoValor: String(r['CEE Consumo Valor']||'').trim(),
@@ -2255,6 +2267,13 @@
         tag.className = esAlquiler ? 'reel-op-tag alquiler' : 'reel-op-tag venta';
         tag.innerHTML = esAlquiler ? ('🔑 '+esc(tr('Alquiler'))) : ('🏠 '+esc(tr('Venta')));
         d.appendChild(tag);
+
+        if(p.offMarket){
+          var offTag = document.createElement('span');
+          offTag.className = 'reel-offmarket-tag';
+          offTag.innerHTML = '🔒 OFF MARKET';
+          d.appendChild(offTag);
+        }
 
         var muteBtn = document.createElement('button');
         muteBtn.type = 'button'; muteBtn.className = 'reel-mute-btn'; muteBtn.textContent = '🔇';
